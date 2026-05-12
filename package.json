@@ -1,6 +1,6 @@
 {
-  "name": "theniitettey.live",
-  "version": "0.1.0",
+  "name": "theniidromo",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
