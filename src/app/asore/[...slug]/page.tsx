@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allAsores } from "@/.contentlayer/generated";
+import { allAsores } from "@/lib/content";
 import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
@@ -135,7 +135,7 @@ export default async function DevotionalPage({ params }: DevotionalProps) {
             </div>
           )}
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
-            <MDXComponent code={post.body.code} />
+            <MDXComponent code={post.body} />
           </article>
         </div>
       </MotionDiv>

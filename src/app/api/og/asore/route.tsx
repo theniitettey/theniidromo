@@ -1,5 +1,5 @@
-import { ImageResponse } from "@vercel/og";
-import { allAsores } from "@/.contentlayer/generated";
+﻿import { ImageResponse } from "@vercel/og";
+import { allAsores } from "@/lib/content";
 
 export const runtime = "edge";
 

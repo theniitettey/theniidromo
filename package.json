@@ -3,9 +3,9 @@
   "version": "2.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "preview": "next build --webpack && next start",
+    "dev": "concurrently \"velite dev\" \"next dev\"",
+    "build": "velite build && next build",
+    "preview": "velite build && next build && next start",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,13 +25,11 @@
     "autoprefixer": "10.5.0",
     "bright": "^1.0.0",
     "clsx": "^2.1.1",
-    "contentlayer": "^0.3.2",
     "date-fns": "^4.1.0",
     "eslint": "^9.39.1",
     "eslint-config-next": "latest",
     "framer-motion": "^12.23.12",
     "next": "^16.2.6",
-    "next-contentlayer": "^0.3.2",
     "next-themes": "^0.4.3",
     "postcss": "8.5.14",
     "react": "^19.2.6",
@@ -42,6 +40,10 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "4.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "velite": "^0.3.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

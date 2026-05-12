@@ -1,5 +1,5 @@
-"use client";
-import { allPosts } from "@/.contentlayer/generated";
+﻿"use client";
+import { allPosts } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
@@ -27,7 +27,7 @@ export default function BlogPage() {
       <div className="flex flex-col">
         {posts.map((post) => (
           <article
-            key={post._id}
+            key={post.slug}
             className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
           >
             <Link href={post.slug} className="flex flex-col gap-0.5 flex-1 pr-4">
@@ -61,7 +61,7 @@ export default function BlogPage() {
         href="/archive/posts"
         className="text-xs text-zinc-400 hover:text-foreground transition-colors mt-8 inline-block"
       >
-        Archived posts →
+        Archived posts â†’
       </Link>
     </MotionDiv>
   );

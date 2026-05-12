@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import React from "react";
-import { allPosts } from "@/.contentlayer/generated";
+import { allPosts } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Posts, MotionDiv, MotionHeader, SpotifyCard } from "@/components";
@@ -35,7 +35,7 @@ const Home = () => {
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-3 select-none">
-          ✌️ Akwaaba &nbsp;·&nbsp; いらっしゃいませ
+          âœŒï¸ Akwaaba &nbsp;Â·&nbsp; ã„ã‚‰ã£ã—ã‚ƒã„ã¾ã›
         </p>
         <div className="flex items-start justify-between gap-4 mb-5">
           <MotionHeader variants={itemVariants}>
@@ -43,7 +43,7 @@ const Home = () => {
               Michael Perry Nii Dromo
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-              Software Engineer · CS student, University of Ghana
+              Software Engineer Â· CS student, University of Ghana
             </p>
             <span className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -61,7 +61,7 @@ const Home = () => {
 
         <div className="flex flex-col gap-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
           <p>
-            Developer from Accra, Ghana 🇬🇭 — building polished, production-grade software for
+            Developer from Accra, Ghana ðŸ‡¬ðŸ‡­ â€” building polished, production-grade software for
             the web. I&apos;ve shipped APIs, high-concurrency systems, and frontend products used
             by thousands, across QuiverTech Solutions, BetaForge Labs, and my own projects.
           </p>
@@ -70,7 +70,7 @@ const Home = () => {
             <a href="https://qz.bflabs.tech" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
               Qz
             </a>
-            {" "}— a quiz platform that hit 10,000+ visits in its first month. I work mostly in
+            {" "}â€” a quiz platform that hit 10,000+ visits in its first month. I work mostly in
             TypeScript and Python, treat best practices as guidelines not gospel, and learn through
             reading, writing, and drawing. This site is where all of that lives.
           </p>
@@ -86,11 +86,11 @@ const Home = () => {
           Now
         </h2>
         <ul className="flex flex-col gap-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-          <li>B.Sc. Computer Science at UG Legon <span className="text-zinc-400 dark:text-zinc-500 text-xs">— graduating Aug 2027</span></li>
+          <li>B.Sc. Computer Science at UG Legon <span className="text-zinc-400 dark:text-zinc-500 text-xs">â€” graduating Aug 2027</span></li>
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
-            𓅔 Drake fan &mdash;{" "}
+            ð“…” Drake fan &mdash;{" "}
             <a
               href="https://open.spotify.com/track/047fCsbO4NdmwCBn8pcUXl"
               target="_blank"
@@ -121,12 +121,12 @@ const Home = () => {
           Currently on repeat
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake · Views '16" />
-          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake · More Life '17" />
-          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake · Take Care '11" />
-          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · My Everything '14" />
-          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · Work of Art '23" />
-          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · Adedamola '24" />
+          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake Â· Views '16" />
+          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake Â· More Life '17" />
+          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake Â· Take Care '11" />
+          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande Â· My Everything '14" />
+          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake Â· Work of Art '23" />
+          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML Â· Adedamola '24" />
         </div>
       </MotionDiv>
 
@@ -145,11 +145,11 @@ const Home = () => {
             <div>
               <h3 className="text-sm font-semibold text-foreground">Qz</h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
-                Quiz platform — 10k+ visits in month one
+                Quiz platform â€” 10k+ visits in month one
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              qz.bflabs.tech →
+              qz.bflabs.tech â†’
             </span>
           </a>
           <a
@@ -165,7 +165,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              eventflick.vercel.app →
+              eventflick.vercel.app â†’
             </span>
           </a>
           <Link
@@ -179,7 +179,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              View resume →
+              View resume â†’
             </span>
           </Link>
           <a
@@ -198,7 +198,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              @michaelperryjnr →
+              @michaelperryjnr â†’
             </span>
           </a>
         </div>
@@ -221,13 +221,13 @@ const Home = () => {
         </div>
         <div className="flex items-center gap-5 pt-1">
           <Link href="/blog" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            All posts →
+            All posts â†’
           </Link>
           <Link href="/thoughts" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            Thoughts →
+            Thoughts â†’
           </Link>
           <Link href="/asore" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            Asore →
+            Asore â†’
           </Link>
         </div>
       </MotionDiv>

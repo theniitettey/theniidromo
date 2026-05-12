@@ -1,5 +1,5 @@
-"use client";
-import { allThoughts } from "@/.contentlayer/generated";
+﻿"use client";
+import { allThoughts } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
@@ -27,7 +27,7 @@ const ThoughtsPage = () => {
       <div className="flex flex-col">
         {thoughts.map((thought) => (
           <article
-            key={thought._id}
+            key={thought.slug}
             className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
           >
             <Link href={thought.slug} className="flex flex-col gap-0.5 flex-1 pr-4">

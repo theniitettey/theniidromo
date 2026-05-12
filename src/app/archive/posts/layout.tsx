@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { allPosts } from "@/.contentlayer/generated";
+﻿import type { Metadata } from "next";
+import { allPosts } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const archivedPosts = allPosts.filter((post) => post.archived);

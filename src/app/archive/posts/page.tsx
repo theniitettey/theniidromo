@@ -1,4 +1,4 @@
-import { allPosts } from "@/.contentlayer/generated";
+﻿import { allPosts } from "@/lib/content";
 import Link from "next/link";
 
 export default function ArchivePage() {
@@ -12,7 +12,7 @@ export default function ArchivePage() {
         href="/blog"
         className="text-xs text-zinc-500 hover:text-foreground transition-colors mt-2 inline-block"
       >
-        ← Blog
+        â† Blog
       </Link>
       <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-4 mb-8">
         Archived Posts
@@ -21,7 +21,7 @@ export default function ArchivePage() {
         {archivedPosts.length > 0 ? (
           archivedPosts.map((post) => (
             <article
-              key={post._id}
+              key={post.slug}
               className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
             >
               <Link href={post.slug} className="flex flex-col gap-0.5 flex-1 pr-4">

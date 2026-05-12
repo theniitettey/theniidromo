@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allThoughts } from "@/.contentlayer/generated";
+import { allThoughts } from "@/lib/content";
 import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
@@ -126,7 +126,7 @@ export default async function ThoughtPage({ params }: ThoughtsProps) {
             </div>
           )}
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
-            <MDXComponent code={thought.body.code} />
+            <MDXComponent code={thought.body} />
           </article>
         </div>
       </MotionDiv>

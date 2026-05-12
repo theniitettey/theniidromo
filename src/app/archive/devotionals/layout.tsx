@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { allAsores } from "@/.contentlayer/generated";
+﻿import type { Metadata } from "next";
+import { allAsores } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
   const archivedDevotionals = allAsores.filter(
