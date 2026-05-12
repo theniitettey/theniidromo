@@ -90,7 +90,7 @@ const Home = () => {
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
-            Big Drake fan &mdash; favourite song is{" "}
+            Drake&apos;s <em>Take Care</em> and <em>Views</em> basically raised me &mdash; favourite cut is{" "}
             <a
               href="https://open.spotify.com/track/0zG4M210LKXXXHOoW7DQly"
               target="_blank"
