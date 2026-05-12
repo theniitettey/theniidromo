@@ -8,6 +8,7 @@ import { Icons } from "@/assets";
 import Image from "next/image";
 import { FiYoutube } from "react-icons/fi";
 import { SiSpotify } from "react-icons/si";
+import { LuHandMetal } from "react-icons/lu";
 
 const containerVariants = {
   hidden: {},
@@ -18,6 +19,15 @@ const itemVariants = {
   hidden: { opacity: 0, y: 14 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
 };
+
+const spotifyTracks = [
+  { trackId: "4PA16FAl8LPmFmOhARawdV", label: "Drake · Views '16" },
+  { trackId: "2KvHC9z14GSl4YpkNMX384", label: "Drake · More Life '17" },
+  { trackId: "047fCsbO4NdmwCBn8pcUXl", label: "Drake · Take Care '11" },
+  { trackId: "7xoUc6faLbCqZO6fQEYprd", label: "Ariana Grande · My Everything '14" },
+  { trackId: "0Q1bMs3xLQiDEeaneehdxv", label: "Asake · Work of Art '23" },
+  { trackId: "3x11dxRSmvNxq46e5IhNCO", label: "Fireboy DML · Adedamola '24" },
+];
 
 const Home = () => {
   const recentPosts = allPosts
@@ -34,9 +44,18 @@ const Home = () => {
     >
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
-        <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-3 select-none">
-          ✌️ Akwaaba &nbsp;·&nbsp; いらっしゃいませ
-        </p>
+        <div className="flex flex-col items-start gap-2.5 mb-5 select-none">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 text-xs font-medium">
+            <LuHandMetal size={14} />
+            <span>Akwaaba</span>
+          </div>
+          <span 
+            className="text-sm font-bold text-foreground tracking-widest"
+            style={{ textShadow: "-1.5px 0 0 rgba(0, 255, 255, 0.7), 1.5px 0 0 rgba(255, 0, 0, 0.7)" }}
+          >
+            いらっしゃいませ
+          </span>
+        </div>
         <div className="flex items-start justify-between gap-4 mb-5">
           <MotionHeader variants={itemVariants}>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
@@ -61,21 +80,29 @@ const Home = () => {
 
         <div className="flex flex-col gap-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
           <p>
-            Developer from Accra, Ghana 🇬🇭 — building polished, production-grade software for
-            the web. I&apos;ve shipped APIs, high-concurrency systems, and frontend products used
-            by thousands, across QuiverTech Solutions, BetaForge Labs, and my own projects.
+            Developer from Accra, Ghana 🇬🇭 — building polished, production-grade
+            software for the web. I&apos;ve shipped APIs, high-concurrency
+            systems, and frontend products used by thousands, across QuiverTech
+            Solutions, BetaForge Labs, and my own projects.
           </p>
           <p>
             Currently building{" "}
-            <a href="https://qz.bflabs.tech" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
+            <a
+              href="https://qz.bflabs.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground font-medium hover:opacity-70 transition-opacity"
+            >
               Qz
-            </a>
-            {" "}— a quiz platform that hit 10,000+ visits in its first month. I work mostly in
-            TypeScript and Python, treat best practices as guidelines not gospel, and learn through
-            reading, writing, and drawing. This site is where all of that lives.
+            </a>{" "}
+            — a quiz platform that hit 10,000+ visits in its first month. I work
+            mostly in TypeScript and Python, treat best practices as guidelines
+            not gospel, and learn through reading, writing, and drawing. This
+            site is where all of that lives.
           </p>
           <p className="text-zinc-400 dark:text-zinc-500 text-xs italic mt-1">
-            Where tradition meets innovation, that&apos;s where you&apos;ll find me coding.
+            Where tradition meets innovation, that&apos;s where you&apos;ll find
+            me coding.
           </p>
         </div>
       </MotionDiv>
@@ -86,7 +113,12 @@ const Home = () => {
           Now
         </h2>
         <ul className="flex flex-col gap-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-          <li>B.Sc. Computer Science at UG Legon <span className="text-zinc-400 dark:text-zinc-500 text-xs">— graduating Aug 2027</span></li>
+          <li>
+            B.Sc. Computer Science at UG Legon{" "}
+            <span className="text-zinc-400 dark:text-zinc-500 text-xs">
+              — graduating Aug 2027
+            </span>
+          </li>
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
@@ -99,8 +131,8 @@ const Home = () => {
             >
               <SiSpotify size={11} />
               Take Care
-            </a>
-            {" "}&amp;{" "}
+            </a>{" "}
+            &amp;{" "}
             <a
               href="https://open.spotify.com/track/0zG4M210LKXXXHOoW7DQly"
               target="_blank"
@@ -109,8 +141,8 @@ const Home = () => {
             >
               <SiSpotify size={11} />
               Views
-            </a>
-            {" "}basically raised me
+            </a>{" "}
+            basically raised me
           </li>
         </ul>
       </MotionDiv>
@@ -121,12 +153,13 @@ const Home = () => {
           Currently on repeat
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake · Views '16" />
-          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake · More Life '17" />
-          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake · Take Care '11" />
-          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · My Everything '14" />
-          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · Work of Art '23" />
-          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · Adedamola '24" />
+          {spotifyTracks.map((track) => (
+            <SpotifyCard
+              key={track.trackId}
+              trackId={track.trackId}
+              label={track.label}
+            />
+          ))}
         </div>
       </MotionDiv>
 
@@ -159,7 +192,9 @@ const Home = () => {
             className="group flex flex-col justify-between gap-4 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
           >
             <div>
-              <h3 className="text-sm font-semibold text-foreground">EventFlick</h3>
+              <h3 className="text-sm font-semibold text-foreground">
+                EventFlick
+              </h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
                 Event ticketing SaaS for organizers
               </p>
@@ -220,13 +255,22 @@ const Home = () => {
           ))}
         </div>
         <div className="flex items-center gap-5 pt-1">
-          <Link href="/blog" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
+          <Link
+            href="/blog"
+            className="text-xs text-zinc-500 hover:text-foreground transition-colors"
+          >
             All posts →
           </Link>
-          <Link href="/thoughts" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
+          <Link
+            href="/thoughts"
+            className="text-xs text-zinc-500 hover:text-foreground transition-colors"
+          >
             Thoughts →
           </Link>
-          <Link href="/asore" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
+          <Link
+            href="/asore"
+            className="text-xs text-zinc-500 hover:text-foreground transition-colors"
+          >
             Asore →
           </Link>
         </div>
