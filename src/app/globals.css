@@ -1,6 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Class-based dark mode — next-themes adds .dark to <html> */
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* Typography plugin */
+@plugin "@tailwindcss/typography";
+
+/* Custom color tokens */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-grey-50: #f7f6f6;
+  --color-grey-100: #3c3633;
+  --color-grey-200: #8a7d77;
+
+  --color-glow-100: #1ec3f7;
+  --color-glow-200: #301934;
+
+  --color-ground-100: #262626;
+  --color-ground-200: #baabab;
+  --color-ground-300: #b5b3b3;
+  --color-ground-400: #424242;
+  --color-ground-500: #afafaf;
+  --color-ground-600: #6d6565;
+  --color-ground-700: #301934;
+}
 
 @layer base {
   :root {
