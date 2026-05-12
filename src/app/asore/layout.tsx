@@ -17,13 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const topics = [...new Set(activePosts.flatMap((post) => post.tags || []))];
   const topTopics = topics.slice(0, 5).join(", ");
 
-  const title = "Devotionals | The Nii Tettey";
+  const title = "Devotionals | The Nii Dromo";
   const description =
     postCount > 0
       ? `Explore ${postCount} devotionals on ${
           topTopics || "various topics"
-        }. Quiet time reflections, spiritual insights, and biblical truths by Nii Tettey.`
-      : "Personal blog featuring quiet time reflections, spiritual insights, and biblical truths by Nii Tettey.";
+        }. Quiet time reflections, spiritual insights, and biblical truths by Nii Dromo.`
+      : "Quiet time reflections, spiritual insights, and biblical truths by Nii Dromo.";
 
   return {
     title,
@@ -33,16 +33,16 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title,
       description,
-      url: "https://www.theniitettey.live/asore",
+      url: "/asore",
       images: [
         {
           url: "/api/og/asore",
           width: 1200,
           height: 630,
-          alt: "The Nii Tettey Devotionals",
+          alt: "Nii Dromo Devotionals",
         },
       ],
-      siteName: "The Nii Tettey",
+      siteName: "The Nii Dromo",
       ...(latestPostDate && { modifiedTime: latestPostDate }),
     },
 
@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
 
     alternates: {
-      canonical: "https://www.theniitettey.live/asore",
+      canonical: "/asore",
     },
 
     robots: {
@@ -72,8 +72,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
     authors: [
       {
-        name: "Nii Tettey",
-        url: "https://www.theniitettey.live",
+        name: "Nii Dromo",
+        url: "/",
       },
     ],
   };
