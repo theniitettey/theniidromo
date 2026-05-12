@@ -3,7 +3,8 @@ import Footer from "./Footer";
 import Posts from "./Posts";
 import ThemeProvider from "./ThemeProvider";
 import SchemeToggle from "./SchemeToggle";
-import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard } from "./ui";
+import { QueryProvider } from "./QueryProvider";
+import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard, SignaturePad } from "./ui";
 
 export {
   Header,
@@ -11,8 +12,10 @@ export {
   Posts,
   ThemeProvider,
   SchemeToggle,
+  QueryProvider,
   MotionHeader,
   MotionDiv,
   MotionFooter,
   SpotifyCard,
+  SignaturePad,
 };

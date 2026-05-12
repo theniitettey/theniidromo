@@ -29,7 +29,6 @@ export const SpotifyCard = ({ trackId, label }: SpotifyCardProps) => {
       </div>
       {mounted ? (
         <iframe
-          allowTransparency
           style={{
             display: "block",
             border: "none",
