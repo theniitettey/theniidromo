@@ -92,7 +92,7 @@ const Home = () => {
           <li>
             Big Drake fan &mdash; favourite song is{" "}
             <a
-              href="https://open.spotify.com/search/Weston%20Road%20Flows%20Drake"
+              href="https://open.spotify.com/track/0zG4M210LKXXXHOoW7DQly"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[#1DB954] hover:opacity-80 transition-opacity font-medium align-middle"
@@ -102,6 +102,22 @@ const Home = () => {
             </a>
           </li>
         </ul>
+      </MotionDiv>
+
+      {/* Spotify */}
+      <MotionDiv variants={itemVariants} className="flex flex-col gap-3">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+          Currently on repeat
+        </h2>
+        <iframe
+          style={{ borderRadius: "12px" }}
+          src="https://open.spotify.com/embed/track/0zG4M210LKXXXHOoW7DQly?utm_source=generator&theme=0"
+          width="100%"
+          height="80"
+          frameBorder={0}
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        />
       </MotionDiv>
 
       {/* Featured */}
