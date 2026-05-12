@@ -29,7 +29,7 @@
     "eslint": "^9.39.1",
     "eslint-config-next": "latest",
     "framer-motion": "^12.23.12",
-    "next": "latest",
+    "next": "^16.2.6",
     "next-contentlayer": "^0.3.2",
     "next-themes": "^0.4.3",
     "postcss": "8.5.14",
