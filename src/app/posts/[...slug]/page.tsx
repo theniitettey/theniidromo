@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { allPosts } from "@/./.contentlayer/generated";
+import { allPosts } from "@/.contentlayer/generated";
 import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";

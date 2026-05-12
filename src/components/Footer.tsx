@@ -25,6 +25,7 @@ const Footer = () => {
         <Link
           href="https://github.com/michaelperryjnr/themefolio"
           target="_blank"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 hover:text-foreground transition-colors"
         >
           <FiGithub size={12} />

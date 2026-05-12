@@ -10,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/is-prop-valid": "^1.4.0",
     "@headlessui/react": "^2.2.10",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "24.1.0",
@@ -26,7 +25,7 @@
     "clsx": "^2.1.1",
     "contentlayer": "^0.3.2",
     "date-fns": "^4.1.0",
-    "eslint": "10.2.1",
+    "eslint": "^9.39.1",
     "eslint-config-next": "latest",
     "framer-motion": "^12.23.12",
     "next": "latest",

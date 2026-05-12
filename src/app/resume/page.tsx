@@ -38,6 +38,7 @@ const Entry = ({
           <Link
             href={url}
             target="_blank"
+            rel="noopener noreferrer"
             className="text-sm font-semibold text-foreground hover:text-zinc-500 dark:hover:text-zinc-400 transition-colors"
           >
             {title} ↗
@@ -83,6 +84,7 @@ export default function ResumePage() {
         <Link
           href="https://docs.google.com/document/d/1cYsx-G67J1mF6dy6qDW9cBn3j_b3a-xuEDRjbOc1cvY/export?format=pdf"
           target="_blank"
+          rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-foreground transition-colors border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 rounded px-3 py-1.5 shrink-0"
         >
           <FiDownload size={12} />

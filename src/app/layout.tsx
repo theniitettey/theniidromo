@@ -13,8 +13,10 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theniitettey.live";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: "The Nii Dromo | Software Engineer",
   description:
     "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft. Founder of BBF Labs.",

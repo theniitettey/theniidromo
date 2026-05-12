@@ -5,7 +5,7 @@ export const runtime = "edge";
 export async function GET() {
   const title = "Devotional Archive | The Nii Dromo";
   const description =
-    "Archive of past daily devotionals ${dateRange}. A collection of spiritual reflections and biblical insights by Nii Dromo.";
+    "Archive of past daily devotionals. A collection of spiritual reflections and biblical insights by Nii Dromo.";
   try {
     return new ImageResponse(
       (

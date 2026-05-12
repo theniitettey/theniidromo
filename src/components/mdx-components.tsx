@@ -329,9 +329,20 @@ export const mdxComponents = {
     children,
     ...props
   }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-    const isExternal = href?.startsWith("http");
+    const isHashLink = href?.startsWith("#");
+    const isProtocolLink = href
+      ? /^(mailto:|tel:)/i.test(href)
+      : false;
+    const isExternal = href ? /^(https?:)?\/\//i.test(href) : false;
     const cls =
       "text-foreground underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-600 hover:decoration-foreground transition-colors";
+    if (isHashLink || isProtocolLink) {
+      return (
+        <a href={href} className={cls} {...props}>
+          {children}
+        </a>
+      );
+    }
     if (isExternal) {
       return (
         <a

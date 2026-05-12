@@ -68,6 +68,7 @@ const Header = () => {
           <Link
             href="https://x.com/theniitettey"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-zinc-400 hover:text-foreground transition-colors"
           >
             <FiTwitter size={15} />
@@ -75,6 +76,7 @@ const Header = () => {
           <Link
             href="https://linkedin.com/in/theniitettey"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-zinc-400 hover:text-foreground transition-colors"
           >
             <FiLinkedin size={15} />
@@ -82,6 +84,7 @@ const Header = () => {
           <Link
             href="https://github.com/michaelperryjnr"
             target="_blank"
+            rel="noopener noreferrer"
             className="text-zinc-400 hover:text-foreground transition-colors"
           >
             <FiGithub size={15} />
