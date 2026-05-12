@@ -4,7 +4,6 @@ import { Header, Footer, ThemeProvider } from "@/components";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -15,12 +14,12 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://theniitettey.live"),
-  title: "Michael Perry Nii Tettey | Software Engineer & Founder at BBF Labs",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: "The Nii Dromo | Software Engineer",
   description:
-    "Expert software engineer specializing in full-stack web development, React, Node.js, and cloud solutions. Browse my portfolio showcasing innovative projects, technical blog posts, and professional software development services. Founder of BBF Labs, delivering cutting-edge web applications and digital solutions.",
+    "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft. Founder of BBF Labs.",
   keywords: [
-    "Michael Perry Nii Tettey",
+    "Nii Dromo",
     "Software Engineer",
     "BBF Labs Founder",
     "Tech Entrepreneur",
@@ -68,25 +67,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.theniitettey.live",
-    siteName: "Michael Perry Nii Tettey",
-    title: "Michael Perry Nii Tettey | Software Engineer & Founder",
+    url: "/",
+    siteName: "The Nii Dromo",
+    title: "The Nii Dromo | Software Engineer",
     description:
-      "Expert software engineer and founder of BBF Labs. Explore my portfolio of web development projects, technical insights, and professional services.",
+      "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft.",
     images: [
       {
         url: "/api/og/profile",
         width: 1200,
         height: 630,
-        alt: "Michael Perry Nii Tettey - Software Engineer & Founder",
+        alt: "Nii Dromo - Software Engineer & Founder",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Michael Perry Nii Tettey | Software Engineer & Founder",
+    title: "The Nii Dromo | Software Engineer",
     description:
-      "Expert software engineer and founder of BBF Labs. Explore my portfolio of web development projects and technical insights.",
+      "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft.",
     images: ["/api/og/profile"],
     creator: "@thneniitettey",
   },
@@ -106,7 +105,7 @@ export const metadata: Metadata = {
   //   yandex: "your-yandex-verification-code",
   // },
   alternates: {
-    canonical: "https://www.theniitettey.live",
+    canonical: "/",
   },
 };
 
@@ -118,7 +117,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.className} antialiased p-4 lg:container lg:mx-auto sm:w-full lg:w-[50%]`}
+        className={`${poppins.className} antialiased px-4 pt-4 lg:container lg:mx-auto sm:w-full lg:w-[50%] flex flex-col min-h-screen`}
       >
         <ThemeProvider
           attribute="class"
@@ -127,17 +126,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main>{children}</main>
+          <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>
         <Analytics mode="production" />
         <SpeedInsights />
       </body>
-      {process.env.NODE_ENV === "production" && (
-        <>
-          <Script async src="https://api.theniitettey.live/script.js" />
-        </>
-      )}
     </html>
   );
 }
