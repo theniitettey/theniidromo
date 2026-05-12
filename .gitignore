@@ -39,4 +39,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .contentlayer
-features
+features.claude
+.claude/
+CLAUDE.md
