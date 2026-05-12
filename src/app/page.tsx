@@ -35,7 +35,7 @@ const Home = () => {
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-3 select-none">
-          âœŒï¸ Akwaaba &nbsp;Â·&nbsp; ã„ã‚‰ã£ã—ã‚ƒã„ã¾ã›
+          âœŒï¸ Akwaaba &nbsp;·&nbsp; ã„ã‚‰ã£ã—ã‚ƒã„ã¾ã›
         </p>
         <div className="flex items-start justify-between gap-4 mb-5">
           <MotionHeader variants={itemVariants}>
@@ -43,7 +43,7 @@ const Home = () => {
               Michael Perry Nii Dromo
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-              Software Engineer Â· CS student, University of Ghana
+              Software Engineer · CS student, University of Ghana
             </p>
             <span className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -121,12 +121,12 @@ const Home = () => {
           Currently on repeat
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake Â· Views '16" />
-          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake Â· More Life '17" />
-          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake Â· Take Care '11" />
-          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande Â· My Everything '14" />
-          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake Â· Work of Art '23" />
-          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML Â· Adedamola '24" />
+          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake · Views '16" />
+          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake · More Life '17" />
+          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake · Take Care '11" />
+          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · My Everything '14" />
+          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · Work of Art '23" />
+          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · Adedamola '24" />
         </div>
       </MotionDiv>
 
