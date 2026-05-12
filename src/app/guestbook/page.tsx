@@ -1,0 +1,65 @@
+import { neon } from "@neondatabase/serverless";
+
+const sql = neon(process.env.DATABASE_URL!);
+import { getSession } from "@/lib/session";
+import { GuestbookClient } from "./GuestbookClient";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Guestbook | The Nii Dromo",
+  description: "Leave a message for Nii Dromo.",
+};
+
+interface Entry {
+  id: number;
+  username: string;
+  name: string;
+  avatar_url: string;
+  message: string;
+  created_at: string;
+}
+
+async function getEntries(): Promise<Entry[]> {
+  try {
+    await sql`
+      CREATE TABLE IF NOT EXISTS guestbook (
+        id SERIAL PRIMARY KEY,
+        github_id INTEGER NOT NULL,
+        username TEXT NOT NULL,
+        name TEXT NOT NULL,
+        avatar_url TEXT NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `;
+    const rows = await sql`
+      SELECT id, username, name, avatar_url, message, created_at
+      FROM guestbook
+      ORDER BY created_at DESC
+      LIMIT 100
+    `;
+    return rows as Entry[];
+  } catch {
+    return [];
+  }
+}
+
+interface PageProps {
+  searchParams: Promise<{ error?: string }>;
+}
+
+export default async function GuestbookPage({ searchParams }: PageProps) {
+  const [entries, session, params] = await Promise.all([
+    getEntries(),
+    getSession(),
+    searchParams,
+  ]);
+
+  return (
+    <GuestbookClient
+      initialEntries={entries}
+      session={session}
+      error={params.error}
+    />
+  );
+}
