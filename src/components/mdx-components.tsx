@@ -14,38 +14,43 @@ const calloutConfig: Record<
   {
     label: string;
     Icon: React.ComponentType<{ size?: number; className?: string }>;
-    accent: string;
     bg: string;
     labelColor: string;
+    iconBg: string;
+    line: string;
   }
 > = {
   info: {
     label: "Note",
     Icon: FiInfo,
-    accent: "border-l-blue-400 dark:border-l-blue-500",
-    bg: "bg-blue-50/60 dark:bg-blue-950/20",
+    bg: "bg-blue-50/70 dark:bg-blue-950/25",
     labelColor: "text-blue-600 dark:text-blue-400",
+    iconBg: "bg-blue-400 dark:bg-blue-500",
+    line: "bg-blue-200 dark:bg-blue-800",
   },
   warning: {
     label: "Warning",
     Icon: FiAlertTriangle,
-    accent: "border-l-amber-400 dark:border-l-amber-500",
-    bg: "bg-amber-50/60 dark:bg-amber-950/20",
+    bg: "bg-amber-50/70 dark:bg-amber-950/25",
     labelColor: "text-amber-600 dark:text-amber-400",
+    iconBg: "bg-amber-400 dark:bg-amber-500",
+    line: "bg-amber-200 dark:bg-amber-800",
   },
   tip: {
     label: "Tip",
     Icon: FiZap,
-    accent: "border-l-emerald-400 dark:border-l-emerald-500",
-    bg: "bg-emerald-50/60 dark:bg-emerald-950/20",
+    bg: "bg-emerald-50/70 dark:bg-emerald-950/25",
     labelColor: "text-emerald-600 dark:text-emerald-400",
+    iconBg: "bg-emerald-400 dark:bg-emerald-500",
+    line: "bg-emerald-200 dark:bg-emerald-800",
   },
   danger: {
     label: "Caution",
     Icon: FiAlertOctagon,
-    accent: "border-l-red-400 dark:border-l-red-500",
-    bg: "bg-red-50/60 dark:bg-red-950/20",
+    bg: "bg-red-50/70 dark:bg-red-950/25",
     labelColor: "text-red-600 dark:text-red-400",
+    iconBg: "bg-red-400 dark:bg-red-500",
+    line: "bg-red-200 dark:bg-red-800",
   },
 };
 
@@ -64,19 +69,28 @@ export const Callout = ({
   children: React.ReactNode;
   type?: CalloutType;
 }) => {
-  const { label, Icon, accent, bg, labelColor } = calloutConfig[type];
+  const { label, Icon, bg, labelColor, iconBg, line } = calloutConfig[type];
   return (
-    <div
-      className={`my-6 rounded-r-lg border-l-4 ${accent} ${bg} px-4 py-3.5 not-prose`}
-    >
-      <div className={`flex items-center gap-1.5 mb-2 ${labelColor}`}>
-        <Icon size={12} />
-        <span className="text-[10px] font-semibold uppercase tracking-widest">
-          {label}
-        </span>
+    <div className="my-6 not-prose flex gap-3">
+      {/* Left column: circle icon + vertical line */}
+      <div className="flex flex-col items-center">
+        <div
+          className={`w-6 h-6 rounded-full ${iconBg} flex items-center justify-center shrink-0`}
+        >
+          <Icon size={11} className="text-white" />
+        </div>
+        <div className={`w-px flex-1 mt-1.5 ${line}`} />
       </div>
-      <div className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed [&>p]:m-0 [&>p:not(:last-child)]:mb-2">
-        {children}
+      {/* Content */}
+      <div className={`flex-1 min-w-0 ${bg} rounded-lg px-4 pt-2.5 pb-4`}>
+        <p
+          className={`text-[10px] font-semibold uppercase tracking-widest mb-1.5 ${labelColor}`}
+        >
+          {label}
+        </p>
+        <div className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed [&>p]:m-0 [&>p:not(:last-child)]:mb-2">
+          {children}
+        </div>
       </div>
     </div>
   );
