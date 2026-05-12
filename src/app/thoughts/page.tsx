@@ -1,45 +1,60 @@
 "use client";
-import { allThoughts } from "@/./.contentlayer/generated";
-import { Thoughts } from "@/./.contentlayer/generated/types";
+import { allThoughts } from "@/.contentlayer/generated";
 import { MotionDiv } from "@/components";
 import { format } from "date-fns";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
 
 const variant = {
-  hidden: { opacity: 0, y: -5 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: -8 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 const ThoughtsPage = () => {
-  const sortedThoughts = allThoughts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-  const [thoughts, setThoughts] = useState<Thoughts[]>(sortedThoughts);
-
-  useEffect(() => {
-    setThoughts(sortedThoughts);
-  }, []);
+  const thoughts = allThoughts
+    .filter((t) => !t.archived && !t.draft)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <MotionDiv initial="hidden" animate="visible" variants={variant}>
-      {thoughts.map((post) => (
-        <article key={post._id} className="">
-          <div className="flex flex-col gap-[0.1rem] items-start">
-            <Link
-              href={post.slug}
-              className="flex gap-4 justify-center items-center mt-4 text-xs sm:text-lg sm:mt-8 font-medium"
-            >
-              <span>{format(new Date(post.date), "yyyy-MM-dd")}</span>
-
-              <h2 className="t hover:underline decoration-grey-100 hover:decoration-1 mb-1">
-                {post.title.charAt(0).toUpperCase() + post.title.slice(1)}
+    <MotionDiv
+      initial="hidden"
+      animate="visible"
+      variants={variant}
+      className="mb-20"
+    >
+      <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-2 mb-6">
+        Thoughts
+      </h1>
+      <div className="flex flex-col">
+        {thoughts.map((thought) => (
+          <article
+            key={thought._id}
+            className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
+          >
+            <Link href={thought.slug} className="flex flex-col gap-0.5 flex-1 pr-4">
+              <h2 className="text-sm font-medium text-foreground group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+                {thought.title.charAt(0).toUpperCase() + thought.title.slice(1)}
               </h2>
+              {thought.description && (
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
+                  {thought.description}
+                </p>
+              )}
+              {thought.tags && thought.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {thought.tags.map((tag: string) => (
+                    <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </Link>
-            <div className="h-[1px] w-full bg-ground-100 dark:bg-ground-600"></div>
-          </div>
-        </article>
-      ))}
+            <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 pt-0.5">
+              {format(new Date(thought.date), "yyyy-MM-dd")}
+            </time>
+          </article>
+        ))}
+      </div>
     </MotionDiv>
   );
 };
