@@ -19,13 +19,13 @@ export async function GET() {
   const topics = [...new Set(activePosts.flatMap((post) => post.tags || []))];
   const topTopics = topics.slice(0, 5).join(", ");
 
-  const title = "Devotionals | The Nii Tettey";
+  const title = "Devotionals | The Nii Dromo";
   const description =
     postCount > 0
       ? `Explore ${postCount} devotionals on ${
           topTopics || "various topics"
-        }. Quiet time reflections, spiritual insights, and biblical truths by Nii Tettey.`
-      : "Personal blog featuring quiet time reflections, spiritual insights, and biblical truths by Nii Tettey.";
+        }. Quiet time reflections, spiritual insights, and biblical truths by Nii Dromo.`
+      : "Personal blog featuring quiet time reflections, spiritual insights, and biblical truths by Nii Dromo.";
 
   try {
     return new ImageResponse(
@@ -96,7 +96,7 @@ export async function GET() {
             <span
               style={{ color: "#e5e7eb", fontSize: "20px", fontWeight: "600" }}
             >
-              The Nii Tettey's Devotionals
+              Nii Dromo's Devotionals
             </span>
           </div>
           <div
