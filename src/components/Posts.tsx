@@ -11,14 +11,13 @@ interface IPost {
 const Posts: React.FC<IPost> = ({ title, date, slug }) => {
   return (
     <Link
-      href={`${slug}`}
-      className="flex flex-col gap-[0.1rem] sm:gap-[0.4rem]"
+      href={slug}
+      className="group flex justify-between items-center py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
     >
-      <div className="flex flex-row justify-between items-center text-xs sm:text-lg text-grey-100 dark:text-white">
-        <h3>{title}</h3>
-        <p className="dark:text-slate-300 text-grey-200">{date}</p>
-      </div>
-      <div className="h-[1px] w-full bg-ground-100"></div>
+      <h3 className="text-sm font-medium text-foreground group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+        {title}
+      </h3>
+      <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 ml-4">{date}</time>
     </Link>
   );
 };
