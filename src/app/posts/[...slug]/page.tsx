@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { allPosts } from "@/./.contentlayer/generated";
 import { Metadata } from "next";
-import { MDXComponent as Mdx, MotionDiv } from "@/components";
+import { MotionDiv } from "@/components";
+import MDXComponent from "@/components/MdxComponent";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface PostsProps {
   params: Promise<{
@@ -11,19 +13,13 @@ interface PostsProps {
 }
 
 const variant = {
-  hidden: { opacity: 0, y: -50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: -12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 async function getPostFromParams(slug: string[]): Promise<any | null> {
   const slugString = slug.join("/");
-  const post = allPosts.find((post) => post.slugAsParams === slugString);
-
-  if (!post) {
-    return null;
-  }
-
-  return post;
+  return allPosts.find((post) => post.slugAsParams === slugString) ?? null;
 }
 
 export async function generateMetadata({
@@ -34,7 +30,7 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found | The Nii Tettey",
+      title: "Post Not Found | Nii Dromo",
       description: "The requested blog post could not be found.",
     };
   }
@@ -43,45 +39,32 @@ export async function generateMetadata({
   const postTitle = post.title.charAt(0).toUpperCase() + post.title.slice(1);
   const ogImageUrl = `/api/og/posts?${new URLSearchParams({
     title: postTitle,
-    description:
-      post.description || `Blog post from ${formattedDate} by Nii Tettey`,
-    date: new Date(post.date).toISOString(), // Pass the date as ISO string
+    description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
+    date: new Date(post.date).toISOString(),
   }).toString()}`;
 
   return {
-    title: `${postTitle} | Blog | The Nii Tettey`,
-    description:
-      post.description || `Blog post from ${formattedDate} by Nii Tettey`,
+    title: `${postTitle} | Blog | The Nii Dromo`,
+    description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
     keywords: post.tags || [],
     openGraph: {
       type: "article",
       title: postTitle,
-      description:
-        post.description || `Blog post from ${formattedDate} by Nii Tettey`,
-      url: `https://www.theniitettey.live${post.slug}`,
+      description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
+      url: post.slug,
       publishedTime: new Date(post.date).toISOString(),
-      authors: ["Nii Tettey"],
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: postTitle,
-        },
-      ],
+      authors: ["Nii Dromo"],
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: postTitle }],
     },
-
     twitter: {
       card: "summary_large_image",
       title: postTitle,
-      description:
-        post.description || `Blog post from ${formattedDate} by Nii Tettey`,
+      description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
       creator: "@theniitettey",
       images: [ogImageUrl],
     },
-
     alternates: {
-      canonical: `https://www.theniitettey.live${post.slug}`,
+      canonical: post.slug,
     },
   };
 }
@@ -96,38 +79,53 @@ export default async function PostsPage({ params }: PostsProps) {
   const resolvedParams = await params;
   const post = await getPostFromParams(resolvedParams.slug);
 
-  if (!post) {
-    notFound();
-  }
+  if (!post) notFound();
 
   return (
     <div className="mb-20">
       <MotionDiv initial="hidden" animate="visible" variants={variant}>
-        <article className="py-6 prose dark:prose-invert min-w-[300px] max-w-[1010px]">
-          <div className="mb-10">
-            <h1 className="mb-2 text-2xl text-grey-100 dark:text-white">
-              {post.title}
-            </h1>
-
-            <div className="flex gap-x-2">
-              <p className="text-base mt-0 text-slate-700 dark:text-slate-200">
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-              <p className="text-base mt-0 text-slate-700 dark:text-slate-200">
-                •
-              </p>
-
-              <p className="text-base mt-0 text-slate-700 dark:text-slate-200">
-                {post.readTimeMinutes}
-              </p>
-            </div>
+        <div className="pt-2 pb-6">
+          <Link
+            href="/blog"
+            className="text-xs text-zinc-500 hover:text-foreground transition-colors mb-3 inline-block"
+          >
+            ← Blog
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-3">
+            {post.title}
+          </h1>
+          <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 mb-3">
+            <time>
+              {new Date(post.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <span>·</span>
+            <span>{post.readTimeMinutes}</span>
           </div>
-          <Mdx code={post.body.code} />
-        </article>
+          {post.description && (
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
+              {post.description}
+            </p>
+          )}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-8">
+              {post.tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+          <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
+            <MDXComponent code={post.body.code} />
+          </article>
+        </div>
       </MotionDiv>
     </div>
   );
