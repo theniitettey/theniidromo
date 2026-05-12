@@ -121,7 +121,7 @@ const Home = () => {
           Currently on repeat
         </h2>
         <iframe
-          style={{ borderRadius: "12px" }}
+          style={{ borderRadius: "12px", border: "none", display: "block" }}
           src="https://open.spotify.com/embed/track/047fCsbO4NdmwCBn8pcUXl?utm_source=generator&theme=0"
           width="100%"
           height="80"
@@ -130,7 +130,7 @@ const Home = () => {
           loading="lazy"
         />
         <iframe
-          style={{ borderRadius: "12px" }}
+          style={{ borderRadius: "12px", border: "none", display: "block" }}
           src="https://open.spotify.com/embed/track/0zG4M210LKXXXHOoW7DQly?utm_source=generator&theme=0"
           width="100%"
           height="80"
