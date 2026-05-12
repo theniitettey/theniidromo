@@ -7,15 +7,15 @@ interface SpotifyCardProps {
 }
 
 export const SpotifyCard = ({ trackId, label }: SpotifyCardProps) => (
-  <div
-    className="border border-zinc-800 bg-[#121212]"
-    style={{ borderRadius: "12px", clipPath: "inset(0 round 12px)" }}
-  >
+  <div className="rounded-xl border border-zinc-800 bg-[#121212]">
     <div className="flex items-center justify-between px-3 pt-2.5 pb-1">
       <span className="text-[10px] font-medium text-zinc-500 tracking-wide">{label}</span>
       <SiSpotify size={10} className="text-[#1DB954]" />
     </div>
     <iframe
+      // allowTransparency lets the container's #121212 show through any gaps in the Spotify player
+      // instead of the browser's default white iframe background
+      allowTransparency
       style={{ display: "block", border: "none", backgroundColor: "#121212" }}
       src={`https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`}
       width="100%"
