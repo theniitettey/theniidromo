@@ -1,7 +1,7 @@
 "use client";
 import { allThoughts } from "@/.contentlayer/generated";
 import { MotionDiv } from "@/components";
-import { format } from "date-fns";
+import { formatDistance } from "date-fns";
 import Link from "next/link";
 
 const variant = {
@@ -50,7 +50,9 @@ const ThoughtsPage = () => {
               )}
             </Link>
             <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 pt-0.5">
-              {format(new Date(thought.date), "yyyy-MM-dd")}
+              {formatDistance(new Date(thought.date), new Date(), {
+                addSuffix: true,
+              })}
             </time>
           </article>
         ))}

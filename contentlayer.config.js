@@ -159,5 +159,15 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkMath],
     rehypePlugins: [rehypeKatex],
+    esbuildOptions(options) {
+      options.external = [
+        ...(options.external ?? []),
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+      ];
+      return options;
+    },
   },
 });
