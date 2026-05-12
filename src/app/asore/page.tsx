@@ -1,67 +1,68 @@
 "use client";
 import { allAsores } from "@/.contentlayer/generated";
-import { Asore } from "@/.contentlayer/generated/types";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 const variant = {
-  hidden: { opacity: 0, y: -5 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, y: -8 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
 export default function DevotionalsPage() {
-  const sortedPosts = allAsores
+  const devotionals = allAsores
     .filter((post) => !post.archived)
-    .sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-  const [posts, setPosts] = useState<Asore[]>(sortedPosts);
-
-  useEffect(() => {
-    setPosts(sortedPosts);
-  }, []);
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <MotionDiv
       initial="hidden"
       animate="visible"
       variants={variant}
-      className="space-y-4"
+      className="mb-20"
     >
-      <div>
-        <h1 className="text-xl sm:text-3xl font-bold flex gap-2 items-center mt-6 mb-4 cursor-pointer">
-          Devotionals
-        </h1>
-
-        {posts.map((post) => (
-          <article key={post._id} className="mb-8">
-            <Link href={post.slug} className="flex justify-between items-start">
-              <h2 className="text-xs sm:text-lg text-grey-100 dark:text-white font-medium">
+      <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-2 mb-6">
+        Devotionals
+      </h1>
+      <div className="flex flex-col">
+        {devotionals.map((post) => (
+          <article
+            key={post._id}
+            className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
+          >
+            <Link href={post.slug} className="flex flex-col gap-0.5 flex-1 pr-4">
+              <h2 className="text-sm font-medium text-foreground group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                 {post.title}
               </h2>
-              <span className=" text-[0.4rem] sm:text-sm dark:text-ground-200 text-grey-200">
-                {formatDistance(new Date(post.date), new Date(), {
-                  addSuffix: true,
-                })}
-              </span>
+              {post.description && (
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
+                  {post.description}
+                </p>
+              )}
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {post.tags.map((tag: string) => (
+                    <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </Link>
-            {post.description && (
-              <p className="text-[0.6rem] sm:text-sm font-light text-ground-600">
-                {post.description}
-              </p>
-            )}
+            <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 pt-0.5">
+              {formatDistance(new Date(post.date), new Date(), {
+                addSuffix: true,
+              })}
+            </time>
           </article>
         ))}
-
-        <Link
-          href="archive/devotionals"
-          className="text-sm sm:text-xl font-normal mt-9 hover:underline decoration-grey-100 hover:decoration-1 cursor-pointer italic"
-        >
-          Archived Devotionals
-        </Link>
       </div>
+      <Link
+        href="/archive/devotionals"
+        className="text-xs text-zinc-400 hover:text-foreground transition-colors mt-8 inline-block"
+      >
+        Archived devotionals →
+      </Link>
     </MotionDiv>
   );
 }
