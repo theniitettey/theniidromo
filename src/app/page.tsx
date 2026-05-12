@@ -3,7 +3,7 @@ import React from "react";
 import { allPosts } from "@/.contentlayer/generated";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Posts, MotionDiv, MotionHeader } from "@/components";
+import { Posts, MotionDiv, MotionHeader, SpotifyCard } from "@/components";
 import { Icons } from "@/assets";
 import Image from "next/image";
 import { FiYoutube } from "react-icons/fi";
@@ -120,32 +120,13 @@ const Home = () => {
         <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
           Currently on repeat
         </h2>
-        <div className="flex flex-col gap-2">
-          {[
-            { id: "0zG4M210LKXXXHOoW7DQly", album: "Views", year: "2016" },
-            { id: "047fCsbO4NdmwCBn8pcUXl", album: "Take Care", year: "2011" },
-          ].map(({ id, album, year }) => (
-            <div
-              key={id}
-              className="rounded-xl overflow-hidden border border-zinc-800 bg-[#121212]"
-            >
-              <div className="flex items-center justify-between px-3 pt-2.5 pb-1">
-                <span className="text-[10px] font-medium text-zinc-500 tracking-wide">
-                  {album} · {year}
-                </span>
-                <SiSpotify size={10} className="text-[#1DB954]" />
-              </div>
-              <iframe
-                style={{ display: "block", border: "none", backgroundColor: "#121212" }}
-                src={`https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`}
-                width="100%"
-                height="80"
-                frameBorder={0}
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
-            </div>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake · Views '16" />
+          <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake · More Life '17" />
+          <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake · Take Care '11" />
+          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · '14" />
+          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · '23" />
+          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · '23" />
         </div>
       </MotionDiv>
 

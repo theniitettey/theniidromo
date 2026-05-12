@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import Posts from "./Posts";
 import ThemeProvider from "./ThemeProvider";
 import SchemeToggle from "./SchemeToggle";
-import { MotionHeader, MotionDiv, MotionFooter } from "./ui";
+import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard } from "./ui";
 
 export {
   Header,
@@ -14,4 +14,5 @@ export {
   MotionHeader,
   MotionDiv,
   MotionFooter,
+  SpotifyCard,
 };
