@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/is-prop-valid": "^1.4.0",
     "@headlessui/react": "^2.2.10",
+    "@neondatabase/serverless": "^1.1.0",
     "@tailwindcss/postcss": "^4.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "24.1.0",
@@ -19,7 +20,6 @@
     "@types/react-dom": "latest",
     "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.11.1",
-    "@vercel/postgres": "^0.10.0",
     "@vercel/speed-insights": "^2.0.0",
     "arctic": "^3.7.0",
     "autoprefixer": "10.5.0",
