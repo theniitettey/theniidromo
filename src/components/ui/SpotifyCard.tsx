@@ -7,7 +7,10 @@ interface SpotifyCardProps {
 }
 
 export const SpotifyCard = ({ trackId, label }: SpotifyCardProps) => (
-  <div className="rounded-xl overflow-hidden border border-zinc-800 bg-[#121212]">
+  <div
+    className="rounded-xl overflow-hidden border border-zinc-800 bg-[#121212]"
+    style={{ transform: "translateZ(0)" }}
+  >
     <div className="flex items-center justify-between px-3 pt-2.5 pb-1">
       <span className="text-[10px] font-medium text-zinc-500 tracking-wide">{label}</span>
       <SiSpotify size={10} className="text-[#1DB954]" />

@@ -90,7 +90,7 @@ const Home = () => {
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
-            𓅔 Drake&apos;s{" "}
+            𓅔 Drake fan &mdash;{" "}
             <a
               href="https://open.spotify.com/track/047fCsbO4NdmwCBn8pcUXl"
               target="_blank"
@@ -124,9 +124,9 @@ const Home = () => {
           <SpotifyCard trackId="4PA16FAl8LPmFmOhARawdV" label="Drake · Views '16" />
           <SpotifyCard trackId="2KvHC9z14GSl4YpkNMX384" label="Drake · More Life '17" />
           <SpotifyCard trackId="047fCsbO4NdmwCBn8pcUXl" label="Drake · Take Care '11" />
-          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · '14" />
-          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · '23" />
-          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · '23" />
+          <SpotifyCard trackId="7xoUc6faLbCqZO6fQEYprd" label="Ariana Grande · My Everything '14" />
+          <SpotifyCard trackId="0Q1bMs3xLQiDEeaneehdxv" label="Asake · Work of Art '23" />
+          <SpotifyCard trackId="5tM3Fo4qBqDAwWJ9ZY5AtX" label="Fireboy DML · Adedamola '24" />
         </div>
       </MotionDiv>
 
