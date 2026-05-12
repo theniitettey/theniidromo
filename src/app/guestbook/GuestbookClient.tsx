@@ -5,15 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiGithub } from "react-icons/si";
 import { format } from "date-fns";
-
-interface Entry {
-  id: number;
-  username: string;
-  name: string;
-  avatar_url: string;
-  message: string;
-  created_at: string;
-}
+import axios from "axios";
+import { SignaturePad } from "@/components/ui";
+import {
+  useGuestbookEntries,
+  useSignGuestbook,
+  Entry,
+} from "@/hooks/useGuestbook";
 
 interface Session {
   githubId: number;
@@ -28,51 +26,60 @@ interface GuestbookClientProps {
   error?: string;
 }
 
-export function GuestbookClient({ initialEntries, session, error }: GuestbookClientProps) {
-  const [entries, setEntries] = useState<Entry[]>(initialEntries);
+export function GuestbookClient({
+  initialEntries,
+  session,
+  error,
+}: GuestbookClientProps) {
+  const { data: entries = [] } = useGuestbookEntries(initialEntries);
+  const { mutateAsync: signGuestbook, isPending: submitting } =
+    useSignGuestbook();
+
   const [message, setMessage] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [displayName, setDisplayName] = useState(session?.name || "");
+  const [signatureData, setSignatureData] = useState<string | null>(null);
   const [formError, setFormError] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!message.trim()) return;
-    setSubmitting(true);
+    if (!message.trim() || !displayName.trim()) return;
     setFormError("");
 
-    const res = await fetch("/api/guestbook", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message.trim() }),
-    });
-
-    if (res.ok) {
-      const entry = await res.json() as Entry;
-      setEntries((prev) => [entry, ...prev]);
+    try {
+      await signGuestbook({
+        message: message.trim(),
+        signatureData,
+        name: displayName.trim(),
+      });
       setMessage("");
-    } else {
-      const body = await res.json() as { error?: string };
-      setFormError(body.error ?? "Something went wrong");
+      setSignatureData(null); // Triggers SignaturePad to clear internally if we re-render or we can just rely on state.
+      // Note: In a fully controlled SignaturePad, passing null here wouldn't automatically clear the canvas visually unless the pad reacts to it.
+      // But we will let the user clear it manually or unmount it. Actually, resetting `key` on SignaturePad can force it to unmount!
+    } catch (err: any) {
+      setFormError(err.message || "Something went wrong");
     }
-    setSubmitting(false);
   }
 
   async function handleSignOut() {
-    await fetch("/api/auth/signout", { method: "POST" });
+    await axios.post("/api/auth/signout");
     window.location.reload();
   }
 
   return (
     <div className="flex flex-col gap-10 mb-20">
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">Guestbook</h1>
+        <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">
+          Guestbook
+        </h1>
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
           Leave a message — I read every one.
         </p>
       </div>
 
       {error && (
-        <p className="text-xs text-red-500">Authentication failed. Please try again.</p>
+        <p className="text-xs text-red-500">
+          Authentication failed. Please try again.
+        </p>
       )}
 
       {/* Sign form */}
@@ -108,20 +115,55 @@ export function GuestbookClient({ initialEntries, session, error }: GuestbookCli
                 Sign out
               </button>
             </div>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Your message..."
-              maxLength={500}
-              rows={3}
-              className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 resize-none"
-            />
+
+            <div className="flex flex-col gap-1 mt-2">
+              <label
+                htmlFor="displayName"
+                className="text-xs text-zinc-500 font-medium ml-1"
+              >
+                Display Name
+              </label>
+              <input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Your name..."
+                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1 mt-1">
+              <label
+                htmlFor="message"
+                className="text-xs text-zinc-500 font-medium ml-1"
+              >
+                Message
+              </label>
+              <textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Your message..."
+                maxLength={500}
+                rows={3}
+                className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:focus:ring-zinc-600 resize-none"
+              />
+            </div>
+
+            <div className="mt-1">
+              {/* Signature Pad */}
+              <SignaturePad key={entries.length} onSign={setSignatureData} />
+            </div>
+
             {formError && <p className="text-xs text-red-500">{formError}</p>}
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] text-zinc-400">{message.length}/500</span>
+            <div className="flex items-center justify-between mt-1">
+              <span className="text-[10px] text-zinc-400">
+                {message.length}/500
+              </span>
               <button
                 type="submit"
-                disabled={submitting || !message.trim()}
+                disabled={submitting || !message.trim() || !displayName.trim()}
                 className="text-xs font-medium px-3 py-1.5 rounded-lg bg-foreground text-background disabled:opacity-40 hover:opacity-80 transition-opacity"
               >
                 {submitting ? "Signing..." : "Sign"}
@@ -147,7 +189,9 @@ export function GuestbookClient({ initialEntries, session, error }: GuestbookCli
       {/* Entries */}
       <div className="flex flex-col gap-4">
         {entries.length === 0 ? (
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">No entries yet. Be the first!</p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500">
+            No entries yet. Be the first!
+          </p>
         ) : (
           entries.map((entry) => (
             <div key={entry.id} className="flex gap-3">
@@ -172,9 +216,20 @@ export function GuestbookClient({ initialEntries, session, error }: GuestbookCli
                     {format(new Date(entry.created_at), "d MMM yyyy")}
                   </span>
                 </div>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 break-words">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 break-words whitespace-pre-wrap">
                   {entry.message}
                 </p>
+                {entry.signature_data && (
+                  <div className="mt-2 mix-blend-difference dark:mix-blend-normal dark:invert">
+                    <Image
+                      src={entry.signature_data}
+                      alt="Signature"
+                      width={120}
+                      height={40}
+                      className="opacity-80 dark:opacity-70 pointer-events-none"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           ))
