@@ -1,4 +1,4 @@
-﻿import { allPosts } from "@/lib/content";
+import { allPosts } from "@/lib/content";
 import Link from "next/link";
 
 export default function ArchivePage() {
@@ -12,7 +12,7 @@ export default function ArchivePage() {
         href="/blog"
         className="text-xs text-zinc-500 hover:text-foreground transition-colors mt-2 inline-block"
       >
-        â† Blog
+        ← Blog
       </Link>
       <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-4 mb-8">
         Archived Posts

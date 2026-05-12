@@ -1,4 +1,4 @@
-﻿import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "@vercel/og";
 import { allPosts } from "@/lib/content";
 
 export const runtime = "edge";

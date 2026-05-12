@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { allPosts } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { allThoughts } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";

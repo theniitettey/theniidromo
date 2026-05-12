@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { allPosts } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
@@ -61,7 +61,7 @@ export default function BlogPage() {
         href="/archive/posts"
         className="text-xs text-zinc-400 hover:text-foreground transition-colors mt-8 inline-block"
       >
-        Archived posts â†’
+        Archived posts →
       </Link>
     </MotionDiv>
   );

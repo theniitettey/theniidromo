@@ -1,4 +1,4 @@
-﻿import { allAsores } from "@/lib/content";
+import { allAsores } from "@/lib/content";
 import Link from "next/link";
 
 export default function ArchiveDevotionalPage() {
@@ -12,7 +12,7 @@ export default function ArchiveDevotionalPage() {
         href="/asore"
         className="text-xs text-zinc-500 hover:text-foreground transition-colors mt-2 inline-block"
       >
-        â† Devotionals
+        ← Devotionals
       </Link>
       <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-4 mb-8">
         Archived Devotionals

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { allAsores } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
@@ -61,7 +61,7 @@ export default function DevotionalsPage() {
         href="/archive/devotionals"
         className="text-xs text-zinc-400 hover:text-foreground transition-colors mt-8 inline-block"
       >
-        Archived devotionals â†’
+        Archived devotionals →
       </Link>
     </MotionDiv>
   );

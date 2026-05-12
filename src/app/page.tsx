@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React from "react";
 import { allPosts } from "@/lib/content";
 import Link from "next/link";
@@ -35,7 +35,7 @@ const Home = () => {
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-3 select-none">
-          âœŒï¸ Akwaaba &nbsp;·&nbsp; ã„ã‚‰ã£ã—ã‚ƒã„ã¾ã›
+          ✌️ Akwaaba &nbsp;·&nbsp; いらっしゃいませ
         </p>
         <div className="flex items-start justify-between gap-4 mb-5">
           <MotionHeader variants={itemVariants}>
@@ -61,7 +61,7 @@ const Home = () => {
 
         <div className="flex flex-col gap-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
           <p>
-            Developer from Accra, Ghana ðŸ‡¬ðŸ‡­ â€” building polished, production-grade software for
+            Developer from Accra, Ghana 🇬🇭 — building polished, production-grade software for
             the web. I&apos;ve shipped APIs, high-concurrency systems, and frontend products used
             by thousands, across QuiverTech Solutions, BetaForge Labs, and my own projects.
           </p>
@@ -70,7 +70,7 @@ const Home = () => {
             <a href="https://qz.bflabs.tech" target="_blank" rel="noopener noreferrer" className="text-foreground font-medium hover:opacity-70 transition-opacity">
               Qz
             </a>
-            {" "}â€” a quiz platform that hit 10,000+ visits in its first month. I work mostly in
+            {" "}— a quiz platform that hit 10,000+ visits in its first month. I work mostly in
             TypeScript and Python, treat best practices as guidelines not gospel, and learn through
             reading, writing, and drawing. This site is where all of that lives.
           </p>
@@ -86,11 +86,11 @@ const Home = () => {
           Now
         </h2>
         <ul className="flex flex-col gap-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-          <li>B.Sc. Computer Science at UG Legon <span className="text-zinc-400 dark:text-zinc-500 text-xs">â€” graduating Aug 2027</span></li>
+          <li>B.Sc. Computer Science at UG Legon <span className="text-zinc-400 dark:text-zinc-500 text-xs">— graduating Aug 2027</span></li>
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
-            ð“…” Drake fan &mdash;{" "}
+            𓅔 Drake fan &mdash;{" "}
             <a
               href="https://open.spotify.com/track/047fCsbO4NdmwCBn8pcUXl"
               target="_blank"
@@ -145,11 +145,11 @@ const Home = () => {
             <div>
               <h3 className="text-sm font-semibold text-foreground">Qz</h3>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
-                Quiz platform â€” 10k+ visits in month one
+                Quiz platform — 10k+ visits in month one
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              qz.bflabs.tech â†’
+              qz.bflabs.tech →
             </span>
           </a>
           <a
@@ -165,7 +165,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              eventflick.vercel.app â†’
+              eventflick.vercel.app →
             </span>
           </a>
           <Link
@@ -179,7 +179,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              View resume â†’
+              View resume →
             </span>
           </Link>
           <a
@@ -198,7 +198,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              @michaelperryjnr â†’
+              @michaelperryjnr →
             </span>
           </a>
         </div>
@@ -221,13 +221,13 @@ const Home = () => {
         </div>
         <div className="flex items-center gap-5 pt-1">
           <Link href="/blog" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            All posts â†’
+            All posts →
           </Link>
           <Link href="/thoughts" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            Thoughts â†’
+            Thoughts →
           </Link>
           <Link href="/asore" className="text-xs text-zinc-500 hover:text-foreground transition-colors">
-            Asore â†’
+            Asore →
           </Link>
         </div>
       </MotionDiv>
