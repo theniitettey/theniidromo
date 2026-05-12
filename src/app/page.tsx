@@ -90,7 +90,17 @@ const Home = () => {
           <li>Building full-stack products and exploring AI tooling</li>
           <li>Open to collaborating on interesting problems</li>
           <li>
-            𓅔 Drake&apos;s <em>Take Care</em> and <em>Views</em> basically raised me &mdash; favourite cut is{" "}
+            𓅔 Drake&apos;s{" "}
+            <a
+              href="https://open.spotify.com/track/047fCsbO4NdmwCBn8pcUXl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-[#1DB954] hover:opacity-80 transition-opacity font-medium align-middle"
+            >
+              <SiSpotify size={11} />
+              Take Care
+            </a>
+            {" "}&amp;{" "}
             <a
               href="https://open.spotify.com/track/0zG4M210LKXXXHOoW7DQly"
               target="_blank"
@@ -98,8 +108,9 @@ const Home = () => {
               className="inline-flex items-center gap-1 text-[#1DB954] hover:opacity-80 transition-opacity font-medium align-middle"
             >
               <SiSpotify size={11} />
-              Weston Road Flows
+              Views
             </a>
+            {" "}basically raised me
           </li>
         </ul>
       </MotionDiv>
@@ -109,6 +120,15 @@ const Home = () => {
         <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
           Currently on repeat
         </h2>
+        <iframe
+          style={{ borderRadius: "12px" }}
+          src="https://open.spotify.com/embed/track/047fCsbO4NdmwCBn8pcUXl?utm_source=generator&theme=0"
+          width="100%"
+          height="80"
+          frameBorder={0}
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        />
         <iframe
           style={{ borderRadius: "12px" }}
           src="https://open.spotify.com/embed/track/0zG4M210LKXXXHOoW7DQly?utm_source=generator&theme=0"
