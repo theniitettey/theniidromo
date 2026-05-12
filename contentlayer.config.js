@@ -130,6 +130,25 @@ export const Thoughts = defineDocumentType(() => ({
       type: "date",
       required: true,
     },
+    description: {
+      type: "string",
+      required: false,
+    },
+    tags: {
+      type: "list",
+      of: { type: "string" },
+      required: false,
+    },
+    draft: {
+      type: "boolean",
+      required: false,
+      default: false,
+    },
+    archived: {
+      type: "boolean",
+      required: false,
+      default: false,
+    },
   },
   computedFields,
 }));

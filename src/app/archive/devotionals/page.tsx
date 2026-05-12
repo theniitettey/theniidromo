@@ -1,60 +1,45 @@
-"use client";
 import { allAsores } from "@/.contentlayer/generated";
-import { Asore } from "@/.contentlayer/generated/types";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
 
 export default function ArchiveDevotionalPage() {
-  const sortedDevotionals = allAsores
+  const archivedDevotionals = allAsores
     .filter((devotional) => devotional.archived)
-    .sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-
-  const [archivedDevotionals, setArchivedDevotionals] =
-    useState<Asore[]>(sortedDevotionals);
-
-  useEffect(() => {
-    setArchivedDevotionals(sortedDevotionals);
-  }, []);
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div>
-      <h1 className="text-xl sm:text-3xl font-bold flex gap-2 items-center mt-6 mb-4 cursor-pointer">
+    <div className="mb-20">
+      <Link
+        href="/asore"
+        className="text-xs text-zinc-500 hover:text-foreground transition-colors mt-2 inline-block"
+      >
+        ← Devotionals
+      </Link>
+      <h1 className="text-xl sm:text-2xl font-bold tracking-tight mt-4 mb-8">
         Archived Devotionals
       </h1>
-      {archivedDevotionals.length > 0 ? (
-        archivedDevotionals.map((devotional) => (
-          <article key={devotional._id} className="mb-8">
-            <Link
-              href={devotional.slug}
-              className="flex justify-between items-start"
+      <div className="flex flex-col">
+        {archivedDevotionals.length > 0 ? (
+          archivedDevotionals.map((devotional) => (
+            <article
+              key={devotional._id}
+              className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
             >
-              <h2
-                className="
-
-                text-sm
-                sm:text-lg
-                text-grey-100
-                dark:text-white
-                font-medium
-              "
-              >
-                {devotional.title}
-              </h2>
-            </Link>
-            {devotional.description && (
-              <p className="text-[0.7rem] sm:text-sm font-light text-ground-600">
-                {devotional.description}
-              </p>
-            )}
-          </article>
-        ))
-      ) : (
-        <p className="text-[0.7rem] sm:text-sm font-light text-ground-600">
-          No archived devotionals found.
-        </p>
-      )}
+              <Link href={devotional.slug} className="flex flex-col gap-0.5 flex-1 pr-4">
+                <h2 className="text-sm font-medium text-foreground group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+                  {devotional.title}
+                </h2>
+                {devotional.description && (
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-snug">
+                    {devotional.description}
+                  </p>
+                )}
+              </Link>
+            </article>
+          ))
+        ) : (
+          <p className="text-sm text-zinc-500">No archived devotionals.</p>
+        )}
+      </div>
     </div>
   );
 }

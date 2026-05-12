@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Thoughts & Insights | Michael Perry Nii Tettey",
+    title: "Thoughts | The Nii Dromo",
     description:
-      "A personal blog sharing both technical expertise and life reflections. From software development insights and coding experiences to personal perspectives on life, creativity, and general musings. Join me in exploring technology, personal growth, and everything in between",
+      "Short writings and personal reflections by Nii Dromo — on software, life, and everything in between.",
     keywords: [
       "Technical Blog",
       "Software Development Blog",
@@ -34,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Tech Industry Trends",
       "Personal Stories",
       "Life Lessons",
-      "Michael Perry Nii Tettey",
+      "Nii Dromo",
       "BBF Labs Blog",
       "Software Engineer Writing",
       "Developer Lifestyle",
@@ -45,25 +45,25 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "en_US",
-      url: "https://www.theniitettey.live/thoughts",
-      siteName: "Michael Perry Nii Tettey's Thoughts",
-      title: "Technical & Personal Insights | The Nii Tettey",
+      url: "/thoughts",
+      siteName: "The Nii Dromo",
+      title: "Thoughts | The Nii Dromo",
       description:
-        "Join Michael Perry Nii Tettey's journey through software development, personal growth, and life's adventures. A mix of technical expertise and personal reflections.",
+        "Short writings and personal reflections by Nii Dromo — on software, life, and everything in between.",
       images: [
         {
           url: "/api/og/thought",
           width: 1200,
           height: 630,
-          alt: "Michael Perry Nii Tettey's Thoughts - Technical & Personal Insights",
+          alt: "Nii Dromo's Thoughts - Technical & Personal Insights",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Technical & Personal Insights | The Nii Tettey",
+      title: "Thoughts | The Nii Dromo",
       description:
-        "Join my journey through software development, personal growth, and life's adventures. A mix of technical expertise and personal reflections.",
+        "Short writings and personal reflections by Nii Dromo — on software, life, and everything in between.",
       images: ["/api/og/thought"],
       creator: "@theniitettey",
     },
@@ -75,12 +75,12 @@ export async function generateMetadata(): Promise<Metadata> {
       "max-video-preview": -1,
     },
     alternates: {
-      canonical: "https://www.theniitettey.live/thoughts",
+      canonical: "/thoughts",
     },
     authors: [
       {
-        name: "Michael Perry Nii Tettey",
-        url: "https://www.theniitettey.live",
+        name: "Nii Dromo",
+        url: "/",
       },
     ],
     category: "Thoughts",

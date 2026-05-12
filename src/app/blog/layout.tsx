@@ -17,13 +17,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const topics = [...new Set(activePosts.flatMap((post) => post.tags || []))];
   const topTopics = topics.slice(0, 5).join(", ");
 
-  const title = "Blog | The Nii Tettey";
+  const title = "Blog | The Nii Dromo";
   const description =
     postCount > 0
       ? `Explore ${postCount} articles on ${
           topTopics || "various topics"
-        }. Personal insights, technical writings, and thoughts by Nii Tettey.`
-      : "Personal blog featuring insights, technical writings, and thoughts by Nii Tettey.";
+        }. Personal insights, technical writings, and thoughts by Nii Dromo.`
+      : "Personal blog featuring insights, technical writings, and thoughts by Nii Dromo.";
 
   return {
     title,
@@ -33,16 +33,16 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title,
       description,
-      url: "https://www.theniitettey.live/blog",
+      url: "/blog",
       images: [
         {
           url: "/api/og/blog",
           width: 1200,
           height: 630,
-          alt: "The Nii Tettey Blog",
+          alt: "Nii Dromo Blog",
         },
       ],
-      siteName: "The Nii Tettey",
+      siteName: "The Nii Dromo",
       ...(latestPostDate && { modifiedTime: latestPostDate }),
     },
 
@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
 
     alternates: {
-      canonical: "https://www.theniitettey.live/blog",
+      canonical: "/blog",
     },
 
     robots: {
@@ -72,8 +72,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
     authors: [
       {
-        name: "Nii Tettey",
-        url: "https://www.theniitettey.live",
+        name: "Nii Dromo",
+        url: "/",
       },
     ],
   };

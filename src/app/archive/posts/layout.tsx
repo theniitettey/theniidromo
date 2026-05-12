@@ -17,11 +17,11 @@ export async function generateMetadata(): Promise<Metadata> {
     dateRange = `from ${oldestPost.getFullYear()} to ${newestPost.getFullYear()}`;
   }
 
-  const title = "Archive | The Nii Tettey";
+  const title = "Archive | The Nii Dromo";
   const description =
     postCount > 0
-      ? `Browse ${postCount} archived blog posts ${dateRange}. A collection of past writings and thoughts by Nii Tettey.`
-      : "Archive of past blog posts by Nii Tettey.";
+      ? `Browse ${postCount} archived blog posts ${dateRange}. A collection of past writings and thoughts by Nii Dromo.`
+      : "Archive of past blog posts by Nii Dromo.";
 
   return {
     title,
@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title,
       description,
-      url: "https://www.theniitettey.live/archive/posts",
+      url: "/archive/posts",
       images: [
         {
           url: "/api/og/post-archive",
@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
 
     alternates: {
-      canonical: "https://www.theniitettey.live/archive/posts",
+      canonical: "/archive/posts",
     },
   };
 }

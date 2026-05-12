@@ -19,13 +19,13 @@ export async function GET() {
   const topics = [...new Set(activePosts.flatMap((post) => post.tags || []))];
   const topTopics = topics.slice(0, 5).join(", ");
 
-  const title = "Blog | The Nii Tettey";
+  const title = "Blog | The Nii Dromo";
   const description =
     postCount > 0
       ? `Explore ${postCount} articles on ${
           topTopics || "various topics"
-        }. Personal insights, technical writings, and thoughts by Nii Tettey.`
-      : "Personal blog featuring insights, technical writings, and thoughts by Nii Tettey.";
+        }. Personal insights, technical writings, and thoughts by Nii Dromo.`
+      : "Personal blog featuring insights, technical writings, and thoughts by Nii Dromo.";
   try {
     return new ImageResponse(
       (
@@ -95,7 +95,7 @@ export async function GET() {
             <span
               style={{ color: "#e5e7eb", fontSize: "20px", fontWeight: "600" }}
             >
-              The Nii Tettey's Blog Posts
+              Nii Dromo's Blog Posts
             </span>
           </div>
           <div

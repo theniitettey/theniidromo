@@ -1,6 +1,6 @@
 {
-  "name": "theniitettey.live",
-  "version": "0.1.0",
+  "name": "theniidromo",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,7 +25,7 @@
     "clsx": "^2.1.1",
     "contentlayer": "^0.3.2",
     "date-fns": "^4.1.0",
-    "eslint": "10.2.1",
+    "eslint": "^9.39.1",
     "eslint-config-next": "latest",
     "framer-motion": "^12.23.12",
     "next": "latest",

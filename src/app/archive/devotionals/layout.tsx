@@ -21,11 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
     dateRange = `from ${oldestDevotional.getFullYear()} to ${newestDevotional.getFullYear()}`;
   }
 
-  const title = "Devotional Archive | The Nii Tettey";
+  const title = "Devotional Archive | The Nii Dromo";
   const description =
     devotionalCount > 0
-      ? `Access ${devotionalCount} archived daily devotionals ${dateRange}. A collection of spiritual reflections and biblical insights by Nii Tettey.`
-      : "Archive of past daily devotionals and spiritual reflections by Nii Tettey.";
+      ? `Access ${devotionalCount} archived daily devotionals ${dateRange}. A collection of spiritual reflections and biblical insights by Nii Dromo.`
+      : "Archive of past daily devotionals and spiritual reflections by Nii Dromo.";
 
   return {
     title,
@@ -35,7 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title,
       description,
-      url: "https://www.theniitettey.live/archive/devotionals",
+      url: "/archive/devotionals",
       images: [
         {
           url: "/api/og/dev-archive",
@@ -44,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: "Devotional Archive",
         },
       ],
-      siteName: "The Nii Tettey",
+      siteName: "Nii Dromo",
     },
 
     twitter: {
@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
 
     alternates: {
-      canonical: "https://www.theniitettey.live/archive/devotionals",
+      canonical: "/archive/devotionals",
     },
     keywords: [
       "daily devotionals",

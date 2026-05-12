@@ -7,10 +7,10 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const title =
-      searchParams.get("title") || "The Nii Tettey | Portfolio & Blog";
+      searchParams.get("title") || "The Nii Dromo | Portfolio & Blog";
     const date = searchParams.get("date") || new Date();
     const description =
-      searchParams.get("description") || "A Devotional by Nii Tettey";
+      searchParams.get("description") || "A Devotional by Nii Dromo";
 
     return new ImageResponse(
       (

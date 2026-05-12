@@ -19,11 +19,11 @@ export async function GET() {
     dateRange = `from ${oldestPost.getFullYear()} to ${newestPost.getFullYear()}`;
   }
 
-  const title = "Archive | The Nii Tettey";
+  const title = "Archive | The Nii Dromo";
   const description =
     postCount > 0
-      ? `Browse ${postCount} archived blog posts ${dateRange}. A collection of past writings and thoughts by Nii Tettey.`
-      : "Archive of past blog posts by Nii Tettey.";
+      ? `Browse ${postCount} archived blog posts ${dateRange}. A collection of past writings and thoughts by Nii Dromo.`
+      : "Archive of past blog posts by Nii Dromo.";
   try {
     return new ImageResponse(
       (
@@ -93,7 +93,7 @@ export async function GET() {
             <span
               style={{ color: "#e5e7eb", fontSize: "20px", fontWeight: "600" }}
             >
-              The Nii Tettey's Post Archives
+              Nii Dromo's Post Archives
             </span>
           </div>
           <div
