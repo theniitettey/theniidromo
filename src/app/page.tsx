@@ -120,24 +120,33 @@ const Home = () => {
         <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
           Currently on repeat
         </h2>
-        <iframe
-          style={{ borderRadius: "12px", border: "none", display: "block" }}
-          src="https://open.spotify.com/embed/track/047fCsbO4NdmwCBn8pcUXl?utm_source=generator&theme=0"
-          width="100%"
-          height="80"
-          frameBorder={0}
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        />
-        <iframe
-          style={{ borderRadius: "12px", border: "none", display: "block" }}
-          src="https://open.spotify.com/embed/track/0zG4M210LKXXXHOoW7DQly?utm_source=generator&theme=0"
-          width="100%"
-          height="80"
-          frameBorder={0}
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        />
+        <div className="flex flex-col gap-2">
+          {[
+            { id: "0zG4M210LKXXXHOoW7DQly", album: "Views", year: "2016" },
+            { id: "047fCsbO4NdmwCBn8pcUXl", album: "Take Care", year: "2011" },
+          ].map(({ id, album, year }) => (
+            <div
+              key={id}
+              className="rounded-xl overflow-hidden border border-zinc-800 bg-[#121212]"
+            >
+              <div className="flex items-center justify-between px-3 pt-2.5 pb-1">
+                <span className="text-[10px] font-medium text-zinc-500 tracking-wide">
+                  {album} · {year}
+                </span>
+                <SiSpotify size={10} className="text-[#1DB954]" />
+              </div>
+              <iframe
+                style={{ display: "block", border: "none" }}
+                src={`https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`}
+                width="100%"
+                height="80"
+                frameBorder={0}
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
       </MotionDiv>
 
       {/* Featured */}
