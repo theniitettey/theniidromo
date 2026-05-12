@@ -3,9 +3,9 @@ import { ImageResponse } from "@vercel/og";
 export const runtime = "edge";
 
 export async function GET() {
-  const title = "Devotional Archive | The Nii Tettey";
+  const title = "Devotional Archive | The Nii Dromo";
   const description =
-    "Archive of past daily devotionals ${dateRange}. A collection of spiritual reflections and biblical insights by Nii Tettey.";
+    "Archive of past daily devotionals ${dateRange}. A collection of spiritual reflections and biblical insights by Nii Dromo.";
   try {
     return new ImageResponse(
       (
@@ -54,7 +54,7 @@ export async function GET() {
             <span
               style={{ color: "#93c5fd", fontSize: "20px", fontWeight: "600" }}
             >
-              The Nii Tettey's Devotionals
+              Nii Dromo's Devotionals
             </span>
           </div>
           <div
