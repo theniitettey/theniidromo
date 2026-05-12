@@ -3,7 +3,7 @@ import { ImageResponse } from "@vercel/og";
 export const runtime = "edge";
 
 export async function GET() {
-  const title = "Thoughts  | The Nii Tettey";
+  const title = "Thoughts | The Nii Dromo";
   const description =
     "A personal blog sharing both technical expertise and life reflections. From software development insights and coding experiences to personal perspectives on life, creativity, and general musings. Join me in exploring technology, personal growth, and everything in between";
   try {
@@ -61,7 +61,7 @@ export async function GET() {
             <span
               style={{ color: "#ddd6fe", fontSize: "20px", fontWeight: "600" }}
             >
-              The Nii Tettey's Thoughts
+              Nii Dromo's Thoughts
             </span>
           </div>
           <div
