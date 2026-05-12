@@ -136,7 +136,7 @@ const Home = () => {
                 <SiSpotify size={10} className="text-[#1DB954]" />
               </div>
               <iframe
-                style={{ display: "block", border: "none" }}
+                style={{ display: "block", border: "none", backgroundColor: "#121212" }}
                 src={`https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`}
                 width="100%"
                 height="80"
