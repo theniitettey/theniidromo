@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
         name: artist.name,
         imageUrl: artist.images[0]?.url || "",
         url: artist.external_urls.spotify,
-        genres: artist.genres.slice(0, 2), // Take first two genres
+        genres: (artist.genres || []).slice(0, 2), // Take first two genres
         followers: artist.followers?.total || 0,
       }));
       return NextResponse.json({ items: artists });
