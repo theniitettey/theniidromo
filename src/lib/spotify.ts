@@ -1,23 +1,30 @@
 import { siteConfig } from "@/lib/config";
 import axios from "axios";
 
-const client_id = siteConfig.spotify.clientId;
-const client_secret = siteConfig.spotify.clientSecret;
-const refresh_token = siteConfig.spotify.refreshToken;
+const clientId = siteConfig.spotify.clientId;
+const clientSecret = siteConfig.spotify.clientSecret;
+const refreshToken = siteConfig.spotify.refreshToken;
 
-const basic = Buffer.from(`${client_id}:${client_secret}`).toString("base64");
+const basic = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
 const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played?limit=1`;
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
+export class SpotifyAuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SpotifyAuthError";
+  }
+}
+
 const getAccessToken = async () => {
-  if (!client_id || !client_secret || !refresh_token) {
+  if (!clientId || !clientSecret || !refreshToken) {
     throw new Error("Spotify environment variables are missing!");
   }
 
   const params = new URLSearchParams({
     grant_type: "refresh_token",
-    refresh_token,
+    refresh_token: refreshToken,
   });
 
   try {
@@ -32,7 +39,7 @@ const getAccessToken = async () => {
   } catch (error: any) {
     // Rethrow compact error to avoid massive Axios stack dumps flooding terminal
     const status = error.response?.status || error.code || "UNKNOWN";
-    throw new Error(`Spotify Token Auth Timeout/Error [${status}]`);
+    throw new SpotifyAuthError(`Spotify Token Auth Timeout/Error [${status}]`);
   }
 };
 

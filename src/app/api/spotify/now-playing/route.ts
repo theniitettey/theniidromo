@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getNowPlaying, getRecentlyPlayed } from "@/lib/spotify";
+import { SpotifyAuthError, getNowPlaying, getRecentlyPlayed } from "@/lib/spotify";
 import { siteConfig } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +30,10 @@ function getDeterministicVibe(trackId: string) {
   };
 }
 
+function getDisabledResponse() {
+  return NextResponse.json({ isPlaying: false, disabled: true });
+}
+
 export async function GET() {
   // If credentials are not configured, fail gracefully and disable the feature
   if (
@@ -45,7 +49,7 @@ export async function GET() {
     const response = await getNowPlaying();
 
     // 204 No Content means no music is currently playing, or the account is offline.
-    if (response.status === 204 || response.status > 400) {
+    if (response.status === 204 || response.status >= 400) {
       return getFallbackRecentlyPlayed();
     }
 
@@ -89,6 +93,8 @@ export async function GET() {
     );
   } catch (error: any) {
     console.error("Error fetching now-playing from Spotify:", error.message);
+    if (error instanceof SpotifyAuthError) return getDisabledResponse();
+
     return getFallbackRecentlyPlayed();
   }
 }
@@ -98,6 +104,9 @@ async function getFallbackRecentlyPlayed() {
     const response = await getRecentlyPlayed();
 
     if (response.status >= 400) {
+      if (response.status === 401 || response.status === 403) {
+        return getDisabledResponse();
+      }
       return NextResponse.json({ isPlaying: false });
     }
 
@@ -135,6 +144,8 @@ async function getFallbackRecentlyPlayed() {
     );
   } catch (error) {
     console.error("Error fetching recently-played from Spotify:", error);
+    if (error instanceof SpotifyAuthError) return getDisabledResponse();
+
     return NextResponse.json({ isPlaying: false });
   }
 }
