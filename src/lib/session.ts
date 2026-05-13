@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
+import { siteConfig } from "./config";
 
 const SESSION_COOKIE = "gb_session";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export interface SessionData {
-  githubId: number;
+  githubId: string;
   username: string;
   name: string;
   avatarUrl: string;
@@ -28,13 +29,13 @@ async function verify(payload: string, sig: string, secret: string): Promise<boo
 }
 
 export async function setSession(data: SessionData): Promise<void> {
-  const secret = process.env.SESSION_SECRET!;
+  const secret = siteConfig.auth.sessionSecret;
   const payload = Buffer.from(JSON.stringify(data)).toString("base64url");
   const sig = await sign(payload, secret);
   const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE, `${payload}.${sig}`, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: siteConfig.isProduction,
     sameSite: "lax",
     maxAge: MAX_AGE,
     path: "/",
@@ -42,7 +43,7 @@ export async function setSession(data: SessionData): Promise<void> {
 }
 
 export async function getSession(): Promise<SessionData | null> {
-  const secret = process.env.SESSION_SECRET;
+  const secret = siteConfig.auth.sessionSecret;
   if (!secret) return null;
   const cookieStore = await cookies();
   const raw = cookieStore.get(SESSION_COOKIE)?.value;

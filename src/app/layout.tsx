@@ -4,6 +4,7 @@ import { Header, Footer, ThemeProvider, QueryProvider } from "@/components";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { siteConfig } from "@/lib/config";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -13,7 +14,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://theniitettey.live";
+const siteUrl = siteConfig.url;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -120,6 +121,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.className} antialiased px-4 pt-4 lg:container lg:mx-auto sm:w-full lg:w-[50%] flex flex-col min-h-screen`}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

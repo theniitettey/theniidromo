@@ -2,9 +2,10 @@ import { GitHub } from "arctic";
 import { cookies } from "next/headers";
 import { setSession } from "@/lib/session";
 import { NextRequest } from "next/server";
+import { siteConfig } from "@/lib/config";
 
 export async function GET(req: NextRequest): Promise<Response> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  const siteUrl = siteConfig.url;
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
   const state = searchParams.get("state");
@@ -18,8 +19,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   }
 
   const github = new GitHub(
-    process.env.GITHUB_CLIENT_ID!,
-    process.env.GITHUB_CLIENT_SECRET!,
+    siteConfig.auth.github.clientId,
+    siteConfig.auth.github.clientSecret,
     `${siteUrl}/api/auth/github/callback`
   );
 
@@ -45,8 +46,36 @@ export async function GET(req: NextRequest): Promise<Response> {
       avatar_url: string;
     };
 
+    // Fetch verified emails to support cross-provider merging
+    let userEmail: string | null = null;
+    try {
+      const emailsRes = await fetch("https://api.github.com/user/emails", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "User-Agent": "theniidromo-guestbook",
+        },
+      });
+      if (emailsRes.ok) {
+        const emails = (await emailsRes.json()) as Array<{
+          email: string;
+          verified: boolean;
+          primary: boolean;
+        }>;
+        const bestEmail = emails.find((e) => e.verified && e.primary) || emails.find((e) => e.verified);
+        if (bestEmail) {
+          userEmail = bestEmail.email;
+        }
+      }
+    } catch (err) {}
+
+    const { resolveUnifiedUser } = await import("@/lib/interactions-db");
+    const canonicalId = await resolveUnifiedUser({
+      githubId: String(user.id),
+      email: userEmail,
+    });
+
     await setSession({
-      githubId: user.id,
+      githubId: canonicalId,
       username: user.login,
       name: user.name ?? user.login,
       avatarUrl: user.avatar_url,

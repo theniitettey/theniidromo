@@ -1,0 +1,21 @@
+export const siteConfig = {
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://theniidromo.me",
+  db: {
+    url: process.env.DATABASE_URL || "",
+  },
+  auth: {
+    sessionSecret: process.env.SESSION_SECRET || "development_secret_key_please_change",
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID || "",
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+    },
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    },
+  },
+  admin: {
+    username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || process.env.ADMIN_GITHUB_USERNAME || "theniitettey",
+  },
+  isProduction: process.env.NODE_ENV === "production",
+};
