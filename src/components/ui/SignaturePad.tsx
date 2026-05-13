@@ -2,29 +2,51 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { Icons } from "@/assets";
 
 export function SignaturePad({ onSign }: { onSign: (data: string | null) => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
   const { resolvedTheme } = useTheme();
-  
-  // To handle proper sizing and touch events
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
-    // Set actual size in memory (scaled to account for pixel ratio).
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * (window.devicePixelRatio || 1);
     canvas.height = rect.height * (window.devicePixelRatio || 1);
-    
     const ctx = canvas.getContext("2d");
     if (ctx) {
       ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
     }
   }, []);
+
+  /** Normalize the drawing to black-on-transparent for consistent storage & display */
+  function exportNormalized(canvas: HTMLCanvasElement): string {
+    const temp = document.createElement("canvas");
+    temp.width = canvas.width;
+    temp.height = canvas.height;
+    const ctx = temp.getContext("2d")!;
+    // Draw the canvas as-is (transparent bg, stroke pixels only)
+    ctx.drawImage(canvas, 0, 0);
+
+    if (resolvedTheme === "dark") {
+      // Strokes are white on transparent — invert only the drawn pixels to black
+      const imageData = ctx.getImageData(0, 0, temp.width, temp.height);
+      const d = imageData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        if (d[i + 3] > 10) { // only touch pixels with actual drawn content
+          d[i]     = 255 - d[i];
+          d[i + 1] = 255 - d[i + 1];
+          d[i + 2] = 255 - d[i + 2];
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+    // Light mode: black strokes on transparent — already correct
+
+    return temp.toDataURL("image/png");
+  }
 
   const getCoordinates = (event: React.MouseEvent | React.TouchEvent) => {
     const canvas = canvasRef.current;
@@ -49,6 +71,7 @@ export function SignaturePad({ onSign }: { onSign: (data: string | null) => void
     if (ctx) {
       ctx.beginPath();
       ctx.moveTo(x, y);
+      // Theme-aware ink color so the user can see what they're drawing
       ctx.strokeStyle = resolvedTheme === "dark" ? "#ffffff" : "#000000";
       ctx.lineWidth = 2.5;
       ctx.lineCap = "round";
@@ -58,23 +81,19 @@ export function SignaturePad({ onSign }: { onSign: (data: string | null) => void
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing) return;
-    if (e.cancelable) e.preventDefault(); // Prevent scrolling on touch
-    
+    if (e.cancelable) e.preventDefault();
     const { x, y } = getCoordinates(e);
     const ctx = canvasRef.current?.getContext("2d");
-    if (ctx) {
+    if (ctx && canvasRef.current) {
       ctx.lineTo(x, y);
       ctx.stroke();
       setHasSignature(true);
-      onSign(canvasRef.current!.toDataURL("image/png"));
+      // Export normalized (always black-on-white) for storage
+      onSign(exportNormalized(canvasRef.current));
     }
   };
 
-  const stopDrawing = () => {
-    if (isDrawing) {
-      setIsDrawing(false);
-    }
-  };
+  const stopDrawing = () => setIsDrawing(false);
 
   const clear = () => {
     const canvas = canvasRef.current;
@@ -89,12 +108,14 @@ export function SignaturePad({ onSign }: { onSign: (data: string | null) => void
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between px-1">
-        <span className="text-xs text-zinc-500 font-medium">Add your signature (optional)</span>
+        <span className="text-xs text-zinc-500 font-medium">
+          Add your signature (optional)
+        </span>
         {hasSignature && (
           <button
             type="button"
             onClick={clear}
-            className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:text-red-700 dark:hover:text-red-300 transition-colors"
+            className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-colors"
           >
             Clear pad
           </button>
@@ -109,7 +130,7 @@ export function SignaturePad({ onSign }: { onSign: (data: string | null) => void
         onTouchStart={startDrawing}
         onTouchMove={draw}
         onTouchEnd={stopDrawing}
-        className="w-full h-[120px] rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-[#1a1a1a] cursor-crosshair touch-none"
+        className="w-full h-[120px] rounded-lg border border-dashed border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 cursor-crosshair touch-none"
       />
     </div>
   );
