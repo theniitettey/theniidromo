@@ -3,6 +3,8 @@ import { allPosts } from "@/lib/content";
 import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
+import { PostInteractions } from "@/components/PostInteractions";
+import { getSession } from "@/lib/session";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -77,7 +79,10 @@ export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
 
 export default async function PostsPage({ params }: PostsProps) {
   const resolvedParams = await params;
-  const post = await getPostFromParams(resolvedParams.slug);
+  const [post, session] = await Promise.all([
+    getPostFromParams(resolvedParams.slug),
+    getSession(),
+  ]);
 
   if (!post) notFound();
 
@@ -125,6 +130,7 @@ export default async function PostsPage({ params }: PostsProps) {
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
             <MDXComponent code={post.body} />
           </article>
+          <PostInteractions slug={post.slugAsParams} session={session} />
         </div>
       </MotionDiv>
     </div>

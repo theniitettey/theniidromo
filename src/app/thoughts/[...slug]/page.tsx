@@ -3,6 +3,8 @@ import { allThoughts } from "@/lib/content";
 import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
+import { PostInteractions } from "@/components/PostInteractions";
+import { getSession } from "@/lib/session";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -80,7 +82,10 @@ export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
 
 export default async function ThoughtPage({ params }: ThoughtsProps) {
   const resolvedParams = await params;
-  const thought = await getThoughtsFromParams(resolvedParams.slug);
+  const [thought, session] = await Promise.all([
+    getThoughtsFromParams(resolvedParams.slug),
+    getSession(),
+  ]);
 
   if (!thought) notFound();
 
@@ -128,6 +133,7 @@ export default async function ThoughtPage({ params }: ThoughtsProps) {
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
             <MDXComponent code={thought.body} />
           </article>
+          <PostInteractions slug={thought.slugAsParams} session={session} />
         </div>
       </MotionDiv>
     </div>

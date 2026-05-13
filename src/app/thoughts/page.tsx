@@ -1,8 +1,11 @@
 "use client";
+import { useState } from "react";
 import { allThoughts } from "@/lib/content";
 import { MotionDiv } from "@/components";
 import { formatDistance } from "date-fns";
 import Link from "next/link";
+
+const PAGE_SIZE = 10;
 
 const variant = {
   hidden: { opacity: 0, y: -8 },
@@ -13,6 +16,10 @@ const ThoughtsPage = () => {
   const thoughts = allThoughts
     .filter((t) => !t.archived && !t.draft)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const totalPages = Math.ceil(thoughts.length / PAGE_SIZE);
+  const [page, setPage] = useState(1);
+  const paginated = thoughts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <MotionDiv
@@ -25,7 +32,7 @@ const ThoughtsPage = () => {
         Thoughts
       </h1>
       <div className="flex flex-col">
-        {thoughts.map((thought) => (
+        {paginated.map((thought) => (
           <article
             key={thought.slug}
             className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
@@ -50,13 +57,34 @@ const ThoughtsPage = () => {
               )}
             </Link>
             <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 pt-0.5">
-              {formatDistance(new Date(thought.date), new Date(), {
-                addSuffix: true,
-              })}
+              {formatDistance(new Date(thought.date), new Date(), { addSuffix: true })}
             </time>
           </article>
         ))}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-8 text-xs text-zinc-400 dark:text-zinc-500">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            ← Previous
+          </button>
+          <span>
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </MotionDiv>
   );
 };
