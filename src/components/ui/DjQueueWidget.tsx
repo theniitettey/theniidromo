@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LuSearch, LuMusic, LuPlus, LuLoader } from "react-icons/lu";
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "sonner";
 import Image from "next/image";
@@ -25,22 +24,9 @@ export const DjQueueWidget = () => {
   const [isQueuing, setIsQueuing] = useState<string | null>(null);
   
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const queryClient = useQueryClient();
 
-  // Fetch upcoming queue items
-  const { data: queueData } = useQuery({
-    queryKey: ["spotify-queue"],
-    queryFn: async () => {
-      const { data } = await axios.get<{ queue: any[] }>("/api/spotify/queue");
-      return data || { queue: [] };
-    },
-    refetchInterval: 15000, // Poll every 15s
-    staleTime: 10000,
-    enabled: !statusData?.disabled,
-  });
-
-  // Check if component should hide entirely due to global configuration state
-  if (statusData?.disabled) {
+  // Hide widget entirely if Spotify variables are missing or if Michael is not currently listening
+  if (statusData?.disabled || !statusData?.isPlaying) {
     return null;
   }
 
@@ -96,8 +82,6 @@ export const DjQueueWidget = () => {
         // Clean up input
         setQuery("");
         setShowDropdown(false);
-        // Instantly refresh the list to show user their addition
-        queryClient.invalidateQueries({ queryKey: ["spotify-queue"] });
       }
     } catch (err: any) {
       const errMsg = err.response?.data?.error || "Failed to queue song. Verify active player!";
@@ -200,50 +184,6 @@ export const DjQueueWidget = () => {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Queue Display */}
-      {queueData && queueData.queue && queueData.queue.length > 0 && (
-        <div className="mt-1 pt-2.5 flex flex-col gap-1.5 border-t border-dashed border-zinc-100 dark:border-zinc-800/80">
-          <div className="flex items-center justify-between px-0.5">
-            <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 flex items-center gap-1">
-              Up Next
-              <span className="text-[8px] text-zinc-300 dark:text-zinc-600 font-normal lowercase">
-                (syncing live)
-              </span>
-            </span>
-            <span className="flex h-1.5 w-1.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]"></span>
-            </span>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            {queueData.queue.map((track: any, index: number) => (
-              <div 
-                key={track.id + index} 
-                className="flex items-center gap-2.5 py-1 px-1.5 rounded-lg hover:bg-zinc-50/50 dark:hover:bg-zinc-900/40 transition-colors group"
-              >
-                <div className="relative w-6 h-6 rounded overflow-hidden shrink-0 bg-zinc-100 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-                   {track.albumImageUrl ? (
-                      <Image src={track.albumImageUrl} alt="" fill sizes="24px" className="object-cover" />
-                   ) : (
-                      <div className="w-full h-full flex items-center justify-center text-zinc-400 text-[8px]">
-                        <LuMusic size={10} />
-                      </div>
-                   )}
-                </div>
-                <div className="flex-1 min-w-0 flex flex-col py-0.5">
-                  <span className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 truncate leading-snug">
-                    {track.title}
-                  </span>
-                  <span className="text-[9px] text-zinc-400 dark:text-zinc-500 truncate">
-                    {track.artist}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

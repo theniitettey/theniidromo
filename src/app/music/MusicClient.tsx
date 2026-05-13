@@ -7,6 +7,7 @@ import Image from "next/image";
 import { SiSpotify } from "react-icons/si";
 import { LuClock, LuPlay, LuUser, LuMusic, LuTrophy, LuExternalLink } from "react-icons/lu";
 import { NowPlaying, DjQueueWidget, MotionDiv, MotionHeader } from "@/components";
+import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
 
 interface TopTrack {
   rank: number;
@@ -52,6 +53,7 @@ const itemVariants = {
 export const MusicClient = () => {
   const [type, setType] = useState<MediaType>("tracks");
   const [range, setRange] = useState<TimeRange>("short_term");
+  const { data: statusData } = useSpotifyNowPlaying();
 
   // Fetch dynamic top lists from API route
   const { data, isLoading, isError } = useQuery({
@@ -90,9 +92,11 @@ export const MusicClient = () => {
         className="grid grid-cols-1 gap-4"
       >
         <NowPlaying />
-        <div className="p-5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/30 dark:bg-[#121212]/30 backdrop-blur-sm">
-          <DjQueueWidget />
-        </div>
+        {statusData && statusData.isPlaying && !statusData.disabled && (
+          <div className="p-5 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/30 dark:bg-[#121212]/30 backdrop-blur-sm">
+            <DjQueueWidget />
+          </div>
+        )}
       </MotionDiv>
 
       {/* Filters Dashboard */}
