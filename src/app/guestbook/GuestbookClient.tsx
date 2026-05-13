@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SiGithub } from "react-icons/si";
+import { FcGoogle } from "react-icons/fc";
 import { format } from "date-fns";
 import axios from "axios";
 import { SignaturePad } from "@/components/ui";
@@ -15,7 +16,7 @@ import {
 } from "@/hooks/useGuestbook";
 
 interface Session {
-  githubId: number;
+  githubId: string;
   username: string;
   name: string;
   avatarUrl: string;
@@ -44,7 +45,7 @@ export function GuestbookClient({
   const { mutateAsync: signGuestbook, isPending: submitting } = useSignGuestbook();
 
   const existingEntry = session
-    ? entries.find((entry) => entry.username === session.username) ?? null
+    ? entries.find((entry) => entry.github_id === session.githubId) ?? null
     : null;
   const hasSigned = existingEntry !== null;
 
@@ -151,13 +152,23 @@ export function GuestbookClient({
                   </button>
                 )
               ) : (
-                <Link
-                  href="/api/auth/github"
-                  className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-white text-black hover:opacity-80 transition-opacity"
-                >
-                  <SiGithub size={13} />
-                  Sign the Guestbook
-                </Link>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs text-zinc-500 mr-0.5">Sign in:</span>
+                  <Link
+                    href="/api/auth/github"
+                    title="Sign in with GitHub"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                  >
+                    <SiGithub size={14} />
+                  </Link>
+                  <Link
+                    href="/api/auth/google"
+                    title="Sign in with Google"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                  >
+                    <FcGoogle size={14} />
+                  </Link>
+                </div>
               )}
 
               {/* Close / back to grid */}
@@ -290,17 +301,26 @@ export function GuestbookClient({
                   Leave a message — I read every one.
                 </p>
               </div>
-              <div className="flex flex-col items-start gap-3">
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Sign in with GitHub to leave a message.
+              <div className="flex flex-col items-start gap-2">
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-0.5">
+                  Sign in to leave a message.
                 </p>
-                <Link
-                  href="/api/auth/github"
-                  className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-foreground text-background hover:opacity-80 transition-opacity"
-                >
-                  <SiGithub size={13} />
-                  Sign in with GitHub
-                </Link>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Link
+                    href="/api/auth/github"
+                    className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-foreground transition-colors"
+                  >
+                    <SiGithub size={13} />
+                    GitHub
+                  </Link>
+                  <Link
+                    href="/api/auth/google"
+                    className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-foreground transition-colors"
+                  >
+                    <FcGoogle size={13} />
+                    Google
+                  </Link>
+                </div>
               </div>
             </div>
 

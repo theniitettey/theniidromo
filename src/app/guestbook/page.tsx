@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 interface Entry {
   id: number;
+  github_id: string;
   username: string;
   name: string;
   avatar_url: string;
@@ -24,7 +25,7 @@ async function getEntries(): Promise<Entry[]> {
     await sql`
       CREATE TABLE IF NOT EXISTS guestbook (
         id SERIAL PRIMARY KEY,
-        github_id INTEGER NOT NULL,
+        github_id TEXT NOT NULL,
         username TEXT NOT NULL,
         name TEXT NOT NULL,
         avatar_url TEXT NOT NULL,
@@ -33,8 +34,14 @@ async function getEntries(): Promise<Entry[]> {
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
+    
+    // Safe idempotent column alteration
+    try {
+      await sql`ALTER TABLE guestbook ALTER COLUMN github_id TYPE TEXT`;
+    } catch (err) {}
+
     const rows = await sql`
-      SELECT id, username, name, avatar_url, message, signature_data, created_at, updated_at
+      SELECT id, github_id, username, name, avatar_url, message, signature_data, created_at, updated_at
       FROM guestbook
       ORDER BY created_at DESC
       LIMIT 100

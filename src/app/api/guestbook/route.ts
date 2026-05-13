@@ -6,7 +6,7 @@ async function ensureTable() {
   await sql`
     CREATE TABLE IF NOT EXISTS guestbook (
       id SERIAL PRIMARY KEY,
-      github_id INTEGER NOT NULL,
+      github_id TEXT NOT NULL,
       username TEXT NOT NULL,
       name TEXT NOT NULL,
       avatar_url TEXT NOT NULL,
@@ -14,6 +14,10 @@ async function ensureTable() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `;
+  try {
+    await sql`ALTER TABLE guestbook ALTER COLUMN github_id TYPE TEXT`;
+  } catch (err) {}
+
   await sql`
     ALTER TABLE guestbook ADD COLUMN IF NOT EXISTS signature_data TEXT;
   `;
@@ -42,7 +46,7 @@ async function ensureTable() {
 export async function GET() {
   await ensureTable();
   const rows = await sql`
-    SELECT id, username, name, avatar_url, message, signature_data, created_at, updated_at
+    SELECT id, github_id, username, name, avatar_url, message, signature_data, created_at, updated_at
     FROM guestbook
     ORDER BY created_at DESC
     LIMIT 100
@@ -76,7 +80,7 @@ export async function POST(req: NextRequest) {
       signature_data = EXCLUDED.signature_data,
       updated_at = NOW()
     -- created_at is intentionally NOT updated
-    RETURNING id, username, name, avatar_url, message, signature_data, created_at, updated_at
+    RETURNING id, github_id, username, name, avatar_url, message, signature_data, created_at, updated_at
   `;
 
   return Response.json(rows[0], { status: 201 });

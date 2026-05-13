@@ -3,6 +3,7 @@ import axios from "axios";
 
 export interface Entry {
   id: number;
+  github_id: string;
   username: string;
   name: string;
   avatar_url: string;
