@@ -17,7 +17,9 @@ async function ensureTable() {
   const [githubIdColumn] = await sql`
     SELECT data_type
     FROM information_schema.columns
-    WHERE table_name = 'guestbook' AND column_name = 'github_id'
+    WHERE table_schema = current_schema()
+      AND table_name = 'guestbook'
+      AND column_name = 'github_id'
   `;
   if (githubIdColumn?.data_type && githubIdColumn.data_type !== "text") {
     await sql`ALTER TABLE guestbook ALTER COLUMN github_id TYPE TEXT`;

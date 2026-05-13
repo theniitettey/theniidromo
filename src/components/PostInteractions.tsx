@@ -74,6 +74,10 @@ function ReactionSelector({
           }}
           onKeyDown={(e) => {
             if (e.key === "Escape") onClose();
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.currentTarget.click();
+            }
           }}
           className="w-7 h-7 flex items-center justify-center rounded-full text-base hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-125 active:scale-95 transition-all duration-150"
           title={r.name}
