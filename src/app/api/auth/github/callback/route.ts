@@ -2,9 +2,10 @@ import { GitHub } from "arctic";
 import { cookies } from "next/headers";
 import { setSession } from "@/lib/session";
 import { NextRequest } from "next/server";
+import { siteConfig } from "@/lib/config";
 
 export async function GET(req: NextRequest): Promise<Response> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  const siteUrl = siteConfig.url;
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
   const state = searchParams.get("state");
@@ -18,8 +19,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   }
 
   const github = new GitHub(
-    process.env.GITHUB_CLIENT_ID!,
-    process.env.GITHUB_CLIENT_SECRET!,
+    siteConfig.auth.github.clientId,
+    siteConfig.auth.github.clientSecret,
     `${siteUrl}/api/auth/github/callback`
   );
 

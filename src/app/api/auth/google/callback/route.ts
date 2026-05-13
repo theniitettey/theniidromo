@@ -2,6 +2,7 @@ import { Google } from "arctic";
 import { cookies } from "next/headers";
 import { setSession } from "@/lib/session";
 import { NextRequest } from "next/server";
+import { siteConfig } from "@/lib/config";
 
 interface GoogleUser {
   sub: string;
@@ -11,7 +12,7 @@ interface GoogleUser {
 }
 
 export async function GET(req: NextRequest): Promise<Response> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  const siteUrl = siteConfig.url;
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
   const state = searchParams.get("state");
@@ -29,8 +30,8 @@ export async function GET(req: NextRequest): Promise<Response> {
   }
 
   const google = new Google(
-    process.env.GOOGLE_CLIENT_ID!,
-    process.env.GOOGLE_CLIENT_SECRET!,
+    siteConfig.auth.google.clientId,
+    siteConfig.auth.google.clientSecret,
     `${siteUrl}/api/auth/google/callback`
   );
 

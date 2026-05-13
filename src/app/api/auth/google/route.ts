@@ -1,11 +1,13 @@
 import { Google, generateState, generateCodeVerifier } from "arctic";
 import { cookies } from "next/headers";
 
+import { siteConfig } from "@/lib/config";
+
 export async function GET(): Promise<Response> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
+  const siteUrl = siteConfig.url;
   const google = new Google(
-    process.env.GOOGLE_CLIENT_ID!,
-    process.env.GOOGLE_CLIENT_SECRET!,
+    siteConfig.auth.google.clientId,
+    siteConfig.auth.google.clientSecret,
     `${siteUrl}/api/auth/google/callback`
   );
 
@@ -18,7 +20,7 @@ export async function GET(): Promise<Response> {
   // Secure lax cookie for OAuth State
   cookieStore.set("google_oauth_state", state, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: siteConfig.isProduction,
     sameSite: "lax",
     maxAge: 60 * 10,
     path: "/",
@@ -27,7 +29,7 @@ export async function GET(): Promise<Response> {
   // Secure PKCE Code Verifier
   cookieStore.set("google_code_verifier", codeVerifier, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: siteConfig.isProduction,
     sameSite: "lax",
     maxAge: 60 * 10,
     path: "/",
