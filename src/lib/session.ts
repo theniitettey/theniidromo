@@ -42,12 +42,9 @@ export async function setSession(data: SessionData): Promise<void> {
   });
 }
 
-export async function getSession(): Promise<SessionData | null> {
+export async function decryptSession(raw: string | undefined): Promise<SessionData | null> {
   const secret = siteConfig.auth.sessionSecret;
-  if (!secret) return null;
-  const cookieStore = await cookies();
-  const raw = cookieStore.get(SESSION_COOKIE)?.value;
-  if (!raw) return null;
+  if (!secret || !raw) return null;
   const dot = raw.lastIndexOf(".");
   if (dot === -1) return null;
   const payload = raw.slice(0, dot);
@@ -58,6 +55,12 @@ export async function getSession(): Promise<SessionData | null> {
   } catch {
     return null;
   }
+}
+
+export async function getSession(): Promise<SessionData | null> {
+  const cookieStore = await cookies();
+  const raw = cookieStore.get(SESSION_COOKIE)?.value;
+  return decryptSession(raw);
 }
 
 export async function clearSession(): Promise<void> {

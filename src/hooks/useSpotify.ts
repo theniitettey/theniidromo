@@ -9,6 +9,13 @@ export interface SpotifyNowPlaying {
   albumImageUrl?: string;
   songUrl?: string;
   disabled?: boolean;
+  durationMs?: number;
+  progressMs?: number;
+  vibe?: {
+    energy: number;
+    happiness: number;
+    groove: number;
+  } | null;
 }
 
 export function useSpotifyNowPlaying() {
