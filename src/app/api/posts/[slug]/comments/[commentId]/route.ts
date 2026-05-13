@@ -1,6 +1,7 @@
 import { sql } from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
+import { siteConfig } from "@/lib/config";
 
 interface RouteParams {
   params: Promise<{ slug: string; commentId: string }>;
@@ -27,7 +28,7 @@ export async function DELETE(_req: NextRequest, { params }: RouteParams) {
     return Response.json({ error: "Not found" }, { status: 404 });
   }
 
-  const adminUsername = process.env.ADMIN_GITHUB_USERNAME;
+  const adminUsername = siteConfig.admin.username;
   const isAdmin = session.username === adminUsername;
   const isOwner = comment.github_id === session.githubId;
 

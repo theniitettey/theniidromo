@@ -3,11 +3,12 @@ import { ensureInteractionsTables } from "@/lib/interactions-db";
 import { getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
 import { createHash } from "crypto";
+import { siteConfig } from "@/lib/config";
 
 const MAX_LIKES = 50;
 
 function hashIp(ip: string) {
-  return createHash("sha256").update(ip + process.env.SESSION_SECRET).digest("hex").slice(0, 32);
+  return createHash("sha256").update(ip + siteConfig.auth.sessionSecret).digest("hex").slice(0, 32);
 }
 
 function getClientIp(req: NextRequest) {

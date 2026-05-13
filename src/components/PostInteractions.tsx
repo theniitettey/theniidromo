@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { SiGithub } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
+import { siteConfig } from "@/lib/config";
 import {
   useReactions,
   useIncrementReaction,
@@ -369,7 +370,7 @@ export function PostInteractions({ slug, session }: PostInteractionsProps) {
   const { mutateAsync: addComment, isPending: commenting } = useAddComment(slug);
 
   const [commentText, setCommentText] = useState("");
-  const adminUsername = process.env.NEXT_PUBLIC_ADMIN_USERNAME ?? "theniitettey";
+  const adminUsername = siteConfig.admin.username;
 
   // Local state to handle rapid-clicking tap mechanics without waiting for the server
   const [pendingDelta, setPendingDelta] = useState(0);
