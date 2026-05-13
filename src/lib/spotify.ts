@@ -62,15 +62,6 @@ export const getRecentlyPlayed = async () => {
   });
 };
 
-export const getTrackFeatures = async (trackId: string) => {
-  const headers = await getAuthHeaders();
-  return axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-    headers,
-    timeout: 5000,
-    validateStatus: () => true,
-  });
-};
-
 export const getTopTracks = async (limit = 10, timeRange = "short_term") => {
   const headers = await getAuthHeaders();
   return axios.get(`https://api.spotify.com/v1/me/top/tracks`, {
