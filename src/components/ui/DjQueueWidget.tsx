@@ -25,10 +25,6 @@ export const DjQueueWidget = () => {
   
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Hide widget entirely if Spotify variables are missing or if Michael is not currently listening
-  if (statusData?.disabled || !statusData?.isPlaying) {
-    return null;
-  }
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -90,6 +86,12 @@ export const DjQueueWidget = () => {
       setIsQueuing(null);
     }
   };
+
+  // Hide widget entirely if Spotify variables are missing or if Michael is not currently listening
+  // Placed here AFTER all hooks to strictly adhere to React's Rules of Hooks and prevent order shifts.
+  if (statusData?.disabled || !statusData?.isPlaying) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-3 mt-1.5 relative" ref={dropdownRef}>
