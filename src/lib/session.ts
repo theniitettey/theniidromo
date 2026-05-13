@@ -4,7 +4,7 @@ const SESSION_COOKIE = "gb_session";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export interface SessionData {
-  githubId: number;
+  githubId: string;
   username: string;
   name: string;
   avatarUrl: string;
