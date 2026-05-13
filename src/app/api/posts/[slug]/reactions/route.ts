@@ -9,7 +9,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 
 function hashIp(ip: string) {
   if (!SESSION_SECRET) {
-    return null;
+    throw new Error("SESSION_SECRET is required for anonymous reactions");
   }
   return createHash("sha256").update(ip + SESSION_SECRET).digest("hex").slice(0, 32);
 }
@@ -55,10 +55,10 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
   await ensureInteractionsTables();
 
   const session = await getSession();
-  const anonId = session ? null : hashIp(getClientIp(req));
-  if (!session && !anonId) {
+  if (!session && !SESSION_SECRET) {
     return Response.json({ error: "Anonymous reactions unavailable" }, { status: 500 });
   }
+  const anonId = session ? null : hashIp(getClientIp(req));
 
   return Response.json(await getTotals(slug, session?.githubId, anonId));
 }
@@ -68,10 +68,10 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   await ensureInteractionsTables();
 
   const session = await getSession();
-  const anonId = session ? null : hashIp(getClientIp(req));
-  if (!session && !anonId) {
+  if (!session && !SESSION_SECRET) {
     return Response.json({ error: "Anonymous reactions unavailable" }, { status: 500 });
   }
+  const anonId = session ? null : hashIp(getClientIp(req));
 
   const body = await req.json() as { delta?: number };
   const delta = Math.min(Math.max(1, Math.floor(body.delta ?? 1)), MAX_LIKES);

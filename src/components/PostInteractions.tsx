@@ -77,7 +77,7 @@ function ReactionSelector({
               e.preventDefault();
               onClose();
             }
-            if (e.key === "Enter" || e.key === " ") {
+            if (e.key === "Enter" || e.code === "Space") {
               e.preventDefault();
               e.currentTarget.click();
             }
@@ -265,9 +265,9 @@ function CommentItem({
                 onClick={() => setCommentMenuOpen(!commentMenuOpen)}
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setCommentMenuOpen(false);
-                  if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                  if (e.key === "Enter" || e.code === "Space" || e.key === "ArrowDown") {
                     setCommentMenuOpen(true);
-                    if (e.key === " ") e.preventDefault();
+                    if (e.code === "Space") e.preventDefault();
                   }
                 }}
                 className="text-[10px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
@@ -353,9 +353,9 @@ function CommentItem({
                         if (e.key === "Escape") {
                           setReplyMenus((prev) => ({ ...prev, [reply.id]: false }));
                         }
-                        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                        if (e.key === "Enter" || e.code === "Space" || e.key === "ArrowDown") {
                           setReplyMenus((prev) => ({ ...prev, [reply.id]: true }));
-                          if (e.key === " ") e.preventDefault();
+                          if (e.code === "Space") e.preventDefault();
                         }
                       }}
                       className="text-[9px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
