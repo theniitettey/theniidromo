@@ -74,6 +74,7 @@ const Home = () => {
             alt=""
             width={64}
             height={64}
+            style={{ width: "64px", height: "64px" }}
             className="opacity-60 dark:opacity-40 shrink-0 mt-1"
           />
         </div>
