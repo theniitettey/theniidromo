@@ -17,5 +17,10 @@ export const siteConfig = {
   admin: {
     username: process.env.NEXT_PUBLIC_ADMIN_USERNAME || process.env.ADMIN_GITHUB_USERNAME || "theniitettey",
   },
+  spotify: {
+    clientId: process.env.SPOTIFY_CLIENT_ID || "",
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET || "",
+    refreshToken: process.env.SPOTIFY_REFRESH_TOKEN || "",
+  },
   isProduction: process.env.NODE_ENV === "production",
 };
