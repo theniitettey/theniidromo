@@ -16,6 +16,7 @@ interface Entry {
   message: string;
   signature_data: string | null;
   created_at: string;
+  updated_at: string | null;
 }
 
 async function getEntries(): Promise<Entry[]> {
@@ -33,7 +34,7 @@ async function getEntries(): Promise<Entry[]> {
       )
     `;
     const rows = await sql`
-      SELECT id, username, name, avatar_url, message, signature_data, created_at
+      SELECT id, username, name, avatar_url, message, signature_data, created_at, updated_at
       FROM guestbook
       ORDER BY created_at DESC
       LIMIT 100
