@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
 import { SiSpotify } from "react-icons/si";
 import Image from "next/image";
@@ -32,11 +32,33 @@ const Equalizer = () => (
 
 export const NowPlaying = () => {
   const { data, isLoading, isError } = useSpotifyNowPlaying();
+  const [progress, setProgress] = useState(0);
+
+  // Tick local progress state smoothly every second to mimic actual playing
+  useEffect(() => {
+    if (data?.isPlaying && typeof data?.progressMs === "number") {
+      setProgress(data.progressMs);
+
+      const interval = setInterval(() => {
+        setProgress((prev) => {
+          if (data.durationMs && prev >= data.durationMs) {
+            clearInterval(interval);
+            return prev;
+          }
+          return prev + 1000;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    } else {
+      setProgress(data?.progressMs || 0);
+    }
+  }, [data?.progressMs, data?.isPlaying, data?.durationMs]);
 
   if (isLoading) {
     return (
-      <div className="w-full p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] animate-pulse flex items-center gap-3 min-h-[64px]">
-        <div className="w-10 h-10 bg-zinc-200 dark:bg-zinc-800 rounded-lg shrink-0" />
+      <div className="w-full p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] animate-pulse flex items-center gap-3 min-h-[68px]">
+        <div className="w-11 h-11 bg-zinc-200 dark:bg-zinc-800 rounded-lg shrink-0" />
         <div className="flex-1 flex flex-col gap-1.5">
           <div className="h-2.5 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
           <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
@@ -49,77 +71,128 @@ export const NowPlaying = () => {
     return null; // Hide widget entirely if variables are missing or call failed
   }
 
-  const { isPlaying, title, artist, albumImageUrl, songUrl } = data;
+  const { isPlaying, title, artist, albumImageUrl, songUrl, durationMs, vibe } = data;
 
   const hasData = !!title;
+  
+  // Calculate visual bar width
+  const percentage = durationMs && durationMs > 0 
+    ? Math.min((progress / durationMs) * 100, 100) 
+    : 0;
 
   return (
     <a
       href={songUrl || "https://open.spotify.com"}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center gap-3.5 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:bg-zinc-50 dark:hover:bg-[#1a1a1a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
+      className="group relative overflow-hidden flex flex-col items-stretch rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:bg-zinc-50 dark:hover:bg-[#161616] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
     >
-      {/* Album Art */}
-      <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-        {albumImageUrl ? (
-          <Image
-            src={albumImageUrl}
-            alt={title || "Album art"}
-            fill
-            sizes="48px"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex items-center justify-center w-full h-full text-zinc-400 dark:text-zinc-600">
-            <SiSpotify size={22} />
-          </div>
-        )}
-      </div>
-
-      {/* Details */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5">
-        <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-          {isPlaying ? (
-            <span className="text-[#1DB954] flex items-center gap-1">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]"></span>
-              </span>
-              Now Playing
-            </span>
+      {/* Main Row */}
+      <div className="flex items-center gap-3.5 p-3.5 pb-4">
+        {/* Album Art */}
+        <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
+          {albumImageUrl ? (
+            <Image
+              src={albumImageUrl}
+              alt={title || "Album art"}
+              fill
+              sizes="48px"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
           ) : (
-            <span>Recently Played</span>
+            <div className="flex items-center justify-center w-full h-full text-zinc-400 dark:text-zinc-600">
+              <SiSpotify size={22} />
+            </div>
           )}
         </div>
 
-        {hasData ? (
-          <div className="mt-0.5 flex flex-col">
-            <span className="font-semibold text-sm text-zinc-800 dark:text-zinc-200 truncate leading-snug group-hover:text-foreground transition-colors">
-              {title}
-            </span>
-            <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate leading-relaxed">
-              {artist}
-            </span>
+        {/* Details Container */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5">
+          <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            {isPlaying ? (
+              <span className="text-[#1DB954] flex items-center gap-1">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]"></span>
+                </span>
+                Now Playing
+              </span>
+            ) : (
+              <span>Recently Played</span>
+            )}
           </div>
-        ) : (
-          <span className="mt-0.5 font-medium text-xs text-zinc-500">
-            Not listening to anything
-          </span>
-        )}
+
+          {hasData ? (
+            <div className="mt-0.5 flex flex-col">
+              <span className="font-semibold text-sm text-zinc-800 dark:text-zinc-200 truncate leading-snug group-hover:text-foreground transition-colors">
+                {title}
+              </span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate leading-relaxed">
+                {artist}
+              </span>
+              
+              {/* Vibe Analytics Sub-Row */}
+              {isPlaying && vibe && (
+                <div className="flex items-center gap-4 mt-2">
+                  <div className="flex flex-col grow max-w-[48px]">
+                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">ENERGY</span>
+                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
+                      <div 
+                        className="h-full bg-amber-500 rounded-full transition-all duration-700" 
+                        style={{ width: `${vibe.energy}%` }} 
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col grow max-w-[48px]">
+                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">GROOVE</span>
+                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
+                      <div 
+                        className="h-full bg-indigo-500 rounded-full transition-all duration-700" 
+                        style={{ width: `${vibe.groove}%` }} 
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col grow max-w-[48px]">
+                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">MOOD</span>
+                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
+                      <div 
+                        className="h-full bg-[#1DB954] rounded-full transition-all duration-700" 
+                        style={{ width: `${vibe.happiness}%` }} 
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <span className="mt-0.5 font-medium text-xs text-zinc-500">
+              Not listening to anything
+            </span>
+          )}
+        </div>
+
+        {/* Status Indicator */}
+        <div className="shrink-0 flex items-center pl-1">
+          {isPlaying ? (
+            <Equalizer />
+          ) : (
+            <SiSpotify
+              className="text-zinc-300 dark:text-zinc-700 group-hover:text-[#1DB954] transition-colors duration-300"
+              size={18}
+            />
+          )}
+        </div>
       </div>
 
-      {/* Status Indicator */}
-      <div className="shrink-0 flex items-center">
-        {isPlaying ? (
-          <Equalizer />
-        ) : (
-          <SiSpotify
-            className="text-zinc-300 dark:text-zinc-700 group-hover:text-[#1DB954] transition-colors duration-300"
-            size={18}
+      {/* Ticking Bottom Progress Bar */}
+      {isPlaying && percentage > 0 && (
+        <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
+          <div 
+            className="h-full bg-[#1DB954] transition-all duration-1000 ease-linear"
+            style={{ width: `${percentage}%` }}
           />
-        )}
-      </div>
+        </div>
+      )}
     </a>
   );
 };

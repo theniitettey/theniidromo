@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/config";
+import axios from "axios";
 
 const client_id = siteConfig.spotify.clientId;
 const client_secret = siteConfig.spotify.clientSecret;
@@ -14,44 +15,85 @@ const getAccessToken = async () => {
     throw new Error("Spotify environment variables are missing!");
   }
 
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: "POST",
+  const params = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token,
+  });
+
+  const response = await axios.post(TOKEN_ENDPOINT, params.toString(), {
     headers: {
       Authorization: `Basic ${basic}`,
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams({
-      grant_type: "refresh_token",
-      refresh_token,
-    }),
-    next: { revalidate: 0 }, // Next.js 13+ App Router caching directive
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to refresh token: ${response.statusText}`);
-  }
+  return response.data;
+};
 
-  return response.json();
+// Configure base options for all authenticated requests
+const getAuthHeaders = async () => {
+  const { access_token } = await getAccessToken();
+  return {
+    Authorization: `Bearer ${access_token}`,
+  };
 };
 
 export const getNowPlaying = async () => {
-  const { access_token } = await getAccessToken();
-
-  return fetch(NOW_PLAYING_ENDPOINT, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    },
-    next: { revalidate: 0 },
+  const headers = await getAuthHeaders();
+  return axios.get(NOW_PLAYING_ENDPOINT, {
+    headers,
+    validateStatus: () => true, // Pass all statuses to the route handler for manual parsing
   });
 };
 
 export const getRecentlyPlayed = async () => {
-  const { access_token } = await getAccessToken();
+  const headers = await getAuthHeaders();
+  return axios.get(RECENTLY_PLAYED_ENDPOINT, {
+    headers,
+    validateStatus: () => true,
+  });
+};
 
-  return fetch(RECENTLY_PLAYED_ENDPOINT, {
-    headers: {
-      Authorization: `Bearer ${access_token}`,
-    },
-    next: { revalidate: 0 },
+export const getTrackFeatures = async (trackId: string) => {
+  const headers = await getAuthHeaders();
+  return axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
+    headers,
+    validateStatus: () => true,
+  });
+};
+
+export const getTopTracks = async (limit = 10, timeRange = "short_term") => {
+  const headers = await getAuthHeaders();
+  return axios.get(`https://api.spotify.com/v1/me/top/tracks`, {
+    params: { limit, time_range: timeRange },
+    headers,
+    validateStatus: () => true,
+  });
+};
+
+export const getTopArtists = async (limit = 10, timeRange = "short_term") => {
+  const headers = await getAuthHeaders();
+  return axios.get(`https://api.spotify.com/v1/me/top/artists`, {
+    params: { limit, time_range: timeRange },
+    headers,
+    validateStatus: () => true,
+  });
+};
+
+export const searchTracks = async (query: string) => {
+  const headers = await getAuthHeaders();
+  return axios.get(`https://api.spotify.com/v1/search`, {
+    params: { q: query, type: "track", limit: 5 },
+    headers,
+    validateStatus: () => true,
+  });
+};
+
+export const addToQueue = async (uri: string) => {
+  const headers = await getAuthHeaders();
+  return axios.post(`https://api.spotify.com/v1/me/player/queue`, null, {
+    params: { uri },
+    headers,
+    validateStatus: () => true,
   });
 };

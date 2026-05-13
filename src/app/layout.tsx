@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/config";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -135,8 +136,9 @@ export default function RootLayout({
             <Footer />
           </QueryProvider>
         </ThemeProvider>
-        <Analytics mode="production" />
+        <Analytics />
         <SpeedInsights />
+        <Toaster richColors position="top-right" theme="system" closeButton />
       </body>
     </html>
   );
