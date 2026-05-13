@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { decryptSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const cookieValue = request.cookies.get("gb_session")?.value;
   const session = await decryptSession(cookieValue);
 
@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Strictly bind middleware to target routes to maintain peak speed for other pages
+// Strictly bind proxy to target routes to maintain peak speed for other pages
 export const config = {
   matcher: ["/music/:path*"],
 };
