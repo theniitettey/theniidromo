@@ -4,7 +4,7 @@ import Posts from "./Posts";
 import ThemeProvider from "./ThemeProvider";
 import SchemeToggle from "./SchemeToggle";
 import { QueryProvider } from "./QueryProvider";
-import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard, SignaturePad } from "./ui";
+import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard, SignaturePad, NowPlaying } from "./ui";
 
 export {
   Header,
@@ -18,4 +18,5 @@ export {
   MotionFooter,
   SpotifyCard,
   SignaturePad,
+  NowPlaying,
 };

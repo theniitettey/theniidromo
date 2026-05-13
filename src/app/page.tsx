@@ -3,7 +3,7 @@ import React from "react";
 import { allPosts } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Posts, MotionDiv, MotionHeader, SpotifyCard } from "@/components";
+import { Posts, MotionDiv, MotionHeader, SpotifyCard, NowPlaying } from "@/components";
 import { Icons } from "@/assets";
 import Image from "next/image";
 import { FiYoutube } from "react-icons/fi";
@@ -153,6 +153,7 @@ const Home = () => {
         <h2 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
           Currently on repeat
         </h2>
+        <NowPlaying />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {spotifyTracks.map((track) => (
             <SpotifyCard
