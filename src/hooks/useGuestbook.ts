@@ -9,6 +9,7 @@ export interface Entry {
   message: string;
   signature_data: string | null;
   created_at: string;
+  updated_at: string | null;
 }
 
 export function useGuestbookEntries(initialData?: Entry[]) {
