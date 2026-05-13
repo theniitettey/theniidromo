@@ -254,11 +254,14 @@ function CommentItem({
             >
               <button
                 type="button"
-                onFocus={() => setCommentMenuOpen(true)}
                 onMouseEnter={() => setCommentMenuOpen(true)}
                 onClick={() => setCommentMenuOpen(!commentMenuOpen)}
                 onKeyDown={(e) => {
                   if (e.key === "Escape") setCommentMenuOpen(false);
+                  if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                    e.preventDefault();
+                    setCommentMenuOpen(true);
+                  }
                 }}
                 className="text-[10px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
               >
@@ -337,12 +340,15 @@ function CommentItem({
                   >
                     <button
                       type="button"
-                      onFocus={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: true }))}
                       onMouseEnter={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: true }))}
                       onClick={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: !prev[reply.id] }))}
                       onKeyDown={(e) => {
                         if (e.key === "Escape") {
                           setReplyMenus((prev) => ({ ...prev, [reply.id]: false }));
+                        }
+                        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+                          e.preventDefault();
+                          setReplyMenus((prev) => ({ ...prev, [reply.id]: true }));
                         }
                       }}
                       className="text-[9px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
