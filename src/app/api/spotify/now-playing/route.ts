@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { getNowPlaying, getRecentlyPlayed } from "@/lib/spotify";
+import { SpotifyAuthError, getNowPlaying, getRecentlyPlayed } from "@/lib/spotify";
 import { siteConfig } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
 
-function isSpotifyAuthError(error: unknown) {
-  return error instanceof Error && error.message.includes("SPOTIFY_AUTH_ERROR:");
+function getDisabledResponse() {
+  return NextResponse.json({ isPlaying: false, disabled: true });
 }
 
 export async function GET() {
@@ -23,7 +23,7 @@ export async function GET() {
     const response = await getNowPlaying();
 
     // 204 No Content means no music is currently playing, or the account is offline.
-    if (response.status === 204 || !response.ok) {
+    if (response.status === 204 || response.status >= 400) {
       return getFallbackRecentlyPlayed();
     }
 
@@ -57,10 +57,7 @@ export async function GET() {
     );
   } catch (error: any) {
     console.error("Error fetching now-playing from Spotify:", error.message);
-
-    if (isSpotifyAuthError(error)) {
-      return NextResponse.json({ isPlaying: false, disabled: true });
-    }
+    if (error instanceof SpotifyAuthError) return getDisabledResponse();
 
     return getFallbackRecentlyPlayed();
   }
@@ -72,7 +69,7 @@ async function getFallbackRecentlyPlayed() {
 
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) {
-        return NextResponse.json({ isPlaying: false, disabled: true });
+        return getDisabledResponse();
       }
 
       return NextResponse.json({ isPlaying: false });
@@ -108,10 +105,7 @@ async function getFallbackRecentlyPlayed() {
     );
   } catch (error) {
     console.error("Error fetching recently-played from Spotify:", error);
-
-    if (isSpotifyAuthError(error)) {
-      return NextResponse.json({ isPlaying: false, disabled: true });
-    }
+    if (error instanceof SpotifyAuthError) return getDisabledResponse();
 
     return NextResponse.json({ isPlaying: false });
   }

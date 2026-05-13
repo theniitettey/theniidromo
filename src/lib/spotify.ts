@@ -9,6 +9,13 @@ const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-pla
 const RECENTLY_PLAYED_ENDPOINT = `https://api.spotify.com/v1/me/player/recently-played?limit=1`;
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 
+export class SpotifyAuthError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SpotifyAuthError";
+  }
+}
+
 const getAccessToken = async () => {
   if (!clientId || !clientSecret || !refreshToken) {
     throw new Error("Spotify environment variables are missing!");
@@ -28,7 +35,9 @@ const getAccessToken = async () => {
   });
 
   if (!response.ok) {
-    throw new Error(`SPOTIFY_AUTH_ERROR:${response.status}:${response.statusText}`);
+    throw new SpotifyAuthError(
+      `Failed to refresh token (${response.status}): ${response.statusText}`
+    );
   }
 
   return response.json();
