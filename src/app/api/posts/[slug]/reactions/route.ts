@@ -3,12 +3,14 @@ import { ensureInteractionsTables } from "@/lib/interactions-db";
 import { getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
 import { createHash } from "crypto";
-import { siteConfig } from "@/lib/config";
 
 const MAX_LIKES = 50;
-const SESSION_SECRET = siteConfig.auth.sessionSecret || "development_secret_key_please_change";
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 function hashIp(ip: string) {
+  if (!SESSION_SECRET) {
+    return null;
+  }
   return createHash("sha256").update(ip + SESSION_SECRET).digest("hex").slice(0, 32);
 }
 
@@ -54,6 +56,9 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 
   const session = await getSession();
   const anonId = session ? null : hashIp(getClientIp(req));
+  if (!session && !anonId) {
+    return Response.json({ error: "Anonymous reactions unavailable" }, { status: 500 });
+  }
 
   return Response.json(await getTotals(slug, session?.githubId, anonId));
 }
@@ -64,6 +69,9 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
 
   const session = await getSession();
   const anonId = session ? null : hashIp(getClientIp(req));
+  if (!session && !anonId) {
+    return Response.json({ error: "Anonymous reactions unavailable" }, { status: 500 });
+  }
 
   const body = await req.json() as { delta?: number };
   const delta = Math.min(Math.max(1, Math.floor(body.delta ?? 1)), MAX_LIKES);

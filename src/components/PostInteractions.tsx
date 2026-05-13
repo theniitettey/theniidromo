@@ -257,9 +257,9 @@ function CommentItem({
                 onMouseEnter={() => setCommentMenuOpen(true)}
                 onClick={() => setCommentMenuOpen(!commentMenuOpen)}
                 onKeyDown={(e) => {
+                  if (e.key === " ") e.preventDefault();
                   if (e.key === "Escape") setCommentMenuOpen(false);
                   if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-                    e.preventDefault();
                     setCommentMenuOpen(true);
                   }
                 }}
@@ -343,11 +343,11 @@ function CommentItem({
                       onMouseEnter={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: true }))}
                       onClick={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: !prev[reply.id] }))}
                       onKeyDown={(e) => {
+                        if (e.key === " ") e.preventDefault();
                         if (e.key === "Escape") {
                           setReplyMenus((prev) => ({ ...prev, [reply.id]: false }));
                         }
                         if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-                          e.preventDefault();
                           setReplyMenus((prev) => ({ ...prev, [reply.id]: true }));
                         }
                       }}
