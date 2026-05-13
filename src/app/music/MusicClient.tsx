@@ -66,17 +66,17 @@ export const MusicClient = () => {
   });
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10 space-y-10 pb-20">
+    <div className="flex flex-col gap-8 mb-20 mt-2">
       {/* Page Header */}
       <MotionHeader
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-2 flex flex-col"
+        className="flex flex-col"
       >
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight mb-1 text-foreground">
           Music & Vibes
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed max-w-xl">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
           A live-sync dashboard exposing what's on Michael's rotation. 
           Pass the aux to add a track to his live queue, or check his all-time charts below.
         </p>
