@@ -1,6 +1,4 @@
-import { neon } from "@neondatabase/serverless";
-
-const sql = neon(process.env.DATABASE_URL!);
+import { sql } from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { GuestbookClient } from "./GuestbookClient";
 import type { Metadata } from "next";
@@ -16,7 +14,9 @@ interface Entry {
   name: string;
   avatar_url: string;
   message: string;
+  signature_data: string | null;
   created_at: string;
+  updated_at: string | null;
 }
 
 async function getEntries(): Promise<Entry[]> {
@@ -29,11 +29,12 @@ async function getEntries(): Promise<Entry[]> {
         name TEXT NOT NULL,
         avatar_url TEXT NOT NULL,
         message TEXT NOT NULL,
+        signature_data TEXT,
         created_at TIMESTAMPTZ DEFAULT NOW()
       )
     `;
     const rows = await sql`
-      SELECT id, username, name, avatar_url, message, created_at
+      SELECT id, username, name, avatar_url, message, signature_data, created_at, updated_at
       FROM guestbook
       ORDER BY created_at DESC
       LIMIT 100
