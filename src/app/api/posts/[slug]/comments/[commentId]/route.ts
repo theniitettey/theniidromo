@@ -1,4 +1,5 @@
 import { sql } from "@/lib/db";
+import { ensureInteractionsTables } from "@/lib/interactions-db";
 import { getSession } from "@/lib/session";
 import { NextRequest } from "next/server";
 import { siteConfig } from "@/lib/config";
@@ -19,6 +20,8 @@ export async function DELETE(_req: NextRequest, { params }: RouteParams) {
   if (isNaN(id)) {
     return Response.json({ error: "Invalid comment ID" }, { status: 400 });
   }
+
+  await ensureInteractionsTables();
 
   const [comment] = await sql`
     SELECT github_id FROM post_comments WHERE id = ${id}

@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 import { SiGithub } from "react-icons/si";
 import { FcGoogle } from "react-icons/fc";
-import { siteConfig } from "@/lib/config";
 import {
   useReactions,
   useIncrementReaction,
@@ -18,7 +17,6 @@ import {
   useToggleReplyReaction,
   Comment,
 } from "@/hooks/usePostInteractions";
-import { useEffect, useRef } from "react";
 
 interface Session {
   githubId: string;
@@ -30,6 +28,7 @@ interface Session {
 interface PostInteractionsProps {
   slug: string;
   session: Session | null;
+  adminUsername: string;
 }
 
 function Avatar({ src, alt, size = 24 }: { src: string; alt: string; size?: number }) {
@@ -73,8 +72,12 @@ function ReactionSelector({
             onSelect(r.type, e);
             onClose();
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") onClose();
+          }}
           className="w-7 h-7 flex items-center justify-center rounded-full text-base hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:scale-125 active:scale-95 transition-all duration-150"
           title={r.name}
+          aria-label={r.name}
         >
           {r.label}
         </button>
@@ -241,11 +244,22 @@ function CommentItem({
 
           <div className="flex items-center gap-3.5 mt-1.5">
             {/* React Dropdown Toggle */}
-            <div className="relative">
+            <div
+              className="relative"
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                  setCommentMenuOpen(false);
+                }
+              }}
+            >
               <button
                 type="button"
+                onFocus={() => setCommentMenuOpen(true)}
                 onMouseEnter={() => setCommentMenuOpen(true)}
                 onClick={() => setCommentMenuOpen(!commentMenuOpen)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setCommentMenuOpen(false);
+                }}
                 className="text-[10px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
               >
                 ☺ React
@@ -313,11 +327,24 @@ function CommentItem({
 
                 <div className="flex items-center mt-1">
                   {/* Reply React Toggle */}
-                  <div className="relative">
+                  <div
+                    className="relative"
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                        setReplyMenus((prev) => ({ ...prev, [reply.id]: false }));
+                      }
+                    }}
+                  >
                     <button
                       type="button"
+                      onFocus={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: true }))}
                       onMouseEnter={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: true }))}
                       onClick={() => setReplyMenus((prev) => ({ ...prev, [reply.id]: !prev[reply.id] }))}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") {
+                          setReplyMenus((prev) => ({ ...prev, [reply.id]: false }));
+                        }
+                      }}
                       className="text-[9px] text-zinc-400 hover:text-foreground transition-colors flex items-center gap-0.5"
                     >
                       ☺ React
@@ -363,14 +390,13 @@ function CommentItem({
   );
 }
 
-export function PostInteractions({ slug, session }: PostInteractionsProps) {
+export function PostInteractions({ slug, session, adminUsername }: PostInteractionsProps) {
   const { data: reactions } = useReactions(slug);
   const { mutate: incrementReaction } = useIncrementReaction(slug);
   const { data: comments = [], isLoading: commentsLoading } = useComments(slug);
   const { mutateAsync: addComment, isPending: commenting } = useAddComment(slug);
 
   const [commentText, setCommentText] = useState("");
-  const adminUsername = siteConfig.admin.username;
 
   // Local state to handle rapid-clicking tap mechanics without waiting for the server
   const [pendingDelta, setPendingDelta] = useState(0);
@@ -389,12 +415,6 @@ export function PostInteractions({ slug, session }: PostInteractionsProps) {
   const fillPercentage = (currentUserCount / maxLikes) * 100;
   const hasLiked = currentUserCount > 0;
   const isAtMax = currentUserCount >= maxLikes;
-
-  // Sync local pending increments to the server
-  function syncPendingToApi(delta: number) {
-    incrementReaction({ delta });
-    setPendingDelta(0);
-  }
 
   // Handle tap
   function handleTap(e: React.MouseEvent<HTMLButtonElement>) {

@@ -14,9 +14,14 @@ async function ensureTable() {
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `;
-  try {
+  const [githubIdColumn] = await sql`
+    SELECT data_type
+    FROM information_schema.columns
+    WHERE table_name = 'guestbook' AND column_name = 'github_id'
+  `;
+  if (githubIdColumn?.data_type && githubIdColumn.data_type !== "text") {
     await sql`ALTER TABLE guestbook ALTER COLUMN github_id TYPE TEXT`;
-  } catch (err) {}
+  }
 
   await sql`
     ALTER TABLE guestbook ADD COLUMN IF NOT EXISTS signature_data TEXT;

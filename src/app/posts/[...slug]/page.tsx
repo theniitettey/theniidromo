@@ -5,6 +5,7 @@ import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { PostInteractions } from "@/components/PostInteractions";
 import { getSession } from "@/lib/session";
+import { siteConfig } from "@/lib/config";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -130,7 +131,7 @@ export default async function PostsPage({ params }: PostsProps) {
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
             <MDXComponent code={post.body} />
           </article>
-          <PostInteractions slug={post.slugAsParams} session={session} />
+          <PostInteractions slug={post.slugAsParams} session={session} adminUsername={siteConfig.admin.username} />
         </div>
       </MotionDiv>
     </div>

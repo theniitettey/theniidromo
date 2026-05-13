@@ -6,9 +6,10 @@ import { createHash } from "crypto";
 import { siteConfig } from "@/lib/config";
 
 const MAX_LIKES = 50;
+const SESSION_SECRET = siteConfig.auth.sessionSecret || "development_secret_key_please_change";
 
 function hashIp(ip: string) {
-  return createHash("sha256").update(ip + siteConfig.auth.sessionSecret).digest("hex").slice(0, 32);
+  return createHash("sha256").update(ip + SESSION_SECRET).digest("hex").slice(0, 32);
 }
 
 function getClientIp(req: NextRequest) {

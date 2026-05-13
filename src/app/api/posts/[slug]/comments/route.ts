@@ -29,8 +29,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
   const anonId = session ? null : hashIp(getClientIp(req));
   
   // Identifiers to match likes
-  const viewerGithubId = session?.githubId ?? -1;
-  const viewerAnonId = anonId ?? "none";
+  const viewerGithubId = session?.githubId ?? null;
+  const viewerAnonId = anonId ?? null;
 
   // Query returns reaction map counts + specific user reaction string
   const comments = await sql`
@@ -46,8 +46,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
       (
         SELECT reaction_type FROM comment_reactions cr 
         WHERE cr.comment_id = c.id AND (
-          (cr.github_id = ${viewerGithubId} AND ${viewerGithubId} > 0) OR 
-          (cr.anon_id = ${viewerAnonId} AND ${viewerAnonId} <> 'none')
+          (${viewerGithubId} IS NOT NULL AND cr.github_id = ${viewerGithubId}) OR 
+          (${viewerAnonId} IS NOT NULL AND cr.anon_id = ${viewerAnonId})
         )
         LIMIT 1
       ) AS user_reaction,
@@ -71,8 +71,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
             'user_reaction', (
               SELECT reaction_type FROM reply_reactions rr 
               WHERE rr.reply_id = r.id AND (
-                (rr.github_id = ${viewerGithubId} AND ${viewerGithubId} > 0) OR 
-                (rr.anon_id = ${viewerAnonId} AND ${viewerAnonId} <> 'none')
+                (${viewerGithubId} IS NOT NULL AND rr.github_id = ${viewerGithubId}) OR 
+                (${viewerAnonId} IS NOT NULL AND rr.anon_id = ${viewerAnonId})
               )
               LIMIT 1
             )
