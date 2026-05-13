@@ -101,6 +101,22 @@ async function getFallbackRecentlyPlayed() {
     const albumImageUrl = trackData.album.images[0]?.url || "";
     const songUrl = trackData.external_urls.spotify;
 
+    // Fetch audio features for the fallback track
+    let vibe = null;
+    try {
+      const featureResponse = await getTrackFeatures(trackData.id);
+      if (featureResponse.status >= 200 && featureResponse.status < 300) {
+        const features = featureResponse.data;
+        vibe = {
+          energy: Math.round((features.energy || 0) * 100),
+          happiness: Math.round((features.valence || 0) * 100),
+          groove: Math.round((features.danceability || 0) * 100),
+        };
+      }
+    } catch (e) {
+      // Fail silently
+    }
+
     return NextResponse.json(
       {
         isPlaying: false,
@@ -109,6 +125,7 @@ async function getFallbackRecentlyPlayed() {
         album,
         albumImageUrl,
         songUrl,
+        vibe,
       },
       {
         headers: {

@@ -132,7 +132,7 @@ export const NowPlaying = () => {
               </span>
               
               {/* Vibe Analytics Sub-Row */}
-              {isPlaying && vibe && (
+              {vibe && (
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex flex-col grow max-w-[48px]">
                     <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">ENERGY</span>
