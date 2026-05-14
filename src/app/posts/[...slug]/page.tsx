@@ -5,7 +5,6 @@ import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { PostInteractions } from "@/components/PostInteractions";
 import { ViewTracker } from "@/components/ui/ViewTracker";
-import { ReadingProgress } from "@/components/ui/ReadingProgress";
 import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
 import { getPostViews } from "@/lib/interactions-db";
@@ -94,7 +93,6 @@ export default async function PostsPage({ params }: PostsProps) {
 
   return (
     <div className="mb-20">
-      <ReadingProgress />
       <MotionDiv initial="hidden" animate="visible" variants={variant}>
         <div className="pt-2 pb-6">
           <Link
