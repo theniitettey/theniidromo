@@ -9,9 +9,9 @@ import type { SearchResult } from "@/app/api/search/route";
 import { format } from "date-fns";
 
 const TYPE_META = {
-  post:    { label: "Blog",    icon: LuFileText,      color: "text-blue-500",   bg: "bg-blue-50 dark:bg-blue-950/40" },
-  thought: { label: "Thought", icon: LuMessageSquare, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-950/40" },
-  asore:   { label: "Asore",   icon: LuBookOpen,      color: "text-amber-500",  bg: "bg-amber-50 dark:bg-amber-950/40" },
+  post:    { label: "Blog",    icon: LuFileText,      color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
+  thought: { label: "Thought", icon: LuMessageSquare, color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
+  asore:   { label: "Asore",   icon: LuBookOpen,      color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
 };
 
 export function SearchModal() {
@@ -139,7 +139,7 @@ export function SearchModal() {
                             )}
                           </div>
                           <div className="shrink-0 flex flex-col items-end gap-1">
-                            <span className={`text-[10px] font-semibold uppercase tracking-wider ${meta.color}`}>
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                               {meta.label}
                             </span>
                             <span className="text-[10px] text-zinc-400">

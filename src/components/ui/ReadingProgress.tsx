@@ -33,7 +33,7 @@ export function ReadingProgress() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-[2px] bg-[#1DB954] origin-left z-[100]"
+      className="fixed top-0 left-0 right-0 h-[2px] bg-zinc-800 dark:bg-zinc-200 origin-left z-[100]"
       style={{ scaleX }}
     />
   );
