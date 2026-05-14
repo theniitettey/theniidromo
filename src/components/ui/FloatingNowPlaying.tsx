@@ -28,7 +28,6 @@ export function FloatingNowPlaying() {
     HIDDEN_PATHS.includes(pathname) ||
     !data ||
     data.disabled ||
-    !data.isPlaying ||
     !data.title;
 
   return (
@@ -67,12 +66,16 @@ export function FloatingNowPlaying() {
 
             {/* Track Info */}
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] font-bold text-[#1DB954] uppercase tracking-wider flex items-center gap-1 leading-none mb-0.5">
-                <span className="relative flex h-1.5 w-1.5 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]" />
-                </span>
-                Now Playing
+              <p className="text-[11px] font-bold uppercase tracking-wider flex items-center gap-1 leading-none mb-0.5 text-[#1DB954]">
+                {data?.isPlaying ? (
+                  <span className="relative flex h-1.5 w-1.5 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]" />
+                  </span>
+                ) : (
+                  <SiSpotify size={10} className="shrink-0" />
+                )}
+                {data?.isPlaying ? "Now Playing" : "Recently Played"}
               </p>
               <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate leading-snug">
                 {data?.title}
@@ -82,13 +85,17 @@ export function FloatingNowPlaying() {
               </p>
             </div>
 
-            {/* Equalizer */}
-            <div className="flex items-end gap-[2px] h-3.5 w-5 shrink-0">
-              <EqualizerBar delay={0} />
-              <EqualizerBar delay={0.3} />
-              <EqualizerBar delay={0.15} />
-              <EqualizerBar delay={0.45} />
-            </div>
+            {/* Equalizer / icon */}
+            {data?.isPlaying ? (
+              <div className="flex items-end gap-[2px] h-3.5 w-5 shrink-0">
+                <EqualizerBar delay={0} />
+                <EqualizerBar delay={0.3} />
+                <EqualizerBar delay={0.15} />
+                <EqualizerBar delay={0.45} />
+              </div>
+            ) : (
+              <SiSpotify size={16} className="shrink-0 text-zinc-300 dark:text-zinc-600" />
+            )}
 
             {/* Dismiss */}
             <button
