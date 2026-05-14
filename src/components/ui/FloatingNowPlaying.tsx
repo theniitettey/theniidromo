@@ -236,18 +236,16 @@ export function FloatingNowPlaying() {
                 transition={{ type: "spring", stiffness: 400, damping: 28 }}
                 className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md shadow-xl shadow-black/10 dark:shadow-black/40 w-[260px]"
               >
-                {/* Queue button */}
-                <button
-                  onClick={() => setQueueOpen((v) => !v)}
-                  className={`shrink-0 w-7 h-7 rounded-xl flex items-center justify-center transition-colors ${
-                    queueOpen
-                      ? "bg-[#1DB954] text-white"
-                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-[#1DB954]"
-                  }`}
-                  aria-label="Open queue"
-                >
-                  <LuMusic size={13} />
-                </button>
+                {/* Album Art */}
+                <div className="relative w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+                  {data?.albumImageUrl ? (
+                    <Image src={data.albumImageUrl} alt={data.title || ""} fill sizes="36px" className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-400">
+                      <SiSpotify size={16} />
+                    </div>
+                  )}
+                </div>
 
                 {/* Track link */}
                 <a
@@ -278,6 +276,19 @@ export function FloatingNowPlaying() {
                   <EqualizerBar delay={0.15} />
                   <EqualizerBar delay={0.45} />
                 </div>
+
+                {/* Queue button */}
+                <button
+                  onClick={() => setQueueOpen((v) => !v)}
+                  className={`shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
+                    queueOpen
+                      ? "bg-[#1DB954] text-white"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 hover:text-[#1DB954]"
+                  }`}
+                  aria-label="Open queue"
+                >
+                  <LuMusic size={12} />
+                </button>
 
                 {/* Collapse */}
                 <button
