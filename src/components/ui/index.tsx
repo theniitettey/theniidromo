@@ -6,5 +6,6 @@ import { NowPlaying } from "./NowPlaying";
 import { DjQueueWidget } from "./DjQueueWidget";
 import { ViewTracker } from "./ViewTracker";
 import { FloatingNowPlaying } from "./FloatingNowPlaying";
+import { ReadingProgress } from "./ReadingProgress";
 
-export { MotionHeader, MotionFooter, MotionDiv, Spoiler, SpotifyCard, SignaturePad, NowPlaying, DjQueueWidget, ViewTracker, FloatingNowPlaying };
+export { MotionHeader, MotionFooter, MotionDiv, Spoiler, SpotifyCard, SignaturePad, NowPlaying, DjQueueWidget, ViewTracker, FloatingNowPlaying, ReadingProgress };
