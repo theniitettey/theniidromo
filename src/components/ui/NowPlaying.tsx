@@ -97,7 +97,7 @@ const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
 
 export const NowPlaying = () => {
   const { data, isLoading, isError } = useSpotifyNowPlaying();
-  const dominantColor = useDominantColor(isPlaying ? data?.albumImageUrl : undefined);
+  const dominantColor = useDominantColor(data?.isPlaying ? data?.albumImageUrl : undefined);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
