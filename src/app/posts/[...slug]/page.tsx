@@ -4,8 +4,11 @@ import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { PostInteractions } from "@/components/PostInteractions";
+import { RelatedPosts } from "@/components/RelatedPosts";
+import { ViewTracker } from "@/components/ui/ViewTracker";
 import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
+import { getPostViews } from "@/lib/interactions-db";
 import { format } from "date-fns";
 import Link from "next/link";
 
@@ -87,6 +90,8 @@ export default async function PostsPage({ params }: PostsProps) {
 
   if (!post) notFound();
 
+  const initialViews = await getPostViews(post.slugAsParams);
+
   return (
     <div className="mb-20">
       <MotionDiv initial="hidden" animate="visible" variants={variant}>
@@ -110,6 +115,8 @@ export default async function PostsPage({ params }: PostsProps) {
             </time>
             <span>·</span>
             <span>{post.readTimeMinutes}</span>
+            <span>·</span>
+            <ViewTracker slug={post.slugAsParams} initialCount={initialViews} />
           </div>
           {post.description && (
             <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
@@ -131,6 +138,7 @@ export default async function PostsPage({ params }: PostsProps) {
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
             <MDXComponent code={post.body} />
           </article>
+          <RelatedPosts tags={post.tags ?? []} currentSlug={post.slugAsParams} />
           <PostInteractions slug={post.slugAsParams} session={session} adminUsername={siteConfig.admin.username} />
         </div>
       </MotionDiv>

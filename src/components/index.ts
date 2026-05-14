@@ -4,7 +4,8 @@ import Posts from "./Posts";
 import ThemeProvider from "./ThemeProvider";
 import SchemeToggle from "./SchemeToggle";
 import { QueryProvider } from "./QueryProvider";
-import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard, SignaturePad, NowPlaying, DjQueueWidget } from "./ui";
+import { MotionHeader, MotionDiv, MotionFooter, SpotifyCard, SignaturePad, NowPlaying, DjQueueWidget, FloatingNowPlaying, SearchModal, useSearchModal } from "./ui";
+import { RelatedPosts } from "./RelatedPosts";
 
 export {
   Header,
@@ -20,4 +21,8 @@ export {
   SignaturePad,
   NowPlaying,
   DjQueueWidget,
+  FloatingNowPlaying,
+  SearchModal,
+  useSearchModal,
+  RelatedPosts,
 };

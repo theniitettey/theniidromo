@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { Header, Footer, ThemeProvider, QueryProvider } from "@/components";
+import { Header, Footer, ThemeProvider, QueryProvider, FloatingNowPlaying, SearchModal } from "@/components";
+import { ReadingProgress } from "@/components/ui/ReadingProgress";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -131,9 +132,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
+            <ReadingProgress />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingNowPlaying />
+            <SearchModal />
           </QueryProvider>
         </ThemeProvider>
         <Analytics />

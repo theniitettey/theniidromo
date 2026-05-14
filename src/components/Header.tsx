@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { SchemeToggle } from "@/components";
+import { SchemeToggle, useSearchModal } from "@/components";
 import Link from "next/link";
 import { FiGithub, FiTwitter, FiMail, FiLinkedin, FiFileText } from "react-icons/fi";
+import { LuSearch } from "react-icons/lu";
 import { Dancing_Script } from "next/font/google";
 
 const cursive = Dancing_Script({
@@ -44,6 +45,7 @@ const Links = [
 
 const Header = () => {
   const pathname = usePathname();
+  const { open: openSearch } = useSearchModal();
 
   const isLinkActive = (href: string | string[]): boolean => {
     if (typeof href === "string") {
@@ -108,7 +110,19 @@ const Header = () => {
             />
           ))}
         </nav>
-        <SchemeToggle />
+        <div className="flex items-center gap-3">
+          <button
+            onClick={openSearch}
+            className="flex items-center gap-1.5 text-zinc-400 hover:text-foreground transition-colors"
+            aria-label="Search"
+          >
+            <LuSearch size={14} />
+            <kbd className="hidden sm:inline-flex text-[10px] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">
+              ⌘K
+            </kbd>
+          </button>
+          <SchemeToggle />
+        </div>
       </div>
     </header>
   );
