@@ -117,9 +117,11 @@ const Header = () => {
             aria-label="Search"
           >
             <LuSearch size={14} />
-            <kbd className="hidden sm:inline-flex text-[10px] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">
-              ⌘K
-            </kbd>
+            <span className="hidden sm:inline-flex items-center gap-0.5">
+              <kbd className="text-[10px] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">⌘</kbd>
+              <span className="text-[10px] text-zinc-400">+</span>
+              <kbd className="text-[10px] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">K</kbd>
+            </span>
           </button>
           <SchemeToggle />
         </div>

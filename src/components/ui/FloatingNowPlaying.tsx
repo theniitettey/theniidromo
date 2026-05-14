@@ -7,6 +7,8 @@ import { SiSpotify } from "react-icons/si";
 import { LuSearch, LuMusic, LuPlus, LuLoader, LuX } from "react-icons/lu";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
+import { useDominantColor } from "@/hooks/useDominantColor";
+import { MoodAura } from "@/components/ui/MoodAura";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -19,11 +21,9 @@ interface TrackResult {
 }
 
 const EqualizerBar = ({ delay }: { delay: number }) => (
-  <motion.span
-    className="w-[2px] bg-[#1DB954] rounded-full"
-    animate={{ height: ["5px", "11px", "5px", "9px", "4px", "11px"] }}
-    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay }}
-    style={{ originY: 1 }}
+  <div
+    className="w-0.5 bg-[#1DB954] rounded-full animate-eq-bar"
+    style={{ height: "0.6875rem", transformOrigin: "50% 100%", animationDelay: `${delay}s` }}
   />
 );
 
@@ -39,6 +39,8 @@ export function FloatingNowPlaying() {
   const [results, setResults] = useState<TrackResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [queuing, setQueuing] = useState<string | null>(null);
+
+  const dominantColor = useDominantColor(data?.albumImageUrl);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -119,7 +121,7 @@ export function FloatingNowPlaying() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 16, scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                className="w-[260px] rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-2xl shadow-black/15 dark:shadow-black/50 overflow-hidden"
+                className="w-64 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-2xl shadow-black/15 dark:shadow-black/50 overflow-hidden"
               >
                 {/* Tray header */}
                 <div className="flex items-center justify-between px-3.5 pt-3 pb-2 border-b border-zinc-100 dark:border-zinc-800">
@@ -211,6 +213,7 @@ export function FloatingNowPlaying() {
                 transition={{ type: "spring", stiffness: 400, damping: 28 }}
                 onClick={() => setCollapsed(false)}
                 className="relative w-12 h-12 rounded-2xl overflow-hidden shadow-xl shadow-black/20 dark:shadow-black/50 border border-zinc-200 dark:border-zinc-700 cursor-pointer"
+                style={dominantColor ? { boxShadow: `0 0 18px 4px ${dominantColor}55` } : undefined}
                 aria-label="Expand now playing"
               >
                 {data?.albumImageUrl ? (
@@ -220,7 +223,7 @@ export function FloatingNowPlaying() {
                     <SiSpotify size={20} className="text-[#1DB954]" />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-black/40 flex items-end justify-center pb-1.5 gap-[2px]">
+                <div className="absolute inset-0 bg-black/40 flex items-end justify-center pb-1.5 gap-0.5">
                   <EqualizerBar delay={0} />
                   <EqualizerBar delay={0.3} />
                   <EqualizerBar delay={0.15} />
@@ -234,12 +237,17 @@ export function FloatingNowPlaying() {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 400, damping: 28 }}
-                className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md shadow-xl shadow-black/10 dark:shadow-black/40 w-[260px]"
+                className="relative overflow-hidden flex items-center gap-2.5 px-3 py-2.5 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md shadow-xl shadow-black/10 dark:shadow-black/40 w-64"
               >
+                {/* Mood aura */}
+                {data?.vibe && dominantColor && (
+                  <MoodAura energy={data.vibe.energy} groove={data.vibe.groove} happiness={data.vibe.happiness} color={dominantColor} compact />
+                )}
+
                 {/* Album Art — click to toggle queue */}
                 <button
                   onClick={() => setQueueOpen((v) => !v)}
-                  className="relative w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 cursor-pointer"
+                  className="relative z-10 w-9 h-9 shrink-0 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 cursor-pointer"
                   aria-label="Toggle queue"
                 >
                   {data?.albumImageUrl ? (
@@ -261,7 +269,7 @@ export function FloatingNowPlaying() {
                   href={data?.songUrl || "https://open.spotify.com"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 min-w-0"
+                  className="relative z-10 flex-1 min-w-0"
                 >
                   <p className="text-[10px] font-bold text-[#1DB954] uppercase tracking-wider flex items-center gap-1 leading-none mb-0.5">
                     <span className="relative flex h-1.5 w-1.5 shrink-0">
@@ -279,7 +287,7 @@ export function FloatingNowPlaying() {
                 </a>
 
                 {/* Equalizer */}
-                <div className="flex items-end gap-[2px] h-3.5 w-[18px] shrink-0">
+                <div className="relative z-10 flex items-end gap-0.5 shrink-0 pb-0.5">
                   <EqualizerBar delay={0} />
                   <EqualizerBar delay={0.3} />
                   <EqualizerBar delay={0.15} />
@@ -289,7 +297,7 @@ export function FloatingNowPlaying() {
                 {/* Collapse */}
                 <button
                   onClick={() => { setCollapsed(true); setQueueOpen(false); }}
-                  className="shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors p-0.5 -mr-0.5"
+                  className="relative z-10 shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors p-0.5 -mr-0.5"
                   aria-label="Collapse"
                 >
                   <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">

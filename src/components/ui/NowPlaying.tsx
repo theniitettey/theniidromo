@@ -5,6 +5,7 @@ import { useDominantColor } from "@/hooks/useDominantColor";
 import { SiSpotify } from "react-icons/si";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { MoodAura } from "@/components/ui/MoodAura";
 
 const EqualizerBar = ({ delay }: { delay: number }) => (
   <motion.span
@@ -23,77 +24,6 @@ const Equalizer = () => (
     <EqualizerBar delay={0.45} />
   </div>
 );
-
-interface VibeProps {
-  energy: number;
-  groove: number;
-  happiness: number;
-  color: string;
-}
-
-const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
-  const eSpeed  = 6  - (energy    / 100) * 3.5;  // 2.5–6s
-  const eAmt    = 8  + (energy    / 100) * 16;    // 8–24px drift
-  const gR      = 12 + (groove    / 100) * 20;    // 12–32px orbit
-  const gSpeed  = 9  - (groove    / 100) * 5;     // 4–9s
-  const hScale  = 1  + (happiness / 100) * 0.4;   // 1.0–1.4x
-  const hSpeed  = 5  - (happiness / 100) * 2.5;   // 2.5–5s
-
-  const colorTransition = { duration: 1.2, ease: "easeOut" as const };
-
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-0">
-      {/* Energy orb — erratic drift, fast when energetic */}
-      <motion.div
-        className="absolute left-[8%] top-[10%] w-28 h-28 rounded-full blur-xl"
-        animate={{
-          backgroundColor: color,
-          x: [0, -eAmt * 0.6, eAmt, eAmt * 0.4, -eAmt * 0.3, 0],
-          y: [0, eAmt * 0.8, eAmt * 0.3, -eAmt * 0.7, -eAmt * 0.2, 0],
-          opacity: [0.3, 0.38, 0.28, 0.36, 0.3, 0.3],
-        }}
-        transition={{
-          backgroundColor: colorTransition,
-          x: { duration: eSpeed, repeat: Infinity, ease: "easeInOut" },
-          y: { duration: eSpeed * 1.1, repeat: Infinity, ease: "easeInOut" },
-          opacity: { duration: eSpeed * 0.9, repeat: Infinity, ease: "easeInOut" },
-        }}
-      />
-
-      {/* Groove orb — smooth elliptical orbit */}
-      <motion.div
-        className="absolute right-[8%] bottom-[5%] w-24 h-24 rounded-full blur-xl"
-        animate={{
-          backgroundColor: color,
-          x: [gR, gR * 0.3, -gR * 0.7, -gR, -gR * 0.3, gR * 0.7, gR],
-          y: [0, -gR * 0.8, -gR * 0.5, 0, gR * 0.8, gR * 0.5, 0],
-          opacity: [0.22, 0.28, 0.22, 0.26, 0.22, 0.28, 0.22],
-        }}
-        transition={{
-          backgroundColor: colorTransition,
-          x: { duration: gSpeed, repeat: Infinity, ease: "linear" },
-          y: { duration: gSpeed, repeat: Infinity, ease: "linear" },
-          opacity: { duration: gSpeed, repeat: Infinity, ease: "linear" },
-        }}
-      />
-
-      {/* Happiness orb — centre pulse, warmer when happier */}
-      <motion.div
-        className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full blur-2xl"
-        animate={{
-          backgroundColor: color,
-          scale: [1, hScale, 0.95, hScale * 0.85, 1],
-          opacity: [0.16, 0.22, 0.14, 0.20, 0.16],
-        }}
-        transition={{
-          backgroundColor: colorTransition,
-          scale:   { duration: hSpeed, repeat: Infinity, ease: "easeInOut" },
-          opacity: { duration: hSpeed * 1.2, repeat: Infinity, ease: "easeInOut" },
-        }}
-      />
-    </div>
-  );
-};
 
 export const NowPlaying = () => {
   const { data, isLoading, isError } = useSpotifyNowPlaying();
