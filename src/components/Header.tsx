@@ -59,7 +59,7 @@ const Header = () => {
       {/* Row 1: Logo + socials (unchanged) */}
       <div className="flex flex-row items-center justify-between">
         <Link href="/" className={`${cursive.className} text-xl sm:text-2xl text-foreground hover:opacity-80 transition-opacity`}>
-          The Nii Dromo
+          the nii dromo
         </Link>
         <div className="flex items-center gap-4">
           <Link href="mailto:michaelperryt97@gmail.com" className="text-zinc-400 hover:text-foreground transition-colors">

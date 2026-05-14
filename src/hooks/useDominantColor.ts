@@ -83,7 +83,7 @@ export function useDominantColor(imageUrl?: string): string | null {
 
   useEffect(() => {
     if (!imageUrl) { setColor(null); return; }
-    setColor(null); // clear on track change — prevents stale color flash
+    // Keep old color visible while new image loads — avoids aura gap between tracks
 
     const proxied = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
     const img = new Image();
