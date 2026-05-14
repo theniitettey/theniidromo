@@ -45,10 +45,16 @@ async function ensureTable() {
   // Ensure unique constraint exists for UPSERT
   await sql`
     DO $$ BEGIN
-      IF NOT EXISTS (
+      IF EXISTS (
         SELECT 1 FROM pg_constraint WHERE conname = 'guestbook_github_id_key'
       ) THEN
-        ALTER TABLE guestbook ADD CONSTRAINT guestbook_github_id_key UNIQUE (github_id);
+        ALTER TABLE guestbook DROP CONSTRAINT guestbook_github_id_key;
+      END IF;
+
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'guestbook_provider_github_id_key'
+      ) THEN
+        ALTER TABLE guestbook ADD CONSTRAINT guestbook_provider_github_id_key UNIQUE (provider, github_id);
       END IF;
     END $$;
   `;
@@ -85,7 +91,7 @@ export async function POST(req: NextRequest) {
   const rows = await sql`
     INSERT INTO guestbook (github_id, username, name, avatar_url, message, signature_data, provider)
     VALUES (${session.userId}, ${session.username}, ${displayName}, ${session.avatarUrl}, ${message}, ${signatureData}, ${session.provider})
-    ON CONFLICT (github_id) DO UPDATE SET
+    ON CONFLICT (provider, github_id) DO UPDATE SET
       name = EXCLUDED.name,
       message = EXCLUDED.message,
       signature_data = EXCLUDED.signature_data,

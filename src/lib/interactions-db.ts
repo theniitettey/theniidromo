@@ -81,13 +81,19 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
     return existing.id;
   }
 
-  // 4. Create new profile. We use the incoming platform ID as the canonical ID to support legacy comments.
-  const universalId = githubId || googleId;
-  if (!universalId) throw new Error("resolveUnifiedUser: at least one provider ID is required");
+  // 4. Create new profile with provider-namespaced canonical ID to prevent cross-provider collisions.
+  let canonicalId: string;
+  if (githubId) {
+    canonicalId = `github:${githubId}`;
+  } else if (googleId) {
+    canonicalId = `google:${googleId}`;
+  } else {
+    throw new Error("resolveUnifiedUser: at least one provider ID is required");
+  }
 
   await safeRun(() => sql`
     INSERT INTO user_accounts (id, email, github_id, google_id)
-    VALUES (${universalId}, ${normalizedEmail}, ${githubId || null}, ${googleId || null})
+    VALUES (${canonicalId}, ${normalizedEmail}, ${githubId || null}, ${googleId || null})
     ON CONFLICT DO NOTHING
   `);
 
@@ -105,7 +111,7 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
     if (row) return row.id;
   }
 
-  return universalId;
+  return canonicalId;
 }
 
 async function _init() {
