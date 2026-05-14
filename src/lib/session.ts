@@ -5,10 +5,38 @@ const SESSION_COOKIE = "gb_session";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export interface SessionData {
-  githubId: string;
+  userId: string;
   username: string;
   name: string;
   avatarUrl: string;
+  provider: "github" | "google";
+}
+
+function normalizeSessionData(data: unknown): SessionData | null {
+  if (!data || typeof data !== "object") return null;
+
+  const session = data as Record<string, unknown>;
+  const legacyGithubId = typeof session.githubId === "string" ? session.githubId : undefined;
+  const userId = typeof session.userId === "string" ? session.userId : legacyGithubId;
+
+  const providerValue =
+    session.provider === "github" || session.provider === "google"
+      ? session.provider
+      : undefined;
+  const provider = providerValue ?? (legacyGithubId ? "github" : undefined);
+
+  if (!userId || !provider) return null;
+  if (typeof session.username !== "string") return null;
+  if (typeof session.name !== "string") return null;
+  if (typeof session.avatarUrl !== "string") return null;
+
+  return {
+    userId,
+    username: session.username,
+    name: session.name,
+    avatarUrl: session.avatarUrl,
+    provider,
+  };
 }
 
 async function sign(payload: string, secret: string): Promise<string> {
@@ -51,7 +79,8 @@ export async function decryptSession(raw: string | undefined): Promise<SessionDa
   const sig = raw.slice(dot + 1);
   if (!(await verify(payload, sig, secret))) return null;
   try {
-    return JSON.parse(Buffer.from(payload, "base64url").toString()) as SessionData;
+    const parsed = JSON.parse(Buffer.from(payload, "base64url").toString()) as unknown;
+    return normalizeSessionData(parsed);
   } catch {
     return null;
   }

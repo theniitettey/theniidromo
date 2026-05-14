@@ -33,9 +33,9 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   }
 
   const [reply] = await sql`
-    INSERT INTO post_replies (comment_id, github_id, username, name, avatar_url, body)
-    VALUES (${id}, ${session.githubId}, ${session.username}, ${session.name}, ${session.avatarUrl}, ${text})
-    RETURNING id, github_id, username, name, avatar_url, body, created_at
+    INSERT INTO post_replies (comment_id, github_id, username, name, avatar_url, body, provider)
+    VALUES (${id}, ${session.userId}, ${session.username}, ${session.name}, ${session.avatarUrl}, ${text}, ${session.provider})
+    RETURNING id, github_id, username, name, avatar_url, body, provider, created_at
   `;
 
   return Response.json(reply, { status: 201 });

@@ -8,6 +8,7 @@ export interface Reply {
   name: string;
   avatar_url: string;
   body: string;
+  provider: "github" | "google";
   created_at: string;
   reactions_map: Record<string, number>;
   user_reaction: string | null;
@@ -20,6 +21,7 @@ export interface Comment {
   name: string;
   avatar_url: string;
   body: string;
+  provider: "github" | "google";
   created_at: string;
   replies: Reply[];
   reactions_map: Record<string, number>;

@@ -9,6 +9,7 @@ export interface Entry {
   avatar_url: string;
   message: string;
   signature_data: string | null;
+  provider: "github" | "google";
   created_at: string;
   updated_at: string | null;
 }

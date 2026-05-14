@@ -29,13 +29,13 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
   const anonId = session ? null : hashIp(getClientIp(req));
   
   // Identifiers to match likes
-  const viewerGithubId = session?.githubId ?? null;
+  const viewerGithubId = session?.userId ?? null;
   const viewerAnonId = anonId ?? null;
 
   // Query returns reaction map counts + specific user reaction string
   const comments = await sql`
     SELECT
-      c.id, c.github_id, c.username, c.name, c.avatar_url, c.body, c.created_at,
+      c.id, c.github_id, c.username, c.name, c.avatar_url, c.body, c.provider, c.created_at,
       (
         SELECT COALESCE(json_object_agg(reaction_type, count), '{}') FROM (
           SELECT reaction_type, COUNT(*)::integer AS count
@@ -60,6 +60,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
             'name', r.name,
             'avatar_url', r.avatar_url,
             'body', r.body,
+            'provider', r.provider,
             'created_at', r.created_at,
             'reactions_map', (
               SELECT COALESCE(json_object_agg(reaction_type, count), '{}') FROM (
@@ -108,9 +109,9 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   await ensureInteractionsTables();
 
   const [comment] = await sql`
-    INSERT INTO post_comments (post_slug, github_id, username, name, avatar_url, body)
-    VALUES (${slug}, ${session.githubId}, ${session.username}, ${session.name}, ${session.avatarUrl}, ${text})
-    RETURNING id, github_id, username, name, avatar_url, body, created_at
+    INSERT INTO post_comments (post_slug, github_id, username, name, avatar_url, body, provider)
+    VALUES (${slug}, ${session.userId}, ${session.username}, ${session.name}, ${session.avatarUrl}, ${text}, ${session.provider})
+    RETURNING id, github_id, username, name, avatar_url, body, provider, created_at
   `;
 
   return Response.json({

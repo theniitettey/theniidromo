@@ -16,7 +16,7 @@ import {
 } from "@/hooks/useGuestbook";
 
 interface Session {
-  githubId: string;
+  userId: string;
   username: string;
   name: string;
   avatarUrl: string;
@@ -45,7 +45,7 @@ export function GuestbookClient({
   const { mutateAsync: signGuestbook, isPending: submitting } = useSignGuestbook();
 
   const existingEntry = session
-    ? entries.find((entry) => entry.github_id === session.githubId) ?? null
+    ? entries.find((entry) => entry.github_id === session.userId) ?? null
     : null;
   const hasSigned = existingEntry !== null;
 
@@ -445,14 +445,18 @@ export function GuestbookClient({
                       className="rounded-full object-cover shrink-0"
                     />
                     <div className="flex flex-col min-w-0">
-                      <a
-                        href={`https://github.com/${entry.username}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity truncate"
-                      >
-                        {entry.name}
-                      </a>
+                      {entry.provider === "github" ? (
+                        <a
+                          href={`https://github.com/${entry.username}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity truncate"
+                        >
+                          {entry.name}
+                        </a>
+                      ) : (
+                        <span className="text-xs font-semibold text-foreground truncate">{entry.name}</span>
+                      )}
                       <span
                         className="text-[10px] text-zinc-400 dark:text-zinc-500"
                         title={new Date(entry.created_at).toLocaleString()}

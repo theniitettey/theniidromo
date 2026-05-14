@@ -4,7 +4,11 @@ export const siteConfig = {
     url: process.env.DATABASE_URL || "",
   },
   auth: {
-    sessionSecret: process.env.SESSION_SECRET || "development_secret_key_please_change",
+    sessionSecret:
+      process.env.SESSION_SECRET ||
+      (process.env.NODE_ENV === "production"
+        ? (() => { throw new Error("SESSION_SECRET env var is not set") })()
+        : "dev_secret_change_me"),
     github: {
       clientId: process.env.GITHUB_CLIENT_ID || "",
       clientSecret: process.env.GITHUB_CLIENT_SECRET || "",

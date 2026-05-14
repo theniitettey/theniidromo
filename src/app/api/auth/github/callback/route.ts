@@ -75,10 +75,11 @@ export async function GET(req: NextRequest): Promise<Response> {
     });
 
     await setSession({
-      githubId: canonicalId,
+      userId: canonicalId,
       username: user.login,
       name: user.name ?? user.login,
       avatarUrl: user.avatar_url,
+      provider: "github",
     });
 
     return Response.redirect(`${siteUrl}/guestbook`);
