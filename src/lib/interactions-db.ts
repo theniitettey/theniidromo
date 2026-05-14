@@ -82,8 +82,8 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
   }
 
   // 4. Create new profile. We use the incoming platform ID as the canonical ID to support legacy comments.
-  const universalId = githubId || googleId || "";
-  if (!universalId) return "";
+  const universalId = githubId || googleId;
+  if (!universalId) throw new Error("resolveUnifiedUser: at least one provider ID is required");
 
   await safeRun(() => sql`
     INSERT INTO user_accounts (id, email, github_id, google_id)
@@ -229,6 +229,14 @@ async function _init() {
 
   await safeRun(() => sql`
     ALTER TABLE reply_reactions ADD COLUMN IF NOT EXISTS reaction_type TEXT NOT NULL DEFAULT 'heart'
+  `);
+
+  // MIGRATIONS: Add provider column to comments and replies
+  await safeRun(() => sql`
+    ALTER TABLE post_comments ADD COLUMN IF NOT EXISTS provider TEXT NOT NULL DEFAULT 'github'
+  `);
+  await safeRun(() => sql`
+    ALTER TABLE post_replies ADD COLUMN IF NOT EXISTS provider TEXT NOT NULL DEFAULT 'github'
   `);
 
   // MIGRATIONS: Safely alter all existing github_id columns from INTEGER to TEXT
