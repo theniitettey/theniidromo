@@ -100,20 +100,25 @@ export function SearchModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-[12vh] px-4"
+          className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-end sm:items-start sm:justify-center sm:pt-[12vh] sm:px-4"
           onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}
         >
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: -16, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -16, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="w-full max-w-lg bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-2xl shadow-black/25 dark:shadow-black/70 overflow-hidden"
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 32 }}
+            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+            className="w-full sm:max-w-lg bg-white dark:bg-zinc-900 rounded-t-2xl sm:rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-2xl shadow-black/25 dark:shadow-black/70 overflow-hidden"
             onKeyDown={onKeyDown}
           >
+            {/* Mobile drag handle */}
+            <div className="flex sm:hidden justify-center pt-3 pb-1">
+              <div className="w-8 h-1 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+            </div>
+
             {/* Search input */}
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-100 dark:border-zinc-800">
+            <div className="flex items-center gap-3 px-4 py-3.5 sm:py-4 border-b border-zinc-100 dark:border-zinc-800">
               {loading
                 ? <LuLoader size={17} className="text-zinc-400 shrink-0 animate-spin" />
                 : <LuSearch size={17} className="text-zinc-400 shrink-0" />
@@ -126,11 +131,11 @@ export function SearchModal() {
                 placeholder="Search posts, thoughts, asore…"
                 className="flex-1 bg-transparent text-sm text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 outline-none"
               />
-              <kbd className="text-[10px] text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono shrink-0">ESC</kbd>
+              <kbd className="text-[0.625rem] text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono shrink-0">ESC</kbd>
             </div>
 
             {/* Results */}
-            <div className="max-h-[420px] overflow-y-auto">
+            <div className="max-h-[52vh] sm:max-h-[420px] overflow-y-auto">
               {groups.length > 0 ? (
                 <div className="py-2">
                   {groups.map(({ type, items }) => {
@@ -141,7 +146,7 @@ export function SearchModal() {
                         {/* Group header */}
                         <div className="flex items-center gap-2 px-4 py-2 mt-1">
                           <Icon size={11} className="text-zinc-400 shrink-0" />
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                          <span className="text-[0.625rem] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
                             {meta.label}
                           </span>
                         </div>
@@ -173,14 +178,14 @@ export function SearchModal() {
                                     </p>
                                   )}
                                   <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                                    <span className="flex items-center gap-1 text-[10px] text-zinc-400">
+                                    <span className="flex items-center gap-1 text-[0.625rem] text-zinc-400">
                                       <LuClock size={9} />
                                       {format(new Date(r.date), "MMM d, yyyy")}
                                     </span>
                                     {r.tags && r.tags.slice(0, 3).map((tag) => (
                                       <span
                                         key={tag}
-                                        className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                                        className="text-[0.625rem] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
                                       >
                                         {tag}
                                       </span>
@@ -217,15 +222,15 @@ export function SearchModal() {
             {/* Footer */}
             {totalResults > 0 && (
               <div className="flex items-center gap-4 px-4 py-2.5 border-t border-zinc-100 dark:border-zinc-800">
-                <span className="text-[10px] text-zinc-400 flex items-center gap-1.5">
+                <span className="text-[0.625rem] text-zinc-400 flex items-center gap-1.5">
                   <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono">↑↓</kbd>
                   navigate
                 </span>
-                <span className="text-[10px] text-zinc-400 flex items-center gap-1.5">
+                <span className="text-[0.625rem] text-zinc-400 flex items-center gap-1.5">
                   <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono">↵</kbd>
                   open
                 </span>
-                <span className="ml-auto text-[10px] text-zinc-400">{totalResults} result{totalResults !== 1 ? "s" : ""}</span>
+                <span className="ml-auto text-[0.625rem] text-zinc-400">{totalResults} result{totalResults !== 1 ? "s" : ""}</span>
               </div>
             )}
           </motion.div>
