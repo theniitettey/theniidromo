@@ -1,22 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
+import { useDominantColor } from "@/hooks/useDominantColor";
 import { SiSpotify } from "react-icons/si";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { MoodAura } from "@/components/ui/MoodAura";
 
 const EqualizerBar = ({ delay }: { delay: number }) => (
   <motion.span
     className="w-[3px] bg-[#1DB954] rounded-full"
-    animate={{
-      height: ["8px", "16px", "8px", "12px", "6px", "16px"],
-    }}
-    transition={{
-      duration: 1.5,
-      repeat: Infinity,
-      ease: "easeInOut",
-      delay: delay,
-    }}
+    animate={{ height: ["8px", "16px", "8px", "12px", "6px", "16px"] }}
+    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay }}
     style={{ originY: 1 }}
   />
 );
@@ -32,23 +27,18 @@ const Equalizer = () => (
 
 export const NowPlaying = () => {
   const { data, isLoading, isError } = useSpotifyNowPlaying();
+  const dominantColor = useDominantColor(data?.isPlaying ? data?.albumImageUrl : undefined);
   const [progress, setProgress] = useState(0);
 
-  // Tick local progress state smoothly every second to mimic actual playing
   useEffect(() => {
     if (data?.isPlaying && typeof data?.progressMs === "number") {
       setProgress(data.progressMs);
-
       const interval = setInterval(() => {
         setProgress((prev) => {
-          if (data.durationMs && prev >= data.durationMs) {
-            clearInterval(interval);
-            return prev;
-          }
+          if (data.durationMs && prev >= data.durationMs) { clearInterval(interval); return prev; }
           return prev + 1000;
         });
       }, 1000);
-
       return () => clearInterval(interval);
     } else {
       setProgress(data?.progressMs || 0);
@@ -67,18 +57,11 @@ export const NowPlaying = () => {
     );
   }
 
-  if (isError || !data || data.disabled) {
-    return null; // Hide widget entirely if variables are missing or call failed
-  }
+  if (isError || !data || data.disabled) return null;
 
   const { isPlaying, title, artist, albumImageUrl, songUrl, durationMs, vibe } = data;
-
   const hasData = !!title;
-  
-  // Calculate visual bar width
-  const percentage = durationMs && durationMs > 0 
-    ? Math.min((progress / durationMs) * 100, 100) 
-    : 0;
+  const percentage = durationMs && durationMs > 0 ? Math.min((progress / durationMs) * 100, 100) : 0;
 
   return (
     <a
@@ -87,8 +70,13 @@ export const NowPlaying = () => {
       rel="noopener noreferrer"
       className="group relative overflow-hidden flex flex-col items-stretch rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:bg-zinc-50 dark:hover:bg-[#161616] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
     >
+      {/* Mood aura — rendered behind everything */}
+      {vibe && isPlaying && dominantColor && (
+        <MoodAura energy={vibe.energy} groove={vibe.groove} happiness={vibe.happiness} color={dominantColor} />
+      )}
+
       {/* Main Row */}
-      <div className="flex items-center gap-3.5 p-3.5 pb-4">
+      <div className="relative z-10 flex items-center gap-3.5 p-3.5 pb-4">
         {/* Album Art */}
         <div className="relative w-12 h-12 shrink-0 overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
           {albumImageUrl ? (
@@ -106,14 +94,14 @@ export const NowPlaying = () => {
           )}
         </div>
 
-        {/* Details Container */}
+        {/* Details */}
         <div className="flex-1 min-w-0 flex flex-col justify-center py-0.5">
           <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             {isPlaying ? (
               <span className="text-[#1DB954] flex items-center gap-1">
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#1DB954]" />
                 </span>
                 Now Playing
               </span>
@@ -130,64 +118,26 @@ export const NowPlaying = () => {
               <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate leading-relaxed">
                 {artist}
               </span>
-              
-              {/* Vibe Analytics Sub-Row */}
-              {vibe && (
-                <div className="flex items-center gap-4 mt-2">
-                  <div className="flex flex-col grow max-w-[48px]">
-                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">ENERGY</span>
-                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
-                      <div 
-                        className="h-full bg-amber-500 rounded-full transition-all duration-700" 
-                        style={{ width: `${vibe.energy}%` }} 
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col grow max-w-[48px]">
-                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">GROOVE</span>
-                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
-                      <div 
-                        className="h-full bg-indigo-500 rounded-full transition-all duration-700" 
-                        style={{ width: `${vibe.groove}%` }} 
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col grow max-w-[48px]">
-                    <span className="text-[8px] font-bold text-zinc-500/90 tracking-wider">MOOD</span>
-                    <div className="h-[3px] w-full bg-zinc-100 dark:bg-zinc-800/80 rounded-full overflow-hidden mt-0.5">
-                      <div 
-                        className="h-full bg-[#1DB954] rounded-full transition-all duration-700" 
-                        style={{ width: `${vibe.happiness}%` }} 
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           ) : (
-            <span className="mt-0.5 font-medium text-xs text-zinc-500">
-              Not listening to anything
-            </span>
+            <span className="mt-0.5 font-medium text-xs text-zinc-500">Not listening to anything</span>
           )}
         </div>
 
-        {/* Status Indicator */}
+        {/* Status */}
         <div className="shrink-0 flex items-center pl-1">
           {isPlaying ? (
             <Equalizer />
           ) : (
-            <SiSpotify
-              className="text-zinc-300 dark:text-zinc-700 group-hover:text-[#1DB954] transition-colors duration-300"
-              size={18}
-            />
+            <SiSpotify className="text-zinc-300 dark:text-zinc-700 group-hover:text-[#1DB954] transition-colors duration-300" size={18} />
           )}
         </div>
       </div>
 
-      {/* Ticking Bottom Progress Bar */}
+      {/* Progress bar */}
       {isPlaying && percentage > 0 && (
-        <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
-          <div 
+        <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-zinc-100 dark:bg-zinc-900 overflow-hidden z-10">
+          <div
             className="h-full bg-[#1DB954] transition-all duration-1000 ease-linear"
             style={{ width: `${percentage}%` }}
           />
