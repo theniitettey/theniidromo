@@ -28,9 +28,9 @@ export default function DevotionalsPage() {
         {devotionals.map((post) => (
           <article
             key={post.slug}
-            className="group flex justify-between items-start py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
+            className="group flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 py-4 sm:py-3 border-b border-zinc-100 dark:border-zinc-900 last:border-0"
           >
-            <Link href={post.slug} className="flex flex-col gap-0.5 flex-1 pr-4">
+            <Link href={post.slug} className="flex flex-col gap-1.5 sm:flex-1 sm:pr-4">
               <h2 className="text-sm font-medium text-foreground group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                 {post.title}
               </h2>
@@ -40,16 +40,16 @@ export default function DevotionalsPage() {
                 </p>
               )}
               {post.tags && post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-1.5">
+                <div className="flex flex-wrap gap-1.5 mt-0.5">
                   {post.tags.map((tag: string) => (
-                    <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
+                    <span key={tag} className="text-[0.625rem] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500">
                       {tag}
                     </span>
                   ))}
                 </div>
               )}
             </Link>
-            <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 pt-0.5">
+            <time className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0 sm:pt-0.5">
               {formatDistance(new Date(post.date), new Date(), {
                 addSuffix: true,
               })}

@@ -268,4 +268,31 @@ async function _init() {
   await safeRun(() => sql`
     ALTER TABLE reply_reactions ALTER COLUMN github_id TYPE TEXT
   `);
+
+  await safeRun(() => sql`
+    CREATE TABLE IF NOT EXISTS post_views (
+      slug TEXT PRIMARY KEY,
+      count BIGINT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+}
+
+export async function incrementPostView(slug: string): Promise<number> {
+  await ensureInteractionsTables();
+  const rows = await sql`
+    INSERT INTO post_views (slug, count, updated_at)
+    VALUES (${slug}, 1, NOW())
+    ON CONFLICT (slug) DO UPDATE
+      SET count = post_views.count + 1,
+          updated_at = NOW()
+    RETURNING count
+  `;
+  return Number(rows[0].count);
+}
+
+export async function getPostViews(slug: string): Promise<number> {
+  await ensureInteractionsTables();
+  const rows = await sql`SELECT count FROM post_views WHERE slug = ${slug}`;
+  return rows.length > 0 ? Number(rows[0].count) : 0;
 }

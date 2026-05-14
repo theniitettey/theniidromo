@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { Header, Footer, ThemeProvider, QueryProvider } from "@/components";
+import { Header, Footer, ThemeProvider, QueryProvider, FloatingNowPlaying, SearchModal } from "@/components";
+import { ReadingProgress } from "@/components/ui/ReadingProgress";
 import { GoogleOneTap } from "@/components/ui";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -132,9 +133,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
+            <ReadingProgress />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingNowPlaying />
+            <SearchModal />
           </QueryProvider>
         </ThemeProvider>
         {/* One Tap disabled — uncomment to enable site-wide Google sign-in prompt */}

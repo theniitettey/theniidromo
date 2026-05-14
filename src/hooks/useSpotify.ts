@@ -25,7 +25,7 @@ export function useSpotifyNowPlaying() {
       const { data } = await axios.get<SpotifyNowPlaying>("/api/spotify/now-playing");
       return data;
     },
-    refetchInterval: (query) => (query.state.data?.disabled ? false : 5000),
+    refetchInterval: (query) => (query.state.data?.disabled ? false : 3000),
     refetchOnWindowFocus: (query) => !query.state.data?.disabled,
   });
 }

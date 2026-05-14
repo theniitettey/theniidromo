@@ -15,7 +15,7 @@ const SchemeToggle = () => {
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="text-zinc-400 hover:text-foreground transition-colors p-1 rounded"
+      className="text-zinc-400 hover:text-foreground transition-colors p-1.5 -m-0.5 rounded"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       <svg
