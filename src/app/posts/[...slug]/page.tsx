@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { PostInteractions } from "@/components/PostInteractions";
+import { RelatedPosts } from "@/components/RelatedPosts";
 import { ViewTracker } from "@/components/ui/ViewTracker";
 import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
@@ -137,6 +138,7 @@ export default async function PostsPage({ params }: PostsProps) {
           <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
             <MDXComponent code={post.body} />
           </article>
+          <RelatedPosts tags={post.tags ?? []} currentSlug={post.slugAsParams} />
           <PostInteractions slug={post.slugAsParams} session={session} adminUsername={siteConfig.admin.username} />
         </div>
       </MotionDiv>
