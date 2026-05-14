@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMotionValue, useSpring } from "framer-motion";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function ReadingProgress() {
   const raw = useMotionValue(0);
