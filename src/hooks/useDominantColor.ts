@@ -77,18 +77,30 @@ function extractVibrantColor(img: HTMLImageElement): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
+const colorCache = new Map<string, string>();
+
 // null = not yet extracted (don't show anything yet)
 export function useDominantColor(imageUrl?: string): string | null {
   const [color, setColor] = useState<string | null>(null);
 
   useEffect(() => {
     if (!imageUrl) { setColor(null); return; }
-    // Keep old color visible while new image loads — avoids aura gap between tracks
 
+    // Instant hit for previously seen tracks
+    if (colorCache.has(imageUrl)) {
+      setColor(colorCache.get(imageUrl)!);
+      return;
+    }
+
+    // Keep old color visible while new image loads — avoids aura gap between tracks
     const proxied = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
     const img = new Image();
     img.onload = () => {
-      try { setColor(extractVibrantColor(img)); }
+      try {
+        const extracted = extractVibrantColor(img);
+        colorCache.set(imageUrl, extracted);
+        setColor(extracted);
+      }
       catch { setColor("#1DB954"); }
     };
     img.onerror = () => setColor("#1DB954");

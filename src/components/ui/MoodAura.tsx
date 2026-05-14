@@ -18,7 +18,7 @@ export const MoodAura = ({ energy, groove, happiness, color, compact = false }: 
   const hScale = 1 + (happiness / 100) * 0.4;
   const hSpeed = 5 - (happiness / 100) * 2.5;
 
-  const colorTransition = { duration: 1.2, ease: "easeOut" as const };
+  const colorTransition = { duration: 0.6, ease: "easeOut" as const };
 
   if (compact) {
     // Horizontal pill layout — small orbs, vertically centered, higher opacity
