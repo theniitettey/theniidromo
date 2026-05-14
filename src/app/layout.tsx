@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Header, Footer, ThemeProvider, QueryProvider } from "@/components";
+import { GoogleOneTap } from "@/components/ui";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -136,6 +137,10 @@ export default function RootLayout({
             <Footer />
           </QueryProvider>
         </ThemeProvider>
+        {/* One Tap disabled — uncomment to enable site-wide Google sign-in prompt */}
+        {/* {siteConfig.auth.google.clientId && (
+          <GoogleOneTap clientId={siteConfig.auth.google.clientId} />
+        )} */}
         <Analytics />
         <SpeedInsights />
         <Toaster richColors position="top-right" theme="system" closeButton />
