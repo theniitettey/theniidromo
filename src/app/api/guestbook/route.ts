@@ -51,6 +51,7 @@ async function ensureTable() {
         ALTER TABLE guestbook DROP CONSTRAINT guestbook_github_id_key;
       END IF;
 
+      -- Keep newest row per (provider, github_id) so composite uniqueness can be enforced safely.
       DELETE FROM guestbook g
       USING (
         SELECT id

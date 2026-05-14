@@ -86,12 +86,12 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
   let canonicalId: string;
   if (githubId) {
     if (!providerIdPattern.test(githubId)) {
-      throw new Error("resolveUnifiedUser: invalid githubId");
+      throw new Error("resolveUnifiedUser: githubId must contain only alphanumeric characters");
     }
     canonicalId = `github:${githubId}`;
   } else if (googleId) {
     if (!providerIdPattern.test(googleId)) {
-      throw new Error("resolveUnifiedUser: invalid googleId");
+      throw new Error("resolveUnifiedUser: googleId must contain only alphanumeric characters");
     }
     canonicalId = `google:${googleId}`;
   } else {
