@@ -51,6 +51,21 @@ async function ensureTable() {
         ALTER TABLE guestbook DROP CONSTRAINT guestbook_github_id_key;
       END IF;
 
+      DELETE FROM guestbook g
+      USING (
+        SELECT id
+        FROM (
+          SELECT id,
+                 ROW_NUMBER() OVER (
+                   PARTITION BY provider, github_id
+                   ORDER BY updated_at DESC NULLS LAST, created_at DESC NULLS LAST, id DESC
+                 ) AS row_num
+          FROM guestbook
+        ) ranked
+        WHERE ranked.row_num > 1
+      ) duplicates
+      WHERE g.id = duplicates.id;
+
       IF NOT EXISTS (
         SELECT 1 FROM pg_constraint WHERE conname = 'guestbook_provider_github_id_key'
       ) THEN

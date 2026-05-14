@@ -84,9 +84,9 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
   // 4. Create new profile with provider-namespaced canonical ID to prevent cross-provider collisions.
   let canonicalId: string;
   if (githubId) {
-    canonicalId = `github:${githubId}`;
+    canonicalId = `github:${Buffer.from(githubId).toString("base64url")}`;
   } else if (googleId) {
-    canonicalId = `google:${googleId}`;
+    canonicalId = `google:${Buffer.from(googleId).toString("base64url")}`;
   } else {
     throw new Error("resolveUnifiedUser: at least one provider ID is required");
   }
