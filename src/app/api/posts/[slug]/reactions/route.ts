@@ -60,7 +60,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
   }
   const anonId = session ? null : hashIp(getClientIp(req));
 
-  return Response.json(await getTotals(slug, session?.githubId, anonId));
+  return Response.json(await getTotals(slug, session?.userId, anonId));
 }
 
 export async function POST(req: NextRequest, { params }: RouteParams) {
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   if (session) {
     await sql`
       INSERT INTO post_reactions (post_slug, github_id, username, reaction_count)
-      VALUES (${slug}, ${session.githubId}, ${session.username}, ${delta})
+      VALUES (${slug}, ${session.userId}, ${session.username}, ${delta})
       ON CONFLICT (post_slug, github_id) WHERE github_id IS NOT NULL
       DO UPDATE SET reaction_count = LEAST(post_reactions.reaction_count + EXCLUDED.reaction_count, ${MAX_LIKES})
     `;
@@ -92,5 +92,5 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     `;
   }
 
-  return Response.json(await getTotals(slug, session?.githubId, anonId));
+  return Response.json(await getTotals(slug, session?.userId, anonId));
 }

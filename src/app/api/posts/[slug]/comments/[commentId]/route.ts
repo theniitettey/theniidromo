@@ -33,7 +33,7 @@ export async function DELETE(_req: NextRequest, { params }: RouteParams) {
 
   const adminUsername = siteConfig.admin.username;
   const isAdmin = session.username === adminUsername;
-  const isOwner = comment.github_id === session.githubId;
+  const isOwner = comment.github_id === session.userId;
 
   if (!isOwner && !isAdmin) {
     return Response.json({ error: "Forbidden" }, { status: 403 });

@@ -47,7 +47,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
 
   if (session) {
     const [existing] = await sql`
-      SELECT id, reaction_type FROM reply_reactions WHERE reply_id = ${id} AND github_id = ${session.githubId}
+      SELECT id, reaction_type FROM reply_reactions WHERE reply_id = ${id} AND github_id = ${session.userId}
     `;
     if (existing) {
       if (existing.reaction_type === reaction) {
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     } else {
       await sql`
         INSERT INTO reply_reactions (reply_id, github_id, username, reaction_type)
-        VALUES (${id}, ${session.githubId}, ${session.username}, ${reaction})
+        VALUES (${id}, ${session.userId}, ${session.username}, ${reaction})
       `;
     }
   } else {
