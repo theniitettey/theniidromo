@@ -41,13 +41,13 @@ const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-0">
       <motion.div
-        className="absolute left-[10%] top-[15%] w-20 h-20 rounded-full blur-2xl opacity-[0.18]"
+        className="absolute left-[10%] top-[15%] w-24 h-24 rounded-full blur-xl opacity-[0.35]"
         style={{ background: color }}
         animate={{ y: [-energySpeed * 4, energySpeed * 4, -energySpeed * 4] }}
         transition={{ duration: energySpeed * 1.2, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute right-[12%] bottom-[10%] w-16 h-16 rounded-full blur-2xl opacity-[0.12]"
+        className="absolute right-[12%] bottom-[10%] w-20 h-20 rounded-full blur-xl opacity-[0.25]"
         style={{ background: color }}
         animate={{
           x: [0, grooveRange, 0, -grooveRange, 0],
@@ -56,7 +56,7 @@ const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
         transition={{ duration: grooveSpeed, repeat: Infinity, ease: "linear" }}
       />
       <motion.div
-        className="absolute left-[45%] top-[40%] w-24 h-24 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl opacity-[0.10]"
+        className="absolute left-[45%] top-[40%] w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl opacity-[0.20]"
         style={{ background: color }}
         animate={{ scale: [1, happyScale, 1] }}
         transition={{ duration: happySpeed, repeat: Infinity, ease: "easeInOut" }}

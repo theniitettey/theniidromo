@@ -18,13 +18,11 @@ function extractVibrantColor(img: HTMLImageElement): string {
     const r = data[i], g = data[i + 1], b = data[i + 2];
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    const lightness = (max + min) / 510; // 0–1
+    const lightness = (max + min) / 510;
     const saturation = max === 0 ? 0 : (max - min) / max;
 
-    // Skip near-black, near-white, and washed-out pixels
     if (lightness < 0.12 || lightness > 0.88 || saturation < 0.25) continue;
 
-    // Score = saturation boosted by mid-range lightness
     const score = saturation * (1 - Math.abs(lightness - 0.5));
     if (score > best.score) best = { r, g, b, score };
   }
@@ -37,19 +35,21 @@ export function useDominantColor(imageUrl?: string): string {
 
   useEffect(() => {
     if (!imageUrl) return;
-    setColor("#1DB954"); // reset on track change
+    setColor("#1DB954");
+
+    // Route through our proxy so the canvas can read pixel data without CORS taint
+    const proxied = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
     img.onload = () => {
       try {
         setColor(extractVibrantColor(img));
       } catch {
-        // CORS or canvas taint — keep Spotify green fallback
+        // keep fallback
       }
     };
     img.onerror = () => {};
-    img.src = imageUrl;
+    img.src = proxied;
   }, [imageUrl]);
 
   return color;
