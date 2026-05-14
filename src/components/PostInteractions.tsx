@@ -19,7 +19,7 @@ import {
 } from "@/hooks/usePostInteractions";
 
 interface Session {
-  githubId: string;
+  userId: string;
   username: string;
   name: string;
   avatarUrl: string;
@@ -156,7 +156,7 @@ function CommentItem({
   const { mutate: toggleCommentReaction } = useToggleCommentReaction(slug);
   const { mutate: toggleReplyReaction } = useToggleReplyReaction(slug);
 
-  const isOwner = session?.githubId === comment.github_id;
+  const isOwner = session?.userId === comment.github_id;
   const isAdmin = session?.username === adminUsername;
   const canDelete = isOwner || isAdmin;
 
@@ -227,14 +227,18 @@ function CommentItem({
         <Avatar src={comment.avatar_url} alt={comment.name} size={28} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <a
-              href={`https://github.com/${comment.username}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
-            >
-              {comment.name}
-            </a>
+            {comment.provider === "github" ? (
+              <a
+                href={`https://github.com/${comment.username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
+              >
+                {comment.name}
+              </a>
+            ) : (
+              <span className="text-xs font-semibold text-foreground">{comment.name}</span>
+            )}
             <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
               {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
             </span>
@@ -313,14 +317,18 @@ function CommentItem({
               <Avatar src={reply.avatar_url} alt={reply.name} size={20} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <a
-                    href={`https://github.com/${reply.username}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
-                  >
-                    {reply.name}
-                  </a>
+                  {reply.provider === "github" ? (
+                    <a
+                      href={`https://github.com/${reply.username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-semibold text-foreground hover:opacity-70 transition-opacity"
+                    >
+                      {reply.name}
+                    </a>
+                  ) : (
+                    <span className="text-xs font-semibold text-foreground">{reply.name}</span>
+                  )}
                   <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
                     {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true })}
                   </span>
