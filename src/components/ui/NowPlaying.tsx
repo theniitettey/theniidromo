@@ -32,34 +32,64 @@ interface VibeProps {
 }
 
 const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
-  const energySpeed = 6 - (energy   / 100) * 4;
-  const grooveRange = 10 + (groove  / 100) * 22;
-  const grooveSpeed = 8 - (groove   / 100) * 5;
-  const happyScale  = 1 + (happiness / 100) * 0.35;
-  const happySpeed  = 5 - (happiness / 100) * 2.5;
+  const eSpeed  = 6  - (energy    / 100) * 3.5;  // 2.5–6s
+  const eAmt    = 8  + (energy    / 100) * 16;    // 8–24px drift
+  const gR      = 12 + (groove    / 100) * 20;    // 12–32px orbit
+  const gSpeed  = 9  - (groove    / 100) * 5;     // 4–9s
+  const hScale  = 1  + (happiness / 100) * 0.4;   // 1.0–1.4x
+  const hSpeed  = 5  - (happiness / 100) * 2.5;   // 2.5–5s
+
+  const colorTransition = { duration: 1.2, ease: "easeOut" as const };
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-0">
+      {/* Energy orb — erratic drift, fast when energetic */}
       <motion.div
-        className="absolute left-[10%] top-[15%] w-24 h-24 rounded-full blur-xl opacity-[0.35]"
-        style={{ background: color }}
-        animate={{ y: [-energySpeed * 4, energySpeed * 4, -energySpeed * 4] }}
-        transition={{ duration: energySpeed * 1.2, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute right-[12%] bottom-[10%] w-20 h-20 rounded-full blur-xl opacity-[0.25]"
-        style={{ background: color }}
+        className="absolute left-[8%] top-[10%] w-28 h-28 rounded-full blur-xl"
         animate={{
-          x: [0, grooveRange, 0, -grooveRange, 0],
-          y: [0, grooveRange * 0.6, grooveRange * 0.9, grooveRange * 0.6, 0],
+          backgroundColor: color,
+          x: [0, -eAmt * 0.6, eAmt, eAmt * 0.4, -eAmt * 0.3, 0],
+          y: [0, eAmt * 0.8, eAmt * 0.3, -eAmt * 0.7, -eAmt * 0.2, 0],
+          opacity: [0.3, 0.38, 0.28, 0.36, 0.3, 0.3],
         }}
-        transition={{ duration: grooveSpeed, repeat: Infinity, ease: "linear" }}
+        transition={{
+          backgroundColor: colorTransition,
+          x: { duration: eSpeed, repeat: Infinity, ease: "easeInOut" },
+          y: { duration: eSpeed * 1.1, repeat: Infinity, ease: "easeInOut" },
+          opacity: { duration: eSpeed * 0.9, repeat: Infinity, ease: "easeInOut" },
+        }}
       />
+
+      {/* Groove orb — smooth elliptical orbit */}
       <motion.div
-        className="absolute left-[45%] top-[40%] w-32 h-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl opacity-[0.20]"
-        style={{ background: color }}
-        animate={{ scale: [1, happyScale, 1] }}
-        transition={{ duration: happySpeed, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute right-[8%] bottom-[5%] w-24 h-24 rounded-full blur-xl"
+        animate={{
+          backgroundColor: color,
+          x: [gR, gR * 0.3, -gR * 0.7, -gR, -gR * 0.3, gR * 0.7, gR],
+          y: [0, -gR * 0.8, -gR * 0.5, 0, gR * 0.8, gR * 0.5, 0],
+          opacity: [0.22, 0.28, 0.22, 0.26, 0.22, 0.28, 0.22],
+        }}
+        transition={{
+          backgroundColor: colorTransition,
+          x: { duration: gSpeed, repeat: Infinity, ease: "linear" },
+          y: { duration: gSpeed, repeat: Infinity, ease: "linear" },
+          opacity: { duration: gSpeed, repeat: Infinity, ease: "linear" },
+        }}
+      />
+
+      {/* Happiness orb — centre pulse, warmer when happier */}
+      <motion.div
+        className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full blur-2xl"
+        animate={{
+          backgroundColor: color,
+          scale: [1, hScale, 0.95, hScale * 0.85, 1],
+          opacity: [0.16, 0.22, 0.14, 0.20, 0.16],
+        }}
+        transition={{
+          backgroundColor: colorTransition,
+          scale:   { duration: hSpeed, repeat: Infinity, ease: "easeInOut" },
+          opacity: { duration: hSpeed * 1.2, repeat: Infinity, ease: "easeInOut" },
+        }}
       />
     </div>
   );
@@ -67,7 +97,7 @@ const MoodAura = ({ energy, groove, happiness, color }: VibeProps) => {
 
 export const NowPlaying = () => {
   const { data, isLoading, isError } = useSpotifyNowPlaying();
-  const dominantColor = useDominantColor(data?.albumImageUrl);
+  const dominantColor = useDominantColor(isPlaying ? data?.albumImageUrl : undefined);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -111,7 +141,7 @@ export const NowPlaying = () => {
       className="group relative overflow-hidden flex flex-col items-stretch rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#121212] hover:bg-zinc-50 dark:hover:bg-[#161616] hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
     >
       {/* Mood aura — rendered behind everything */}
-      {vibe && isPlaying && (
+      {vibe && isPlaying && dominantColor && (
         <MoodAura energy={vibe.energy} groove={vibe.groove} happiness={vibe.happiness} color={dominantColor} />
       )}
 

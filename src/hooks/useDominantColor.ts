@@ -20,9 +20,7 @@ function extractVibrantColor(img: HTMLImageElement): string {
     const min = Math.min(r, g, b);
     const lightness = (max + min) / 510;
     const saturation = max === 0 ? 0 : (max - min) / max;
-
     if (lightness < 0.12 || lightness > 0.88 || saturation < 0.25) continue;
-
     const score = saturation * (1 - Math.abs(lightness - 0.5));
     if (score > best.score) best = { r, g, b, score };
   }
@@ -30,25 +28,21 @@ function extractVibrantColor(img: HTMLImageElement): string {
   return `rgb(${best.r}, ${best.g}, ${best.b})`;
 }
 
-export function useDominantColor(imageUrl?: string): string {
-  const [color, setColor] = useState("#1DB954");
+// null = not yet extracted (don't show anything yet)
+export function useDominantColor(imageUrl?: string): string | null {
+  const [color, setColor] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!imageUrl) return;
-    setColor("#1DB954");
+    if (!imageUrl) { setColor(null); return; }
+    setColor(null); // clear on track change — prevents stale color flash
 
-    // Route through our proxy so the canvas can read pixel data without CORS taint
     const proxied = `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
-
     const img = new Image();
     img.onload = () => {
-      try {
-        setColor(extractVibrantColor(img));
-      } catch {
-        // keep fallback
-      }
+      try { setColor(extractVibrantColor(img)); }
+      catch { setColor("#1DB954"); }
     };
-    img.onerror = () => {};
+    img.onerror = () => setColor("#1DB954");
     img.src = proxied;
   }, [imageUrl]);
 
