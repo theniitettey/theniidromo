@@ -27,13 +27,13 @@ export async function GET(req: NextRequest) {
     .filter((p) => !p.draft && !p.archived)
     .map((p) => ({ slug: p.slug, title: p.title, type: "post", description: p.description, tags: p.tags, date: p.date }));
 
-  const thoughts: SearchResult[] = allThoughts.map((t) => ({
-    slug: t.slug, title: t.title, type: "thought", date: t.date,
-  }));
+  const thoughts: SearchResult[] = allThoughts
+    .filter((t) => !t.draft && !t.archived)
+    .map((t) => ({ slug: t.slug, title: t.title, type: "thought", description: t.description, tags: t.tags, date: t.date }));
 
   const asores: SearchResult[] = allAsores
     .filter((a) => !a.draft && !a.archived)
-    .map((a) => ({ slug: a.slug, title: a.title, type: "asore", tags: a.tags, date: a.date }));
+    .map((a) => ({ slug: a.slug, title: a.title, type: "asore", description: a.description, tags: a.tags, date: a.date }));
 
   const results = [...posts, ...thoughts, ...asores]
     .map((item) => ({ item, score: score(item) }))
