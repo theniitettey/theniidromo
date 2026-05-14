@@ -5,10 +5,11 @@ const SESSION_COOKIE = "gb_session";
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export interface SessionData {
-  githubId: string;
+  userId: string;
   username: string;
   name: string;
   avatarUrl: string;
+  provider: "github" | "google";
 }
 
 async function sign(payload: string, secret: string): Promise<string> {
