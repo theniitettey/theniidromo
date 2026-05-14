@@ -668,14 +668,14 @@ export function PostInteractions({ slug, session, adminUsername }: PostInteracti
             </p>
             <div className="flex items-center gap-2">
               <Link
-                href="/api/auth/github"
+                href="/auth/github"
                 className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 text-foreground transition-colors"
               >
                 <SiGithub size={14} className="text-foreground" />
                 GitHub
               </Link>
               <Link
-                href="/api/auth/google"
+                href="/auth/google"
                 className="inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/50 dark:hover:bg-zinc-800 text-foreground transition-colors"
               >
                 <FcGoogle size={14} />

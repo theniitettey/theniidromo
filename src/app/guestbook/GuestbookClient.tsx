@@ -97,7 +97,7 @@ export function GuestbookClient({
   }
 
   async function handleSignOut() {
-    await axios.post("/api/auth/signout");
+    await axios.post("/auth/signout");
     window.location.reload();
   }
 
@@ -155,14 +155,14 @@ export function GuestbookClient({
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs text-zinc-500 mr-0.5">Sign in:</span>
                   <Link
-                    href="/api/auth/github"
+                    href="/auth/github"
                     title="Sign in with GitHub"
                     className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
                   >
                     <SiGithub size={14} />
                   </Link>
                   <Link
-                    href="/api/auth/google"
+                    href="/auth/google"
                     title="Sign in with Google"
                     className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors"
                   >
@@ -307,14 +307,14 @@ export function GuestbookClient({
                 </p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <Link
-                    href="/api/auth/github"
+                    href="/auth/github"
                     className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-foreground transition-colors"
                   >
                     <SiGithub size={13} />
                     GitHub
                   </Link>
                   <Link
-                    href="/api/auth/google"
+                    href="/auth/google"
                     className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-foreground transition-colors"
                   >
                     <FcGoogle size={13} />
