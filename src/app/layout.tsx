@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { Header, Footer, ThemeProvider, QueryProvider } from "@/components";
+import { Header, Footer, ThemeProvider, QueryProvider, FloatingNowPlaying } from "@/components";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -134,6 +134,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <FloatingNowPlaying />
           </QueryProvider>
         </ThemeProvider>
         <Analytics />
