@@ -7,6 +7,7 @@ async function ensureTable() {
     CREATE TABLE IF NOT EXISTS guestbook (
       id SERIAL PRIMARY KEY,
       github_id TEXT NOT NULL,
+      provider TEXT NOT NULL DEFAULT 'github',
       username TEXT NOT NULL,
       name TEXT NOT NULL,
       avatar_url TEXT NOT NULL,
@@ -27,6 +28,9 @@ async function ensureTable() {
 
   await sql`
     ALTER TABLE guestbook ADD COLUMN IF NOT EXISTS signature_data TEXT;
+  `;
+  await sql`
+    ALTER TABLE guestbook ADD COLUMN IF NOT EXISTS provider TEXT NOT NULL DEFAULT 'github';
   `;
   await sql`
     ALTER TABLE guestbook ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
@@ -53,7 +57,7 @@ async function ensureTable() {
 export async function GET() {
   await ensureTable();
   const rows = await sql`
-    SELECT id, github_id, username, name, avatar_url, message, signature_data, created_at, updated_at
+    SELECT id, github_id, username, name, avatar_url, message, signature_data, provider, created_at, updated_at
     FROM guestbook
     ORDER BY created_at DESC
     LIMIT 100
@@ -79,15 +83,15 @@ export async function POST(req: NextRequest) {
   await ensureTable();
 
   const rows = await sql`
-    INSERT INTO guestbook (github_id, username, name, avatar_url, message, signature_data)
-    VALUES (${session.githubId}, ${session.username}, ${displayName}, ${session.avatarUrl}, ${message}, ${signatureData})
+    INSERT INTO guestbook (github_id, username, name, avatar_url, message, signature_data, provider)
+    VALUES (${session.userId}, ${session.username}, ${displayName}, ${session.avatarUrl}, ${message}, ${signatureData}, ${session.provider})
     ON CONFLICT (github_id) DO UPDATE SET
       name = EXCLUDED.name,
       message = EXCLUDED.message,
       signature_data = EXCLUDED.signature_data,
       updated_at = NOW()
     -- created_at is intentionally NOT updated
-    RETURNING id, github_id, username, name, avatar_url, message, signature_data, created_at, updated_at
+    RETURNING id, github_id, username, name, avatar_url, message, signature_data, provider, created_at, updated_at
   `;
 
   return Response.json(rows[0], { status: 201 });
