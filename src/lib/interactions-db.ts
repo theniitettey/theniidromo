@@ -82,7 +82,7 @@ export async function resolveUnifiedUser({ email, githubId, googleId }: UserIden
   }
 
   // 4. Create new profile with provider-namespaced canonical ID to prevent cross-provider collisions.
-  const providerIdPattern = /^[A-Za-z0-9._-]+$/;
+  const providerIdPattern = /^[A-Za-z0-9]+$/;
   let canonicalId: string;
   if (githubId) {
     if (!providerIdPattern.test(githubId)) {
