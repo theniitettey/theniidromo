@@ -3,16 +3,38 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { LuSearch, LuLoader, LuFileText, LuMessageSquare, LuBookOpen } from "react-icons/lu";
+import { LuSearch, LuLoader, LuFileText, LuMessageSquare, LuBookOpen, LuArrowRight, LuClock } from "react-icons/lu";
 import axios from "axios";
 import type { SearchResult } from "@/app/api/search/route";
 import { format } from "date-fns";
 
-const TYPE_META = {
-  post:    { label: "Blog",    icon: LuFileText,      color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
-  thought: { label: "Thought", icon: LuMessageSquare, color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
-  asore:   { label: "Asore",   icon: LuBookOpen,      color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
+const TYPE_META: Record<SearchResult["type"], { label: string; icon: React.ElementType }> = {
+  post:    { label: "Blog",    icon: LuFileText },
+  thought: { label: "Thought", icon: LuMessageSquare },
+  asore:   { label: "Asore",   icon: LuBookOpen },
 };
+
+function groupByType(results: SearchResult[]) {
+  const order: SearchResult["type"][] = ["post", "thought", "asore"];
+  const map = new Map<SearchResult["type"], SearchResult[]>();
+  for (const r of results) {
+    if (!map.has(r.type)) map.set(r.type, []);
+    map.get(r.type)!.push(r);
+  }
+  return order.filter((t) => map.has(t)).map((t) => ({ type: t, items: map.get(t)! }));
+}
+
+// Flat index for keyboard navigation
+function flatIndex(groups: ReturnType<typeof groupByType>, idx: number) {
+  let i = 0;
+  for (const g of groups) {
+    for (const item of g.items) {
+      if (i === idx) return item;
+      i++;
+    }
+  }
+  return null;
+}
 
 export function SearchModal() {
   const router = useRouter();
@@ -23,26 +45,22 @@ export function SearchModal() {
   const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const close = useCallback(() => { setOpen(false); setQuery(""); setResults([]); setSelected(0); }, []);
+  const close = useCallback(() => {
+    setOpen(false); setQuery(""); setResults([]); setSelected(0);
+  }, []);
 
-  // Cmd+K / Ctrl+K global shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setOpen((v) => !v);
-      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); setOpen((v) => !v); }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, []);
 
-  // Focus input on open
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 50);
   }, [open]);
 
-  // Debounced search
   useEffect(() => {
     if (!open) return;
     const t = setTimeout(async () => {
@@ -50,136 +68,176 @@ export function SearchModal() {
       setLoading(true);
       try {
         const { data } = await axios.get(`/api/search?q=${encodeURIComponent(query.trim())}`);
-        setResults(data.results);
-        setSelected(0);
+        setResults(data.results); setSelected(0);
       } catch { /* silent */ }
       finally { setLoading(false); }
     }, 300);
     return () => clearTimeout(t);
   }, [query, open]);
 
-  const navigate = (result: SearchResult) => {
-    router.push(result.slug);
-    close();
-  };
+  const navigate = useCallback((result: SearchResult) => {
+    router.push(result.slug); close();
+  }, [router, close]);
 
-  // Keyboard navigation
+  const groups = groupByType(results);
+  const totalResults = results.length;
+
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") { close(); return; }
-    if (e.key === "ArrowDown") { e.preventDefault(); setSelected((v) => Math.min(v + 1, results.length - 1)); }
+    if (e.key === "ArrowDown") { e.preventDefault(); setSelected((v) => Math.min(v + 1, totalResults - 1)); }
     if (e.key === "ArrowUp")   { e.preventDefault(); setSelected((v) => Math.max(v - 1, 0)); }
-    if (e.key === "Enter" && results[selected]) navigate(results[selected]);
+    if (e.key === "Enter") { const r = flatIndex(groups, selected); if (r) navigate(r); }
   };
 
+  let flatIdx = 0;
+
   return (
-    <>
-      {/* Trigger exposed via window event — see SearchTrigger */}
-      <AnimatePresence>
-        {open && (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
+          className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm flex items-start justify-center pt-[12vh] px-4"
+          onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}
+        >
           <motion.div
-            key="search-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm flex items-start justify-center pt-[15vh] px-4"
-            onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}
+            key="panel"
+            initial={{ opacity: 0, y: -16, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -16, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            className="w-full max-w-lg bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-2xl shadow-black/25 dark:shadow-black/70 overflow-hidden"
+            onKeyDown={onKeyDown}
           >
-            <motion.div
-              key="search-panel"
-              initial={{ opacity: 0, y: -12, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.97 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="w-full max-w-lg bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-700 shadow-2xl shadow-black/20 dark:shadow-black/60 overflow-hidden"
-              onKeyDown={onKeyDown}
-            >
-              {/* Input row */}
-              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-zinc-100 dark:border-zinc-800">
-                {loading
-                  ? <LuLoader size={16} className="text-zinc-400 shrink-0 animate-spin" />
-                  : <LuSearch size={16} className="text-zinc-400 shrink-0" />
-                }
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search posts, thoughts, asore…"
-                  className="flex-1 bg-transparent text-sm text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 outline-none"
-                />
-                <kbd className="text-[10px] text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono shrink-0">
-                  ESC
-                </kbd>
-              </div>
+            {/* Search input */}
+            <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-100 dark:border-zinc-800">
+              {loading
+                ? <LuLoader size={17} className="text-zinc-400 shrink-0 animate-spin" />
+                : <LuSearch size={17} className="text-zinc-400 shrink-0" />
+              }
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search posts, thoughts, asore…"
+                className="flex-1 bg-transparent text-sm text-zinc-800 dark:text-zinc-200 placeholder:text-zinc-400 outline-none"
+              />
+              <kbd className="text-[10px] text-zinc-400 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono shrink-0">ESC</kbd>
+            </div>
 
-              {/* Results */}
-              <div className="max-h-[360px] overflow-y-auto">
-                {results.length > 0 ? (
-                  <div className="py-1.5">
-                    {results.map((r, i) => {
-                      const meta = TYPE_META[r.type];
-                      const Icon = meta.icon;
-                      return (
-                        <button
-                          key={r.slug}
-                          onClick={() => navigate(r)}
-                          onMouseEnter={() => setSelected(i)}
-                          className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
-                            selected === i ? "bg-zinc-50 dark:bg-zinc-800/60" : ""
-                          }`}
-                        >
-                          <div className={`shrink-0 w-7 h-7 rounded-lg flex items-center justify-center ${meta.bg}`}>
-                            <Icon size={13} className={meta.color} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate">{r.title}</p>
-                            {r.description && (
-                              <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{r.description}</p>
-                            )}
-                          </div>
-                          <div className="shrink-0 flex flex-col items-end gap-1">
-                            <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                              {meta.label}
-                            </span>
-                            <span className="text-[10px] text-zinc-400">
-                              {format(new Date(r.date), "MMM yyyy")}
-                            </span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : query.trim().length >= 2 && !loading ? (
-                  <p className="text-center text-sm text-zinc-400 py-10">No results for &ldquo;{query}&rdquo;</p>
-                ) : query.trim().length === 0 ? (
-                  <p className="text-center text-xs text-zinc-400 py-8">Start typing to search…</p>
-                ) : null}
-              </div>
+            {/* Results */}
+            <div className="max-h-[420px] overflow-y-auto">
+              {groups.length > 0 ? (
+                <div className="py-2">
+                  {groups.map(({ type, items }) => {
+                    const meta = TYPE_META[type];
+                    const Icon = meta.icon;
+                    return (
+                      <div key={type}>
+                        {/* Group header */}
+                        <div className="flex items-center gap-2 px-4 py-2 mt-1">
+                          <Icon size={11} className="text-zinc-400 shrink-0" />
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+                            {meta.label}
+                          </span>
+                        </div>
 
-              {/* Footer hint */}
-              {results.length > 0 && (
-                <div className="flex items-center gap-3 px-4 py-2 border-t border-zinc-100 dark:border-zinc-800">
-                  <span className="text-[10px] text-zinc-400 flex items-center gap-1">
-                    <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1 font-mono">↑↓</kbd> navigate
-                  </span>
-                  <span className="text-[10px] text-zinc-400 flex items-center gap-1">
-                    <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1 font-mono">↵</kbd> open
-                  </span>
+                        {items.map((r) => {
+                          const isSelected = flatIdx === selected;
+                          const currentIdx = flatIdx++;
+                          return (
+                            <button
+                              key={r.slug}
+                              onClick={() => navigate(r)}
+                              onMouseEnter={() => setSelected(currentIdx)}
+                              className={`w-full text-left px-4 py-3 transition-colors border-l-2 ${
+                                isSelected
+                                  ? "bg-zinc-50 dark:bg-zinc-800/50 border-zinc-800 dark:border-zinc-200"
+                                  : "border-transparent hover:bg-zinc-50 dark:hover:bg-zinc-800/30"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <p className={`text-sm font-semibold leading-snug transition-colors ${
+                                    isSelected ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-700 dark:text-zinc-300"
+                                  }`}>
+                                    {r.title}
+                                  </p>
+                                  {r.description && (
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 line-clamp-2 leading-relaxed">
+                                      {r.description}
+                                    </p>
+                                  )}
+                                  <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                    <span className="flex items-center gap-1 text-[10px] text-zinc-400">
+                                      <LuClock size={9} />
+                                      {format(new Date(r.date), "MMM d, yyyy")}
+                                    </span>
+                                    {r.tags && r.tags.slice(0, 3).map((tag) => (
+                                      <span
+                                        key={tag}
+                                        className="text-[10px] px-1.5 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                                      >
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                                <LuArrowRight
+                                  size={14}
+                                  className={`shrink-0 mt-0.5 transition-all ${
+                                    isSelected ? "text-zinc-800 dark:text-zinc-200 translate-x-0.5" : "text-zinc-300 dark:text-zinc-600"
+                                  }`}
+                                />
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
                 </div>
-              )}
-            </motion.div>
+              ) : query.trim().length >= 2 && !loading ? (
+                <div className="flex flex-col items-center gap-2 py-12">
+                  <p className="text-sm font-medium text-zinc-500">No results for &ldquo;{query}&rdquo;</p>
+                  <p className="text-xs text-zinc-400">Try a different keyword or check spelling</p>
+                </div>
+              ) : query.trim().length === 0 ? (
+                <div className="flex flex-col items-center gap-1.5 py-10">
+                  <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">Search everything</p>
+                  <p className="text-xs text-zinc-400">Posts · Thoughts · Asore</p>
+                </div>
+              ) : null}
+            </div>
+
+            {/* Footer */}
+            {totalResults > 0 && (
+              <div className="flex items-center gap-4 px-4 py-2.5 border-t border-zinc-100 dark:border-zinc-800">
+                <span className="text-[10px] text-zinc-400 flex items-center gap-1.5">
+                  <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono">↑↓</kbd>
+                  navigate
+                </span>
+                <span className="text-[10px] text-zinc-400 flex items-center gap-1.5">
+                  <kbd className="border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono">↵</kbd>
+                  open
+                </span>
+                <span className="ml-auto text-[10px] text-zinc-400">{totalResults} result{totalResults !== 1 ? "s" : ""}</span>
+              </div>
+            )}
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
 export function useSearchModal() {
   const open = () => {
-    const event = new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true });
-    document.dispatchEvent(event);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true }));
   };
   return { open };
 }
