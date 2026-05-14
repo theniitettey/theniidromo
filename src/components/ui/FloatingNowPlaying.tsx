@@ -119,7 +119,7 @@ export function FloatingNowPlaying() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 16, scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                className="w-[300px] rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-2xl shadow-black/15 dark:shadow-black/50 overflow-hidden"
+                className="w-[260px] rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md shadow-2xl shadow-black/15 dark:shadow-black/50 overflow-hidden"
               >
                 {/* Tray header */}
                 <div className="flex items-center justify-between px-3.5 pt-3 pb-2 border-b border-zinc-100 dark:border-zinc-800">
