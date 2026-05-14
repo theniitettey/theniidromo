@@ -56,26 +56,12 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-background flex flex-col gap-5 pt-3 pb-3 border-b border-zinc-200 dark:border-zinc-800 mb-8">
-      {/* Row 1: Logo | mobile: search+toggle  desktop: socials */}
+      {/* Row 1: Logo + socials (unchanged) */}
       <div className="flex flex-row items-center justify-between">
         <Link href="/" className={`${cursive.className} text-xl sm:text-2xl text-foreground hover:opacity-80 transition-opacity`}>
           The Nii Dromo
         </Link>
-
-        {/* Mobile: search + theme in top row */}
-        <div className="flex sm:hidden items-center gap-3">
-          <button
-            onClick={openSearch}
-            className="text-zinc-400 hover:text-foreground transition-colors p-1.5 -m-1.5"
-            aria-label="Search"
-          >
-            <LuSearch size={15} />
-          </button>
-          <SchemeToggle />
-        </div>
-
-        {/* Desktop: social links */}
-        <div className="hidden sm:flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <Link href="mailto:michaelperryt97@gmail.com" className="text-zinc-400 hover:text-foreground transition-colors">
             <FiMail size={15} />
           </Link>
@@ -94,9 +80,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Row 2: Nav | desktop: search+toggle */}
-      <div className="flex flex-row items-center justify-between gap-4">
-        <nav className="flex flex-row items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none flex-1 min-w-0">
+      {/* Row 2: Nav (scrollable on mobile) + search/toggle */}
+      <div className="flex flex-row items-center justify-between gap-3">
+        <nav className="flex flex-row items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-none min-w-0">
           {Links.map((link) => (
             <NavLink
               key={link.name}
@@ -106,16 +92,14 @@ const Header = () => {
             />
           ))}
         </nav>
-
-        {/* Desktop: search + toggle */}
-        <div className="hidden sm:flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={openSearch}
             className="flex items-center gap-1.5 text-zinc-400 hover:text-foreground transition-colors"
             aria-label="Search"
           >
             <LuSearch size={14} />
-            <span className="inline-flex items-center gap-0.5">
+            <span className="hidden sm:inline-flex items-center gap-0.5">
               <kbd className="text-[0.625rem] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">⌘</kbd>
               <span className="text-[0.625rem] text-zinc-400">+</span>
               <kbd className="text-[0.625rem] border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 font-mono text-zinc-400">K</kbd>
