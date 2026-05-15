@@ -99,14 +99,14 @@ export default async function DevotionalPage({ params }: DevotionalProps) {
         <div className="pt-2 pb-6">
           <Link
             href="/asore"
-            className="text-xs text-zinc-500 hover:text-foreground transition-colors mb-3 inline-block"
+            className="text-xs text-zinc-400 hover:text-foreground transition-colors mb-6 inline-block"
           >
-            ← Devotionals
+            ← devotionals
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-3">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
             {post.title}
           </h1>
-          <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 mb-3">
+          <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 mb-5">
             <time>
               {new Date(post.date).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -118,12 +118,12 @@ export default async function DevotionalPage({ params }: DevotionalProps) {
             <span>{post.readTimeMinutes}</span>
           </div>
           {post.description && (
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 leading-relaxed">
+            <p className="text-[15px] text-zinc-500 dark:text-zinc-400 mb-5 leading-relaxed">
               {post.description}
             </p>
           )}
           {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-8">
+            <div className="flex flex-wrap gap-1.5">
               {post.tags.map((tag: string) => (
                 <span
                   key={tag}
@@ -134,9 +134,11 @@ export default async function DevotionalPage({ params }: DevotionalProps) {
               ))}
             </div>
           )}
-          <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
-            <MDXComponent code={post.body} />
-          </article>
+          <div className="mt-8 border-t border-zinc-100 dark:border-zinc-800 pt-8">
+            <article className="prose prose-sm dark:prose-invert max-w-none prose-zinc prose-a:underline-offset-4 prose-pre:p-0 prose-pre:bg-transparent">
+              <MDXComponent code={post.body} />
+            </article>
+          </div>
         </div>
       </MotionDiv>
     </div>

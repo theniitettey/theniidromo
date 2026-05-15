@@ -36,11 +36,11 @@ const NavLink: React.FC<NavLinkProps> = ({ href, isActive = false, name }) => {
 };
 
 const Links = [
-  { name: "Home", href: "/" },
-  { name: "Blog", href: ["/blog", "/posts", "/archive/posts"] },
-  { name: "Thoughts", href: ["/thoughts"] },
-  { name: "Asore", href: ["/asore", "/archive/devotionals"] },
-  { name: "Guestbook", href: ["/guestbook"] },
+  { name: "home", href: "/" },
+  { name: "blog", href: ["/blog", "/posts", "/archive/posts"] },
+  { name: "thoughts", href: ["/thoughts"] },
+  { name: "asore", href: ["/asore", "/archive/devotionals"] },
+  { name: "guestbook", href: ["/guestbook"] },
 ];
 
 const Header = () => {

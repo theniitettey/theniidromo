@@ -16,7 +16,7 @@ const Footer = () => {
 
   useEffect(() => {
     const currentYear = new Date().getFullYear();
-    setYear(romans.romanize(currentYear));
+    setYear(romans.romanize(currentYear).toLowerCase());
   }, []);
 
   return (
