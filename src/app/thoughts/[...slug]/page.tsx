@@ -54,7 +54,7 @@ export async function generateMetadata({
       authors: [person.shortName],
       images: [
         {
-          url: `/api/og/thoughts?title=${encodeURIComponent(postTitle)}&date=${encodeURIComponent(thought.date)}`,
+          url: `/api/og/content?${new URLSearchParams({ text: "thought", title: postTitle, date: thought.date }).toString()}`,
           width: 1200,
           height: 630,
           alt: postTitle,
@@ -67,7 +67,7 @@ export async function generateMetadata({
       description: `Thought for ${formattedDate} by Nii Dromo`,
       creator: person.social.twitterHandle,
       images: [
-        `/api/og/thoughts?title=${encodeURIComponent(postTitle)}&date=${encodeURIComponent(thought.date)}`,
+        `/api/og/content?${new URLSearchParams({ text: "thought", title: postTitle, date: thought.date }).toString()}`,
       ],
     },
     alternates: {
