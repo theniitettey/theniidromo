@@ -8,6 +8,7 @@ import Image from "next/image";
 import { FiYoutube } from "react-icons/fi";
 import { SiSpotify } from "react-icons/si";
 import { LuHandMetal } from "react-icons/lu";
+import { person } from "@/data/person";
 
 const containerVariants = {
   hidden: {},
@@ -56,7 +57,7 @@ const Home = () => {
               いらっしゃいませ
             </span>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-3">
-              Michael Perry Nii Dromo Tettey
+              {person.name}
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Software Engineer · CS student, University of Ghana
@@ -169,7 +170,7 @@ const Home = () => {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <a
-            href="https://qz.bflabs.tech"
+            href={person.projects.qz}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col justify-between gap-4 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
@@ -185,7 +186,7 @@ const Home = () => {
             </span>
           </a>
           <a
-            href="https://eventflick.vercel.app"
+            href={person.projects.eventflick}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col justify-between gap-4 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
@@ -217,7 +218,7 @@ const Home = () => {
             </span>
           </Link>
           <a
-            href="https://youtube.com/@michaelperryjnr"
+            href={person.social.youtube}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex flex-col justify-between gap-4 p-3 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
@@ -232,7 +233,7 @@ const Home = () => {
               </p>
             </div>
             <span className="text-xs text-zinc-400 group-hover:text-foreground transition-colors">
-              @michaelperryjnr →
+              {person.social.youtubeHandle} →
             </span>
           </a>
         </div>

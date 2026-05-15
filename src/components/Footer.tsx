@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import romans from "romans";
+import { person } from "@/data/person";
 import { FiGithub } from "react-icons/fi";
 import { Dancing_Script } from "next/font/google";
 
@@ -32,7 +33,7 @@ const Footer = () => {
         </div>
         <div className="flex justify-center items-center gap-1.5">
           <Link
-            href="https://github.com/michaelperryjnr/themefolio"
+            href={person.projects.themefolio}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-foreground transition-colors"

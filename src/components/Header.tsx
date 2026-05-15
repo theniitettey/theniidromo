@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FiGithub, FiTwitter, FiMail, FiLinkedin, FiFileText } from "react-icons/fi";
 import { LuSearch } from "react-icons/lu";
 import { Dancing_Script } from "next/font/google";
+import { person } from "@/data/person";
 
 const cursive = Dancing_Script({
   weight: ["600"],
@@ -62,16 +63,16 @@ const Header = () => {
           the nii dromo
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="mailto:michaelperryt97@gmail.com" className="text-zinc-400 hover:text-foreground transition-colors">
+          <Link href={`mailto:${person.email}`} className="text-zinc-400 hover:text-foreground transition-colors">
             <FiMail size={15} />
           </Link>
-          <Link href="https://x.com/theniitettey" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
+          <Link href={person.social.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
             <FiTwitter size={15} />
           </Link>
-          <Link href="https://linkedin.com/in/theniitettey" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
+          <Link href={person.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
             <FiLinkedin size={15} />
           </Link>
-          <Link href="https://github.com/michaelperryjnr" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
+          <Link href={person.social.github} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
             <FiGithub size={15} />
           </Link>
           <Link href="/resume" className="text-zinc-400 hover:text-foreground transition-colors">
