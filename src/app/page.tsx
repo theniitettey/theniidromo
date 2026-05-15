@@ -102,6 +102,23 @@ const Home = () => {
             Where tradition meets innovation, that&apos;s where you&apos;ll find
             me coding.
           </p>
+          <svg
+            className="mt-5 text-zinc-300 dark:text-zinc-700"
+            width="120"
+            height="14"
+            viewBox="0 0 120 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M2 7 C10 2, 18 12, 26 7 C34 2, 42 12, 50 7 C58 2, 66 12, 74 7 C82 2, 90 12, 98 7 C106 2, 114 12, 118 8"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
         </div>
       </MotionDiv>
 
