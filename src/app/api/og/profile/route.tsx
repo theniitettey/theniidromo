@@ -1,4 +1,5 @@
 import { ImageResponse } from "@vercel/og";
+import { person } from "@/data/person";
 
 export const runtime = "edge";
 
@@ -48,7 +49,7 @@ export async function GET() {
                 }}
               >
                 <img
-                  src="https://github.com/theniitettey.png"
+                  src={person.social.avatarUrl}
                   style={{
                     width: "120px",
                     height: "120px",
@@ -66,7 +67,7 @@ export async function GET() {
                       marginBottom: "8px",
                     }}
                   >
-                    Michael Perry Nii Dromo Tettey
+                    {person.name}
                   </div>
                   <div
                     style={{
