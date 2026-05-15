@@ -28,9 +28,9 @@ export async function GET() {
           <div style={{ display: "flex" }}>
             <img
               src={`${baseUrl}/apple-icon.png`}
-              width={100}
-              height={100}
-              style={{ borderRadius: "50px" }}
+              width={160}
+              height={160}
+              style={{ borderRadius: "80px" }}
             />
           </div>
 
