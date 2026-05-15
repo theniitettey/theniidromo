@@ -10,65 +10,74 @@ export async function GET() {
   try {
     return new ImageResponse(
       (
+        // Full canvas — grid background shows in the margin
         <div
           style={{
             height: "100%",
             width: "100%",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
+            padding: "28px",
             backgroundColor: "#161616",
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            padding: "64px 80px",
           }}
         >
-          {/* Avatar + name grouped close together */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <img
-              src={`${baseUrl}/apple-icon.png`}
-              width={320}
-              height={320}
-              style={{ borderRadius: "160px" }}
-            />
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div
-                style={{
-                  fontSize: "64px",
-                  fontWeight: "800",
-                  color: "#ffffff",
-                  letterSpacing: "-2px",
-                  lineHeight: 1,
-                  textTransform: "uppercase",
-                }}
-              >
-                {person.shortName}
-              </div>
-              <div style={{ fontSize: "22px", color: "#d4d4d4" }}>
-                Software Engineer, Ghana.
-              </div>
-              <div style={{ fontSize: "19px", color: "#737373" }}>
-                Building polished experiences at BetaForge Labs.
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "4px" }}>
+          {/* Content card — plain bg, no grid */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              flex: 1,
+              backgroundColor: "#161616",
+              padding: "52px 64px",
+            }}
+          >
+            {/* Avatar + text tight together */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+              <img
+                src={`${baseUrl}/apple-icon.png`}
+                width={320}
+                height={320}
+                style={{ borderRadius: "160px" }}
+              />
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                 <div
                   style={{
-                    width: "9px",
-                    height: "9px",
-                    borderRadius: "5px",
-                    backgroundColor: "#525252",
+                    fontSize: "64px",
+                    fontWeight: "800",
+                    color: "#ffffff",
+                    letterSpacing: "-2px",
+                    lineHeight: 1,
+                    textTransform: "uppercase",
                   }}
-                />
-                <span style={{ color: "#737373", fontSize: "17px" }}>
-                  TypeScript · CS Student, UG
-                </span>
+                >
+                  {person.shortName}
+                </div>
+                <div style={{ fontSize: "22px", color: "#d4d4d4" }}>
+                  Software Engineer, Ghana.
+                </div>
+                <div style={{ fontSize: "19px", color: "#737373" }}>
+                  Building polished experiences at BetaForge Labs.
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "4px" }}>
+                  <div
+                    style={{
+                      width: "9px",
+                      height: "9px",
+                      borderRadius: "5px",
+                      backgroundColor: "#525252",
+                    }}
+                  />
+                  <span style={{ color: "#737373", fontSize: "17px" }}>
+                    TypeScript · CS Student, UG
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Site name bottom right */}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            {/* Site name */}
             <span style={{ color: "#404040", fontSize: "15px", letterSpacing: "0.05em" }}>
               {person.siteName.toLowerCase()}
             </span>
