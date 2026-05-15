@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { format } from "date-fns";
+import { person } from "@/data/person";
 import Link from "next/link";
 
 interface DevotionalProps {
@@ -48,10 +49,11 @@ export async function generateMetadata({
       description: post.description || `Devotional from ${formattedDate} by Nii Dromo`,
       url: post.slug,
       publishedTime: new Date(post.date).toISOString(),
-      authors: ["Nii Dromo"],
+      authors: [person.shortName],
       images: [
         {
-          url: `/api/og/asores?${new URLSearchParams({
+          url: `/api/og/content?${new URLSearchParams({
+            text: "devotional",
             title: postTitle,
             description: post.description || `Devotional from ${formattedDate}`,
             date: new Date(post.date).toISOString(),
@@ -66,9 +68,10 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: postTitle,
       description: post.description || `Devotional from ${formattedDate} by Nii Dromo`,
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
       images: [
-        `/api/og/asores?${new URLSearchParams({
+        `/api/og/content?${new URLSearchParams({
+          text: "devotional",
           title: postTitle,
           description: post.description || `Devotional from ${formattedDate}`,
           date: new Date(post.date).toISOString(),

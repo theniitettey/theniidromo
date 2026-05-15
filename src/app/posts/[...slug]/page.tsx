@@ -10,6 +10,7 @@ import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
 import { getPostViews } from "@/lib/interactions-db";
 import { format } from "date-fns";
+import { person } from "@/data/person";
 import Link from "next/link";
 
 interface PostsProps {
@@ -43,7 +44,8 @@ export async function generateMetadata({
 
   const formattedDate = format(new Date(post.date), "d MMM, yyyy");
   const postTitle = post.title.charAt(0).toUpperCase() + post.title.slice(1);
-  const ogImageUrl = `/api/og/posts?${new URLSearchParams({
+  const ogImageUrl = `/api/og/content?${new URLSearchParams({
+    text: "blog post",
     title: postTitle,
     description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
     date: new Date(post.date).toISOString(),
@@ -59,14 +61,14 @@ export async function generateMetadata({
       description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
       url: post.slug,
       publishedTime: new Date(post.date).toISOString(),
-      authors: ["Nii Dromo"],
+      authors: [person.shortName],
       images: [{ url: ogImageUrl, width: 1200, height: 630, alt: postTitle }],
     },
     twitter: {
       card: "summary_large_image",
       title: postTitle,
       description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
       images: [ogImageUrl],
     },
     alternates: {

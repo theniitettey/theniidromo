@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { allAsores } from "@/lib/content";
+import { person } from "@/data/person";
 
 export async function generateMetadata(): Promise<Metadata> {
   const archivedDevotionals = allAsores.filter(
@@ -44,14 +45,14 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: "Devotional Archive",
         },
       ],
-      siteName: "Nii Dromo",
+      siteName: person.siteName,
     },
 
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
       images: ["/api/og/dev-archive"],
     },
 

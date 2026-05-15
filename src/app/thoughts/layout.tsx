@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { person } from "@/data/person";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -35,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Personal Stories",
       "Life Lessons",
       "Nii Dromo",
-      "BBF Labs Blog",
+      "BetaForge Labs Blog",
       "Software Engineer Writing",
       "Developer Lifestyle",
       "Personal Insights",
@@ -46,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       locale: "en_US",
       url: "/thoughts",
-      siteName: "The Nii Dromo",
+      siteName: person.siteName,
       title: "Thoughts | The Nii Dromo",
       description:
         "Short writings and personal reflections by Nii Dromo — on software, life, and everything in between.",
@@ -65,7 +66,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description:
         "Short writings and personal reflections by Nii Dromo — on software, life, and everything in between.",
       images: ["/api/og/thought"],
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
     },
     robots: {
       index: true,
@@ -79,7 +80,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     authors: [
       {
-        name: "Nii Dromo",
+        name: person.shortName,
         url: "/",
       },
     ],

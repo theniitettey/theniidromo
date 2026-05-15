@@ -1,6 +1,8 @@
+import { person } from "./person";
+
 export const resumeData = {
-  name: "Michael Perry Nii Dromo Tettey",
-  title: "Software Engineer",
+  name: person.name,
+  title: person.title,
 
   experience: [
     {
@@ -60,7 +62,7 @@ export const resumeData = {
   projects: [
     {
       name: "Qz",
-      url: "https://qz.bflabs.tech",
+      url: person.projects.qz,
       bullets: [
         "Developed a quiz platform (Next.js, Node.js, Express.js, Firebase, MongoDB, Google Genkit) that drove 10,000+ visits in the first month and increased completion rates by 35%.",
       ],

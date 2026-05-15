@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { allPosts } from "@/lib/content";
+import { person } from "@/data/person";
 
 export async function generateMetadata(): Promise<Metadata> {
   const activePosts = allPosts.filter((post) => !post.archived);
@@ -39,10 +40,10 @@ export async function generateMetadata(): Promise<Metadata> {
           url: "/api/og/blog",
           width: 1200,
           height: 630,
-          alt: "Nii Dromo Blog",
+          alt: `${person.shortName} Blog`,
         },
       ],
-      siteName: "The Nii Dromo",
+      siteName: person.siteName,
       ...(latestPostDate && { modifiedTime: latestPostDate }),
     },
 
@@ -50,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title,
       description,
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
       images: ["/api/og/blog"],
     },
 
@@ -72,7 +73,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     authors: [
       {
-        name: "Nii Dromo",
+        name: person.shortName,
         url: "/",
       },
     ],
