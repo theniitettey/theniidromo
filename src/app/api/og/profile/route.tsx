@@ -10,42 +10,29 @@ export async function GET() {
   try {
     return new ImageResponse(
       (
-        // Outer: full canvas with grid bg
         <div
           style={{
             height: "100%",
             width: "100%",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
+            flexDirection: "column",
+            justifyContent: "space-between",
             backgroundColor: "#161616",
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
+            padding: "64px 80px",
           }}
         >
-          {/* Inner card: plain bg, no grid */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              backgroundColor: "#161616",
-              height: "100%",
-              width: "580px",
-              padding: "64px 72px",
-            }}
-          >
-            {/* Avatar */}
+          {/* Avatar + name grouped close together */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <img
               src={`${baseUrl}/apple-icon.png`}
-              width={160}
-              height={160}
-              style={{ borderRadius: "80px" }}
+              width={320}
+              height={320}
+              style={{ borderRadius: "160px" }}
             />
-
-            {/* Name + info */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <div
                 style={{
                   fontSize: "64px",
@@ -58,13 +45,13 @@ export async function GET() {
               >
                 {person.shortName}
               </div>
-              <div style={{ fontSize: "22px", color: "#d4d4d4", letterSpacing: "-0.3px" }}>
+              <div style={{ fontSize: "22px", color: "#d4d4d4" }}>
                 Software Engineer, Ghana.
               </div>
               <div style={{ fontSize: "19px", color: "#737373" }}>
                 Building polished experiences at BetaForge Labs.
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "6px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "4px" }}>
                 <div
                   style={{
                     width: "9px",
@@ -78,8 +65,10 @@ export async function GET() {
                 </span>
               </div>
             </div>
+          </div>
 
-            {/* Site name */}
+          {/* Site name bottom right */}
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <span style={{ color: "#404040", fontSize: "15px", letterSpacing: "0.05em" }}>
               {person.siteName.toLowerCase()}
             </span>
