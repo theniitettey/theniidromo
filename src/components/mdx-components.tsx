@@ -289,6 +289,54 @@ export const mdxComponents = {
     </h4>
   ),
 
+  p: ({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
+    <p
+      className="text-[15px] leading-[1.9] text-zinc-700 dark:text-zinc-300 mb-5 not-prose"
+      {...props}
+    >
+      {children}
+    </p>
+  ),
+
+  ul: ({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
+    <ul
+      className="my-5 pl-5 space-y-2 list-disc marker:text-zinc-400 dark:marker:text-zinc-500 not-prose"
+      {...props}
+    >
+      {children}
+    </ul>
+  ),
+
+  ol: ({ children, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
+    <ol
+      className="my-5 pl-5 space-y-2 list-decimal marker:text-zinc-400 dark:marker:text-zinc-500 not-prose"
+      {...props}
+    >
+      {children}
+    </ol>
+  ),
+
+  li: ({ children, ...props }: React.LiHTMLAttributes<HTMLLIElement>) => (
+    <li
+      className="text-[15px] leading-[1.8] text-zinc-700 dark:text-zinc-300 pl-1"
+      {...props}
+    >
+      {children}
+    </li>
+  ),
+
+  strong: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <strong className="font-semibold text-foreground" {...props}>
+      {children}
+    </strong>
+  ),
+
+  em: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <em className="italic text-zinc-600 dark:text-zinc-400" {...props}>
+      {children}
+    </em>
+  ),
+
   // Smart blockquote: GitHub-style [!NOTE] / [!TIP] / [!WARNING] etc.
   blockquote: ({
     children,
