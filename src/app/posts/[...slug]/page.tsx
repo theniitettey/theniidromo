@@ -44,7 +44,8 @@ export async function generateMetadata({
 
   const formattedDate = format(new Date(post.date), "d MMM, yyyy");
   const postTitle = post.title.charAt(0).toUpperCase() + post.title.slice(1);
-  const ogImageUrl = `/api/og/posts?${new URLSearchParams({
+  const ogImageUrl = `/api/og/content?${new URLSearchParams({
+    text: "blog post",
     title: postTitle,
     description: post.description || `Blog post from ${formattedDate} by Nii Dromo`,
     date: new Date(post.date).toISOString(),
