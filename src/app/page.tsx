@@ -43,27 +43,25 @@ const Home = () => {
     >
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
-        <div className="flex flex-col items-start gap-2.5 mb-3 select-none">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 text-xs font-medium">
-            <LuHandMetal size={14} />
-            <span>Akwaaba</span>
-          </div>
-          <span 
-            className="text-sm font-bold text-foreground tracking-widest"
-            style={{ textShadow: "-1.5px 0 0 rgba(0, 255, 255, 0.7), 1.5px 0 0 rgba(255, 0, 0, 0.7)" }}
-          >
-            いらっしゃいませ
-          </span>
-        </div>
-        <div className="flex items-center justify-between gap-4 mb-3">
-          <MotionHeader variants={itemVariants}>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+        <div className="flex items-center justify-between gap-4 mb-4 select-none">
+          <MotionHeader variants={itemVariants} className="flex flex-col gap-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 text-xs font-medium w-fit">
+              <LuHandMetal size={14} />
+              <span>Akwaaba</span>
+            </div>
+            <span
+              className="text-sm font-bold text-foreground tracking-widest"
+              style={{ textShadow: "-1.5px 0 0 rgba(0, 255, 255, 0.7), 1.5px 0 0 rgba(255, 0, 0, 0.7)" }}
+            >
+              いらっしゃいませ
+            </span>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-3">
               Michael Perry Nii Dromo
             </h1>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Software Engineer · CS student, University of Ghana
             </p>
-            <span className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Open to work
             </span>
