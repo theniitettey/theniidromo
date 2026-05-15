@@ -24,7 +24,10 @@ export async function GET(request: Request) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            backgroundColor: "#09090b",
+            backgroundColor: "#161616",
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
             padding: "60px 72px",
           }}
         >
