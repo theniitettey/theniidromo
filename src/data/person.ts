@@ -1,6 +1,7 @@
 export const person = {
   name: "Michael Perry Nii Dromo Tettey",
   shortName: "Nii Dromo",
+  siteName: "The Nii Dromo",
   title: "Software Engineer",
   email: "michaelperryt97@gmail.com",
 
@@ -12,6 +13,8 @@ export const person = {
     twitterHandle: "@theniitettey",
     youtubeHandle: "@michaelperryjnr",
     githubHandle:  "michaelperryjnr",
+    githubUsername: "theniitettey",
+    avatarUrl: "https://github.com/theniitettey.png",
   },
 
   projects: {
