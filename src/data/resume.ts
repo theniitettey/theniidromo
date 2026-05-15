@@ -1,5 +1,5 @@
 export const resumeData = {
-  name: "Michael Perry Nii Dromo",
+  name: "Michael Perry Nii Dromo Tettey",
   title: "Software Engineer",
 
   experience: [
@@ -25,13 +25,13 @@ export const resumeData = {
       ],
     },
     {
-      company: "Headstarter AI",
+      company: "Taurean IT Logistics",
       role: "Software Engineer",
-      period: "Jul 2024 – Aug 2024",
+      period: "Mar 2024 – Dec 2025",
       bullets: [
-        "Created AI web apps (Customer Service Chatbot, Pantry Tracker) with Next.js and Express.js/Firebase.",
-        "Improved AI model response accuracy to 85%.",
-        "Developed an inventory tracking API with 95% accuracy, managing over 1,000 items.",
+        "Engineered a multi-tenant B2B inventory management and booking platform, onboarding over 10+ companies and integrating full accounting/audit features.",
+        "Developed a membership system backend that integrates with multiple payment platforms and supports 500+ concurrent users with 99.9% uptime.",
+        "Delivered diverse full-stack web apps, APIs, and AI services; refactored the admin panel and client portal to improve user experience, resulting in a 20% reduction in admin report load times.",
       ],
     },
   ],
@@ -41,8 +41,18 @@ export const resumeData = {
       institution: "University of Ghana, Legon",
       degree: "B.Sc. Computer Science",
       period: "Graduating Aug 2027",
-      bullets: [
-        "Relevant coursework: Software Engineering, Data Structures & Algorithms, Operating Systems, Computer Organization & Architecture, Systems Administration, Artificial Intelligence, Statistics & Probability, Numerical & Computational Methods, OOP, Database Systems.",
+      bullets: [],
+      coursework: [
+        "Software Engineering",
+        "Data Structures & Algorithms",
+        "Operating Systems",
+        "Computer Organization & Architecture",
+        "Systems Administration",
+        "Artificial Intelligence",
+        "Statistics & Probability",
+        "Numerical & Computational Methods",
+        "OOP",
+        "Database Systems",
       ],
     },
   ],
@@ -50,16 +60,16 @@ export const resumeData = {
   projects: [
     {
       name: "Qz",
-      url: "",
+      url: "https://qz.bflabs.tech",
       bullets: [
-        "Quiz platform built with Next.js, Node.js, Express.js, Firebase, MongoDB, and Google Genkit — 10,000+ visits in the first month with a 35% completion rate increase.",
+        "Developed a quiz platform (Next.js, Node.js, Express.js, Firebase, MongoDB, Google Genkit) that drove 10,000+ visits in the first month and increased completion rates by 35%.",
       ],
     },
     {
       name: "UniMate",
-      url: "",
+      url: "https://github.com/theniitettey/sts_automation",
       bullets: [
-        "JavaScript automation tool serving 400+ students with a focus on secure session management and data privacy.",
+        "Developed JavaScript automation for 400+ students with a focus on secure session management and data privacy.",
       ],
     },
   ],
