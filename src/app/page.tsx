@@ -56,7 +56,7 @@ const Home = () => {
               いらっしゃいませ
             </span>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-3">
-              Michael Perry Nii Dromo
+              Michael Perry Nii Dromo Tettey
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
               Software Engineer · CS student, University of Ghana

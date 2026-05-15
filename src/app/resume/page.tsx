@@ -24,7 +24,6 @@ const TimelineEntry = ({
   period,
   bullets,
   url,
-  isLast,
 }: {
   title: string;
   subtitle?: string;
