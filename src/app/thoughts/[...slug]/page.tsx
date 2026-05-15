@@ -7,6 +7,7 @@ import { PostInteractions } from "@/components/PostInteractions";
 import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
 import { format } from "date-fns";
+import { person } from "@/data/person";
 import Link from "next/link";
 
 interface ThoughtsProps {
@@ -50,7 +51,7 @@ export async function generateMetadata({
       description: `Thought for ${formattedDate} by Nii Dromo`,
       url: thought.slug,
       publishedTime: new Date(thought.date).toISOString(),
-      authors: ["Nii Dromo"],
+      authors: [person.shortName],
       images: [
         {
           url: `/api/og/thoughts?title=${encodeURIComponent(postTitle)}&date=${encodeURIComponent(thought.date)}`,
@@ -64,7 +65,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: postTitle,
       description: `Thought for ${formattedDate} by Nii Dromo`,
-      creator: "@theniitettey",
+      creator: person.social.twitterHandle,
       images: [
         `/api/og/thoughts?title=${encodeURIComponent(postTitle)}&date=${encodeURIComponent(thought.date)}`,
       ],
