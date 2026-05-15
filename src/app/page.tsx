@@ -4,7 +4,6 @@ import { allPosts } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Posts, MotionDiv, MotionHeader, SpotifyCard, NowPlaying, DjQueueWidget } from "@/components";
-import { Icons } from "@/assets";
 import Image from "next/image";
 import { FiYoutube } from "react-icons/fi";
 import { SiSpotify } from "react-icons/si";
@@ -44,7 +43,7 @@ const Home = () => {
     >
       {/* Hero */}
       <MotionDiv variants={itemVariants} className="pt-2">
-        <div className="flex flex-col items-start gap-2.5 mb-5 select-none">
+        <div className="flex flex-col items-start gap-2.5 mb-3 select-none">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 text-xs font-medium">
             <LuHandMetal size={14} />
             <span>Akwaaba</span>
@@ -56,7 +55,7 @@ const Home = () => {
             いらっしゃいませ
           </span>
         </div>
-        <div className="flex items-start justify-between gap-4 mb-5">
+        <div className="flex items-center justify-between gap-4 mb-3">
           <MotionHeader variants={itemVariants}>
             <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
               Michael Perry Nii Dromo
@@ -70,12 +69,11 @@ const Home = () => {
             </span>
           </MotionHeader>
           <Image
-            src={Icons.doodle}
-            alt=""
-            width={64}
-            height={64}
-            style={{ width: "64px", height: "64px" }}
-            className="opacity-60 dark:opacity-40 shrink-0 mt-1"
+            src="/memoji.png"
+            alt="Nii Dromo memoji"
+            width={80}
+            height={80}
+            className="shrink-0 select-none grayscale w-28 h-28 sm:w-36 sm:h-36 object-contain"
           />
         </div>
 
