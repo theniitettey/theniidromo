@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/lib/config";
+import { person } from "@/data/person";
 import { Toaster } from "sonner";
 
 const poppins = Poppins({
@@ -21,7 +22,7 @@ const siteUrl = siteConfig.url;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "The Nii Dromo | Software Engineer",
+  title: `${person.siteName} | ${person.title}`,
   description:
     "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft. Founder of BBF Labs.",
   keywords: [
@@ -69,8 +70,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "/",
-    siteName: "The Nii Dromo",
-    title: "The Nii Dromo | Software Engineer",
+    siteName: person.siteName,
+    title: `${person.siteName} | ${person.title}`,
     description:
       "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft.",
     images: [
@@ -84,11 +85,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Nii Dromo | Software Engineer",
+    title: `${person.siteName} | ${person.title}`,
     description:
       "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft.",
     images: ["/api/og/profile"],
-    creator: "@thneniitettey",
+    creator: person.social.twitterHandle,
   },
   robots: {
     index: true,
