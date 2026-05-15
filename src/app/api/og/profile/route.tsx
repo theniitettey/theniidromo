@@ -44,7 +44,7 @@ export async function GET() {
                 {person.title}
               </div>
               <div style={{ fontSize: "16px", color: "#52525b", marginTop: "4px" }}>
-                Software · CS · BBF Labs
+                Software · CS · BetaForge Labs
               </div>
             </div>
 

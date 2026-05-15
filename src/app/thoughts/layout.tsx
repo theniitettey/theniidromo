@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       "Personal Stories",
       "Life Lessons",
       "Nii Dromo",
-      "BBF Labs Blog",
+      "BetaForge Labs Blog",
       "Software Engineer Writing",
       "Developer Lifestyle",
       "Personal Insights",

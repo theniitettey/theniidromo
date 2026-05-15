@@ -24,11 +24,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: `${person.siteName} | ${person.title}`,
   description:
-    "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft. Founder of BBF Labs.",
+    "Software engineer building polished web experiences. Writing about TypeScript, Rust, and software craft. Founder of BetaForge Labs.",
   keywords: [
     "Nii Dromo",
     "Software Engineer",
-    "BBF Labs Founder",
+    "BetaForge Labs Founder",
     "Tech Entrepreneur",
     "Full-stack Developer",
     "Frontend Development",
