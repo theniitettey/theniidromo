@@ -2,10 +2,11 @@ import { sql } from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { GuestbookClient } from "./GuestbookClient";
 import type { Metadata } from "next";
+import { person } from "@/data/person";
 
 export const metadata: Metadata = {
-  title: "Guestbook | The Nii Dromo",
-  description: "Leave a message for Nii Dromo.",
+  title: `Guestbook | ${person.siteName}`,
+  description: `Leave a message for ${person.shortName}.`,
 };
 
 interface Entry {

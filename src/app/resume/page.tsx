@@ -2,10 +2,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { FiDownload } from "react-icons/fi";
 import { resumeData } from "@/data/resume";
+import { person } from "@/data/person";
 
 export const metadata: Metadata = {
-  title: "Resume | The Nii Dromo",
-  description: "Resume of Michael Perry Nii Dromo — Software Engineer.",
+  title: `Resume | ${person.siteName}`,
+  description: `Resume of ${person.shortName} — ${person.title}.`,
   alternates: { canonical: "/resume" },
 };
 
