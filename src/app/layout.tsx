@@ -65,11 +65,6 @@ export const metadata: Metadata = {
     "Tech Innovation",
     "Software Architecture",
   ],
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.png",
-    shortcut: "/shortcut-icon.png",
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
