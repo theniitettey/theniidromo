@@ -52,7 +52,8 @@ export async function generateMetadata({
       authors: [person.shortName],
       images: [
         {
-          url: `/api/og/asores?${new URLSearchParams({
+          url: `/api/og/content?${new URLSearchParams({
+            text: "devotional",
             title: postTitle,
             description: post.description || `Devotional from ${formattedDate}`,
             date: new Date(post.date).toISOString(),
@@ -69,7 +70,8 @@ export async function generateMetadata({
       description: post.description || `Devotional from ${formattedDate} by Nii Dromo`,
       creator: person.social.twitterHandle,
       images: [
-        `/api/og/asores?${new URLSearchParams({
+        `/api/og/content?${new URLSearchParams({
+          text: "devotional",
           title: postTitle,
           description: post.description || `Devotional from ${formattedDate}`,
           date: new Date(post.date).toISOString(),
