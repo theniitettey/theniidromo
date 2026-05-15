@@ -1,9 +1,15 @@
 import { ImageResponse } from "@vercel/og";
 import { person } from "@/data/person";
+import { siteConfig } from "@/lib/config";
 
 export const runtime = "edge";
 
+const doodlePath =
+  "M142.794 12.2109C138.34 12.2109 132.863 7.17136 132.63 6.95835C130.13 4.42221 127.6 2.16653 123.88 2.16653C119.801 2.16653 115.01 6.89057 114.96 6.93763L114.545 7.33186C111.904 9.8402 109.409 12.2107 104.965 12.2107C100.511 12.2107 95.0346 7.17117 94.8017 6.95816C92.3013 4.42202 89.7718 2.16634 86.0512 2.16634C81.9727 2.16634 77.1814 6.89036 77.1313 6.93742L76.7404 7.29663C73.7239 10.042 71.3431 12.2104 67.1383 12.2104C62.6824 12.2104 57.2049 7.17093 56.9744 6.95791C54.4726 4.42178 51.9417 2.1661 48.2239 2.1661C44.1455 2.1661 39.3542 6.89011 39.3041 6.93717L38.8852 7.33508C36.246 9.84221 33.7498 12.209 29.3078 12.209C24.852 12.209 19.3744 7.16944 19.144 6.95643C16.6422 4.42029 14.1113 2.16461 10.3935 2.16461C6.69067 2.16461 3.31656 3.93881 1.58478 6.79543C1.36983 7.1534 0.859483 7.29009 0.447627 7.10142C0.037154 6.91033 -0.11959 6.46768 0.0981496 6.10971C2.12286 2.77304 6.06672 0.697735 10.3923 0.697735C14.8204 0.697735 17.7603 3.30524 20.3924 5.97441C21.8042 7.28421 26.2115 10.7409 29.3066 10.7409C33.0108 10.7409 35.0547 8.79975 37.6437 6.34222L38.0502 5.95642C38.2511 5.75567 43.3865 0.698009 48.2208 0.698009C52.6489 0.698009 55.5888 3.30551 58.2209 5.97469C59.6325 7.28449 64.04 10.7411 67.1351 10.7411C70.6214 10.7411 72.5725 8.96691 75.5238 6.28089L75.8927 5.94468C76.0826 5.75359 81.2179 0.697111 86.0508 0.697111C90.4814 0.697111 93.4217 3.30462 96.051 5.97379C97.4629 7.28118 101.87 10.739 104.965 10.739C108.671 10.739 110.717 8.79669 113.308 6.33541L113.712 5.95323C113.913 5.75248 119.048 0.694824 123.88 0.694824C128.31 0.694824 131.251 3.30233 133.88 5.9715C135.292 7.27889 139.699 10.7367 142.794 10.7367C146.346 10.7367 149.653 9.06772 151.43 6.38173C151.661 6.0298 152.174 5.90765 152.579 6.11203C152.981 6.31402 153.119 6.7627 152.888 7.11343C150.811 10.2603 146.943 12.2112 142.794 12.2112L142.794 12.2109Z";
+
 export async function GET() {
+  const baseUrl = siteConfig.url;
+
   try {
     return new ImageResponse(
       (
@@ -12,202 +18,62 @@ export async function GET() {
             height: "100%",
             width: "100%",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#0f172a",
-            backgroundImage:
-              "radial-gradient(circle at 25px 25px, #1e293b 2%, transparent 0%), radial-gradient(circle at 75px 75px, #1e293b 2%, transparent 0%)",
-            backgroundSize: "100px 100px",
+            flexDirection: "row",
+            alignItems: "stretch",
+            backgroundColor: "#09090b",
+            padding: "60px 72px",
           }}
         >
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
-              backgroundColor: "rgba(30, 41, 59, 0.7)",
-              borderRadius: "24px",
-              padding: "40px",
-              maxWidth: "90%",
-              width: "90%",
-              boxShadow:
-                "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              flex: 1,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                  marginBottom: "24px",
-                }}
-              >
-                <img
-                  src={person.social.avatarUrl}
-                  style={{
-                    width: "120px",
-                    height: "120px",
-                    borderRadius: "60px",
-                    border: "4px solid #3b82f6",
-                    marginRight: "24px",
-                  }}
-                />
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <div
-                    style={{
-                      fontSize: "36px",
-                      fontWeight: "bold",
-                      color: "#ffffff",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    {person.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "20px",
-                      color: "#94a3b8",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    Software Engineering, AI/ML & CPH
-                  </div>
-                </div>
+            <span style={{ color: "#71717a", fontSize: "14px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+              portfolio
+            </span>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ fontSize: "52px", fontWeight: "700", color: "#fafafa", lineHeight: 1.1 }}>
+                {person.name}
               </div>
-              <div
-                style={{
-                  fontSize: "21px",
-                  color: "#cbd5e1",
-                  marginBottom: "24px",
-                  textAlign: "left",
-                  maxWidth: "700px",
-                  lineHeight: "1.5",
-                }}
-              >
-                Expert in full-stack web development, delivering cutting-edge
-                applications and digital solutions. Specializing in React,
-                Node.js, and cloud technologies.
+              <div style={{ fontSize: "22px", color: "#a1a1aa" }}>
+                {person.title}
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "12px",
-                  justifyContent: "flex-start",
-                  maxWidth: "700px",
-                }}
-              >
-                {[
-                  "React",
-                  "Node.js",
-                  "TypeScript",
-                  "JavaScript",
-                  "Next.js",
-                  "Express.js",
-                  "Nest.js",
-                  "MongoDB",
-                  "PostgreSQL",
-                  "AWS",
-                  "Google Cloud",
-                  "Azure",
-                  "REST API",
-                  "GraphQL",
-                  "Firebase",
-                ].map((skill) => (
-                  <div
-                    key={skill}
-                    style={{
-                      backgroundColor: "rgba(59, 130, 246, 0.1)",
-                      color: "#60a5fa",
-                      padding: "8px 16px",
-                      borderRadius: "16px",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      backdropFilter: "blur(4px)",
-                    }}
-                  >
-                    {skill}
-                  </div>
-                ))}
-              </div>
-              <div
-                style={{
-                  marginTop: "24px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "16px",
-                }}
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z"
-                    stroke="#60a5fa"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M2 12H22"
-                    stroke="#60a5fa"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z"
-                    stroke="#60a5fa"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <div style={{ color: "#ffffd3", fontSize: "16px" }}>
-                  https://okponglozuck.bflabs.tech
-                </div>
+              <div style={{ fontSize: "16px", color: "#52525b", marginTop: "4px" }}>
+                Software · CS · BBF Labs
               </div>
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <svg
-                width="300"
-                height="354"
-                viewBox="0 0 29 33"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                opacity="0.4"
-              >
-                <rect width="3.5" height="12.5" fill="#EC7C4C" />
-                <path
-                  d="M9 0H12.5V29.5H16.5V23L14.5 21.5V19.5V14.75L20 18.75V29.5V33H16.5H9V0Z"
-                  fill="#67C571"
-                />
-                <rect x="25.5" width="3.5" height="12.5" fill="#F4C725" />
-                <path d="M16.5 0H20V15.3828L16.5 12.8409V0Z" fill="#4B4438" />
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <svg width="153" height="13" viewBox="0 0 153 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d={doodlePath} fill="#3f3f46" />
               </svg>
+              <span style={{ color: "#52525b", fontSize: "16px" }}>{person.siteName}</span>
             </div>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              paddingLeft: "60px",
+            }}
+          >
+            <img
+              src={`${baseUrl}/apple-icon.png`}
+              width={220}
+              height={220}
+              style={{ borderRadius: "110px" }}
+            />
           </div>
         </div>
       ),
-      {
-        width: 1200,
-        height: 630,
-      }
+      { width: 1200, height: 630 }
     );
   } catch (error) {
     console.error(error);
