@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { allPosts } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -9,6 +9,40 @@ import { FiYoutube } from "react-icons/fi";
 import { SiSpotify } from "react-icons/si";
 import { LuHandMetal } from "react-icons/lu";
 import { person } from "@/data/person";
+
+const BIRTH = new Date("2006-03-24T23:59:00Z");
+
+function getTimeOnEarth() {
+  const now = new Date();
+  let years = now.getFullYear() - BIRTH.getFullYear();
+  const lastBirthday = new Date(
+    now.getFullYear(),
+    BIRTH.getUTCMonth(),
+    BIRTH.getUTCDate(),
+    BIRTH.getUTCHours(),
+    BIRTH.getUTCMinutes(),
+    BIRTH.getUTCSeconds()
+  );
+  if (lastBirthday > now) {
+    years--;
+    lastBirthday.setFullYear(now.getFullYear() - 1);
+  }
+  const rem = now.getTime() - lastBirthday.getTime();
+  const days = Math.floor(rem / 86400000);
+  const hours = Math.floor((rem % 86400000) / 3600000);
+  const mins = Math.floor((rem % 3600000) / 60000);
+  const secs = Math.floor((rem % 60000) / 1000);
+  return { years, days, hours, mins, secs };
+}
+
+function useTimeOnEarth() {
+  const [t, setT] = useState(getTimeOnEarth);
+  useEffect(() => {
+    const id = setInterval(() => setT(getTimeOnEarth()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return t;
+}
 
 const containerVariants = {
   hidden: {},
@@ -30,6 +64,7 @@ const spotifyTracks = [
 ];
 
 const Home = () => {
+  const { years, days, hours, mins, secs } = useTimeOnEarth();
   const recentPosts = allPosts
     .filter((post) => !post.archived)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -60,7 +95,7 @@ const Home = () => {
               {person.name}
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              Software Engineer · CS student, University of Ghana
+              Software Engineer · Web & Mobile · CS student, University of Ghana
             </p>
             <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -78,13 +113,14 @@ const Home = () => {
 
         <div className="flex flex-col gap-2.5 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
           <p>
-            Developer from Accra, Ghana 🇬🇭 — building polished, production-grade
-            software for the web. I&apos;ve shipped APIs, high-concurrency
-            systems, and frontend products used by thousands, across QuiverTech
-            Solutions, BetaForge Labs, and my own projects.
+            Developer from Accra, Ghana 🇬🇭 — I build for the web and mobile.
+            APIs, high-concurrency systems, React Native apps, and frontend
+            products used by thousands — shipped across fintech companies,
+            QuiverTech Solutions, BetaForge Labs, and a few things I started
+            at 2am and somehow got out the door.
           </p>
           <p>
-            Currently building{" "}
+            Right now I&apos;m building{" "}
             <a
               href="https://qz.bflabs.tech"
               target="_blank"
@@ -93,14 +129,14 @@ const Home = () => {
             >
               Qz
             </a>{" "}
-            — a quiz platform that hit 10,000+ visits in its first month. I work
-            mostly in TypeScript and Python, treat best practices as guidelines
-            not gospel, and learn through reading, writing, and drawing. This
-            site is where all of that lives.
+            — a quiz platform that crossed 10k visits in its first month.
+            TypeScript and Python mostly. I treat best practices as guidelines
+            not gospel, think shipping beats theorizing, and have an
+            inexplicable habit of rebuilding things from scratch because{" "}
+            <span className="italic">it&apos;ll definitely be cleaner this time.</span>
           </p>
-          <p className="text-zinc-400 dark:text-zinc-500 text-xs italic mt-1">
-            Where tradition meets innovation, that&apos;s where you&apos;ll find
-            me coding.
+          <p className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500 tabular-nums mt-1">
+            {years}y · {days}d · {String(hours).padStart(2, "0")}h · {String(mins).padStart(2, "0")}m · {String(secs).padStart(2, "0")}s on this earth
           </p>
           <svg
             className="mt-5 text-zinc-300 dark:text-zinc-700"
