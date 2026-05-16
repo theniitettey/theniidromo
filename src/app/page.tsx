@@ -95,7 +95,7 @@ const Home = () => {
               {person.name}
             </h1>
             <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              Software Engineer · Web & Mobile · CS student, University of Ghana
+              Software Engineer · CS student, University of Ghana
             </p>
             <span className="inline-flex items-center gap-1.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -134,6 +134,12 @@ const Home = () => {
             not gospel, think shipping beats theorizing, and have an
             inexplicable habit of rebuilding things from scratch because{" "}
             <span className="italic">it&apos;ll definitely be cleaner this time.</span>
+          </p>
+          <p>
+            If there&apos;s docs or not, I can write it. If there&apos;s an idea, I can build it.
+          </p>
+          <p className="text-zinc-400 dark:text-zinc-500 text-xs italic mt-1">
+            what&apos;s west of westeros? shall I go left where nothing is left, or right where nothing is right?
           </p>
           <p className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500 tabular-nums mt-1">
             {years}y · {days}d · {String(hours).padStart(2, "0")}h · {String(mins).padStart(2, "0")}m · {String(secs).padStart(2, "0")}s on this earth
