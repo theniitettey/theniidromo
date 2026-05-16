@@ -10,7 +10,7 @@ so this is the repo for my personal site — [theniidromo.me](https://theniidrom
 - **blog** (`/blog`) — longer-form technical and personal writing
 - **thoughts** (`/thoughts`) — short-form reflections. the stuff that doesn't need 1500 words
 - **asore** (`/asore`) — devotionals. faith, scripture, spiritual reflections
-- **guestbook** (`/guestbook`) — sign in with GitHub, leave a message
+- **guestbook** (`/guestbook`) — sign in with GitHub or Google, leave a message
 - **music** (`/music`) — personal Spotify dashboard. top tracks, listening history. admin only
 - **resume** (`/resume`) — exactly what it sounds like
 
@@ -23,7 +23,7 @@ so this is the repo for my personal site — [theniidromo.me](https://theniidrom
 | framework | Next.js 14 — App Router, React Server Components |
 | content | Velite — MDX compiled at build time, typed collections |
 | styling | Tailwind CSS — custom color tokens, dark mode via class |
-| auth | GitHub OAuth + HMAC-signed sessions via edge middleware |
+| auth | GitHub OAuth + Google OAuth (+ One Tap) + HMAC-signed sessions |
 | database | PostgreSQL (Neon) — post views, likes, guestbook entries |
 | music | Spotify Web API — now playing, queue injection, top tracks |
 | og images | `@vercel/og` (Satori) — edge runtime, per-section routes |
@@ -158,15 +158,30 @@ the content routes (posts, thoughts, devotionals) all share a single route at `/
 - DJ widget — lets visitors request songs to the queue. hides itself when the player is offline
 
 **auth + sessions**
-- GitHub OAuth via `/api/auth/github`
-- sessions are HMAC-signed using `crypto.subtle` (Web Crypto API) — works on the edge
-- session validation happens in `src/middleware.ts` before any protected route runs
+- GitHub OAuth via `/api/auth/github` + `/api/auth/github/callback`
+- Google OAuth via `/api/auth/google` + `/api/auth/google/callback` — with PKCE and state validation
+- Google One Tap via `/api/auth/google/one-tap`
+- sessions store a `provider` field (`"github" | "google"`) so both flows share the same session shape
+- sessions are signed using HMAC-SHA256 via `crypto.subtle` (Web Crypto API) — cookie is `base64url(payload).base64url(sig)`, verified on every read
 - admin access (e.g. `/music`) is checked against `NEXT_PUBLIC_ADMIN_USERNAME`
 
 **post interactions**
-- views tracked per post via `getPostViews` / `incrementPostViews`
-- likes stored in PostgreSQL, toggled client-side
-- comments via `PostInteractions` component — requires GitHub auth
+
+views:
+- tracked per post via `getPostViews` / `incrementPostViews` on page load
+
+likes:
+- progressive fill heart — each user can tap up to 50 times, filling the heart incrementally
+- taps are debounced (800ms) before syncing to the server so rapid clicking doesn't hammer the DB
+- floating `+1` bubble animation on each tap
+
+comments:
+- sign in required — GitHub or Google
+- threaded: top-level comments + nested replies
+- comment reactions: 👍 ❤️ 🚀 🎉 💡 — floating emoji animation on react, reaction counts shown as pills
+- reply reactions work the same way
+- delete available to comment owner or admin (`NEXT_PUBLIC_ADMIN_USERNAME`)
+- 1000 character limit per comment/reply
 
 **related content**
 - `RelatedPosts` component — tag-based, works across any collection (posts or thoughts)
@@ -189,6 +204,10 @@ NEXT_PUBLIC_ADMIN_USERNAME="theniitettey"
 # github oauth
 GITHUB_CLIENT_ID="..."
 GITHUB_CLIENT_SECRET="..."
+
+# google oauth
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
 
 # spotify
 SPOTIFY_CLIENT_ID="..."
