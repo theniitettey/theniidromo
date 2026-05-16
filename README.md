@@ -1,40 +1,196 @@
-# 🌟 The Nii Dromo — Developer Portfolio
+# theniidromo.me
 
-A high-performance, state-of-the-art personal developer portfolio engineered with Next.js, React Server Components, and TailwindCSS. Focused on rich visual aesthetics, robust edge-security, and deep third-party integrations.
-
----
-
-## 🚀 Major Features & Architecture
-
-### 1. 🎶 Real-Time Spotify Integration Hub
-Exposes live analytics and deep statistical aggregates powered directly by the Spotify Web API.
-- **Active Now Playing Card**: Seamless client-side polling displaying your live stream, or falling back gracefully to Recently Played status when offline.
-- **📊 Vibe Analytics Engine**: Dynamically fetches deep acoustic characteristics (Energy, Groove, and Mood percentages) using Spotify Audio Features to render custom live dashboards.
-- **🔐 Secured Music Hub (`/music`)**: A private administrative data visualization center displaying personal charts across customizable time horizons (Short, Medium, & Long-Term).
-- **🎛️ Smart "Pass the Aux" DJ Widget**: An interactive client component allowing approved visitors to request tracks and insert them directly into your live playback queue. Hides automatically from the DOM when your player is offline to prevent error logging.
-
-### 2. 🛡️ Next.js Edge Middleware Security
-Features a zero-trust authentication perimeter configured at the network edge.
-- **Perimeter Blockage**: Active requests to protected resources (such as `/music`) are intercepted and validated inside [src/middleware.ts](file:///c:/Users/micha/Desktop/theniidromo/src/middleware.ts) BEFORE executing core dynamic server code.
-- **HMAC Signature Decoupling**: Uses standard Web Crypto APIs (`crypto.subtle`) to decrypt session state instantly without standard Node.js runtime overheads.
+so this is the repo for my personal site — [theniidromo.me](https://theniidromo.me). it's a portfolio, a blog, a devotional archive, a music dashboard, a guestbook, and whatever else I decided to add at 2am. it's built with Next.js, TypeScript, and a content pipeline I actually enjoy working with. this README documents it properly so future-me (and anyone else poking around) doesn't have to reverse-engineer everything.
 
 ---
 
-## ⚙️ Setup & Environment Configuration
+## what's actually on this site
 
-To fully enable external integrations, define the following core environmental tokens in your `.env` file:
+- **home** — bio, live time-on-earth counter, now playing, featured projects, recent writing
+- **blog** (`/blog`) — longer-form technical and personal writing
+- **thoughts** (`/thoughts`) — short-form reflections. the stuff that doesn't need 1500 words
+- **asore** (`/asore`) — devotionals. faith, scripture, spiritual reflections
+- **guestbook** (`/guestbook`) — sign in with GitHub, leave a message
+- **music** (`/music`) — personal Spotify dashboard. top tracks, listening history. admin only
+- **resume** (`/resume`) — exactly what it sounds like
+
+---
+
+## stack
+
+| layer | what |
+|---|---|
+| framework | Next.js 14 — App Router, React Server Components |
+| content | Velite — MDX compiled at build time, typed collections |
+| styling | Tailwind CSS — custom color tokens, dark mode via class |
+| auth | GitHub OAuth + HMAC-signed sessions via edge middleware |
+| database | PostgreSQL (Neon) — post views, likes, guestbook entries |
+| music | Spotify Web API — now playing, queue injection, top tracks |
+| og images | `@vercel/og` (Satori) — edge runtime, per-section routes |
+| deployment | Vercel — analytics and speed insights injected at root layout |
+| fonts | Geist (body), Dancing Script (logo), system mono |
+
+---
+
+## running it locally
+
+```bash
+npm install
+npm run dev        # runs velite watch + next dev in parallel
+```
+
+other commands:
+
+```bash
+npm run build      # velite build + next build
+npm run lint       # eslint via next lint
+npm run preview    # build + start — local production preview
+```
+
+there's no test suite. TypeScript type-checking runs during `next build`.
+
+---
+
+## content
+
+all written content lives in `content/` as MDX files. Velite processes them at build time and generates typed exports into `.velite/` (gitignored). everything re-exports from `src/lib/content.ts`.
+
+### collections
+
+posts, thoughts, and asores all use the same frontmatter shape:
+
+```mdx
+---
+title: "your title"
+description: "optional — shows under the title and in og images"
+date: "2026-01-15T10:00:00Z"
+tags: ["tag-one", "tag-two"]
+draft: false       # true = excluded from all listings
+archived: false    # true = moved to the archive
+---
+
+your content here
+```
+
+the only difference is asores has one extra field:
+
+```mdx
+christian: true    # flags the piece as explicitly Christian content
+```
+
+**pages** — `content/pages/*.mdx`
+
+static pages. simpler — just `title` and optional `description`, no date or tags.
+
+```mdx
+---
+title: "page title"
+description: "optional"
+---
+
+your content here
+```
+
+---
+
+### computed fields
+
+every item in every collection gets these automatically:
+
+| field | what it does |
+|---|---|
+| `slug` | full URL path — e.g. `/posts/my-post` |
+| `slugAsParams` | path without the type prefix — e.g. `my-post` |
+| `readTimeMinutes` | estimated read time — e.g. `4 min read` |
+
+### MDX features
+
+- **math** — LaTeX via `remark-math` + `rehype-katex`
+- **code blocks** — syntax highlighted via `bright` with `github-dark` / `github-light` themes
+- **custom components** — `Quote`, headings, paragraphs, lists all have custom renderers via `MDXComponent`
+
+---
+
+## routes
+
+```
+/                          home
+/blog                      all non-archived posts
+/posts/[...slug]           individual post
+/thoughts                  all non-archived thoughts
+/thoughts/[...slug]        individual thought
+/asore                     all non-archived devotionals
+/asore/[...slug]           individual devotional
+/archive/posts             archived posts
+/archive/devotionals       archived devotionals
+/guestbook                 guestbook — GitHub auth required to sign
+/music                     spotify dashboard — admin only
+/resume                    resume
+
+/api/og/profile            og image — home / profile
+/api/og/content            og image — posts, thoughts, devotionals (shared route)
+/api/og/post-archive       og image — post archive page
+/api/og/dev-archive        og image — devotional archive page
+/api/og/thought            og image — thoughts index page
+```
+
+---
+
+## og images
+
+each section has a corresponding `/api/og/` route running on the edge via `@vercel/og`. they all share the same design — dark grid background (`#161616`), section label, title, description, doodle, site name.
+
+the content routes (posts, thoughts, devotionals) all share a single route at `/api/og/content` and accept query params:
+
+```
+?section=blog+post&title=...&description=...&date=...
+?section=thoughts&title=...&date=...
+?section=devotional&title=...&description=...&date=...
+```
+
+---
+
+## features worth knowing about
+
+**Spotify integration**
+- `/api/spotify/now-playing` — polls current track, falls back to recently played
+- `/api/spotify/top-tracks` — top tracks across short / medium / long term
+- DJ widget — lets visitors request songs to the queue. hides itself when the player is offline
+
+**auth + sessions**
+- GitHub OAuth via `/api/auth/github`
+- sessions are HMAC-signed using `crypto.subtle` (Web Crypto API) — works on the edge
+- session validation happens in `src/middleware.ts` before any protected route runs
+- admin access (e.g. `/music`) is checked against `NEXT_PUBLIC_ADMIN_USERNAME`
+
+**post interactions**
+- views tracked per post via `getPostViews` / `incrementPostViews`
+- likes stored in PostgreSQL, toggled client-side
+- comments via `PostInteractions` component — requires GitHub auth
+
+**related content**
+- `RelatedPosts` component — tag-based, works across any collection (posts or thoughts)
+- appears after interactions on individual post and thought pages
+
+---
+
+## environment variables
+
+create a `.env.local` at the root:
 
 ```env
-# 🔑 Core Configuration & Auth
+# database
 DATABASE_URL="postgresql://..."
-SESSION_SECRET="development_secret_key"
+
+# auth
+SESSION_SECRET="your-secret-here"
 NEXT_PUBLIC_ADMIN_USERNAME="theniitettey"
 
-# 🐙 Third-Party Provider Authorization
+# github oauth
 GITHUB_CLIENT_ID="..."
 GITHUB_CLIENT_SECRET="..."
 
-# 🎵 Spotify Integrations
+# spotify
 SPOTIFY_CLIENT_ID="..."
 SPOTIFY_CLIENT_SECRET="..."
 SPOTIFY_REFRESH_TOKEN="..."
@@ -42,33 +198,44 @@ SPOTIFY_REFRESH_TOKEN="..."
 
 ---
 
-## 📂 Content Structure Documentation
+## project structure
 
-Your dynamic text assets are managed via the local markdown definitions. Below are the core document types you can build:
-
-### 1. **Page**
-
-The `Page` type is used for defining static text pages like the homepage or About Me.
-
-#### Fields:
-- `title` (required)  
-  **Type**: `string` — The page title.
-- `description` (optional)  
-  **Type**: `string` — A brief summary of the page content.
-
-#### Computed Fields:
-- `slug`: Resolves to absolute URL path (e.g. `/about` from `about.mdx`).
-- `slugAsParams`: Resolves to raw path parameters used in internal routing.
-- `readTimeMinutes`: Automatically computes humanized reading estimates (e.g. `4 min read`).
-
-#### Example:
-```mdx
----
-title: "About Me"
-description: "A little bit about myself."
----
-
-# About Me
-
-Welcome to my portfolio site!
 ```
+src/
+  app/                  pages and layouts (App Router)
+    api/                api routes — auth, spotify, og images, interactions
+  components/           shared components
+    ui/                 motion wrappers, toggles, utility components
+  data/
+    person.ts           single source of truth for personal info (name, links, etc.)
+  lib/
+    content.ts          re-exports all velite collections
+    config.ts           site config (url, admin, etc.)
+    session.ts          session helpers
+content/
+  posts/
+  thoughts/
+  asore/
+  pages/
+velite.config.ts        content pipeline config
+```
+
+---
+
+---
+
+## why MDX and not a CMS
+
+honestly? laziness. but like, the principled kind.
+
+the alternative was setting up a CMS — Contentful, Sanity, whatever — which means a dashboard to log into, an API to call, a schema to maintain, and a whole separate system to keep in sync with the code. or I could've just built individual pages for every post, which... no. I'm not doing that. I'd have to create a new file, add a new route, wire up metadata, write the content, and repeat that every single time I wanted to publish something. that is too much work for someone who already finds reasons not to write.
+
+with MDX, I open a file, write, and push. that's the whole workflow. the content pipeline (Velite) picks it up at build time, generates typed exports, handles slugs, computes read time — everything I'd have had to wire up manually is just... there. the frontmatter gives me structured data without a separate database. the MDX gives me full component support inside prose when I need it, which is occasionally and exactly when I need it.
+
+and the part that actually sold me — it's still JSX. I can drop a custom component right inside a piece of writing and it just works. need a styled quote block? there's a `<Quote>` component. want to embed a code snippet with syntax highlighting? `<Code>`. need something more custom — a callout, an interactive widget, whatever — I write the component once and use it anywhere across any piece of content. no shortcodes, no CMS-specific syntax, no plugin to install. just the same React I'm already writing everywhere else. the line between "content" and "code" basically disappears, which is exactly how it should feel.
+
+it also means everything lives in the same repo. content, code, config — one git history, one deployment. if I want to archive a post I change one field. if I want to add a new collection I add 10 lines to `velite.config.ts`. no migration, no API keys, no CMS subscription, no "your free tier limit has been reached."
+
+would a CMS scale better if this were a publication with multiple authors and editors? probably. but it's just me. and I write when I feel like it. the setup should match the person, and this one does.
+
+_if you're reading this and it's your first time here — akwaaba. hope you find something worth reading._
