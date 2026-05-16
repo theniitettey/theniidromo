@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { allPosts } from "@/lib/content";
+import { allPosts, allThoughts, allAsores } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Posts, MotionDiv, MotionHeader, SpotifyCard, NowPlaying, DjQueueWidget } from "@/components";
@@ -65,8 +65,8 @@ const spotifyTracks = [
 
 const Home = () => {
   const { years, days, hours, mins, secs } = useTimeOnEarth();
-  const recentPosts = allPosts
-    .filter((post) => !post.archived)
+  const recentPosts = [...allPosts, ...allThoughts, ...allAsores]
+    .filter((item) => !item.archived && !item.draft)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 4);
 
@@ -139,7 +139,7 @@ const Home = () => {
             If there&apos;s docs or not, I can write it. If there&apos;s an idea, I can build it.
           </p>
           <p className="text-zinc-400 dark:text-zinc-500 text-xs italic mt-1">
-            what&apos;s west of westeros? shall I go left where nothing is left, or right where nothing is right?
+            what&apos;s west of westeros? that&apos;s where I&apos;m heading. shall I go left where nothing is left, or right where nothing is right?
           </p>
           <p className="font-mono text-[10px] text-zinc-400 dark:text-zinc-500 tabular-nums mt-1">
             {years}y · {days}d · {String(hours).padStart(2, "0")}h · {String(mins).padStart(2, "0")}m · {String(secs).padStart(2, "0")}s on this earth

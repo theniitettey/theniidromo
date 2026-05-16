@@ -2,13 +2,25 @@ import { allPosts } from "@/lib/content";
 import Link from "next/link";
 import { format } from "date-fns";
 
+type ContentItem = {
+  slug: string;
+  slugAsParams: string;
+  title: string;
+  date: string;
+  tags?: string[];
+  draft: boolean;
+  archived: boolean;
+};
+
 interface RelatedPostsProps {
   tags: string[];
   currentSlug: string;
+  collection?: ContentItem[];
+  label?: string;
 }
 
-export function RelatedPosts({ tags, currentSlug }: RelatedPostsProps) {
-  const related = allPosts
+export function RelatedPosts({ tags, currentSlug, collection = allPosts, label = "Related Posts" }: RelatedPostsProps) {
+  const related = collection
     .filter((p) => !p.draft && !p.archived && p.slugAsParams !== currentSlug)
     .map((p) => ({
       post: p,
@@ -24,7 +36,7 @@ export function RelatedPosts({ tags, currentSlug }: RelatedPostsProps) {
   return (
     <div className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
       <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-4">
-        Related Posts
+        {label}
       </h3>
       <div className="flex flex-col gap-3">
         {related.map((post) => (

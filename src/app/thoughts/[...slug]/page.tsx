@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { MotionDiv } from "@/components";
 import MDXComponent from "@/components/MdxComponent";
 import { PostInteractions } from "@/components/PostInteractions";
+import { RelatedPosts } from "@/components/RelatedPosts";
 import { getSession } from "@/lib/session";
 import { siteConfig } from "@/lib/config";
 import { format } from "date-fns";
@@ -138,6 +139,7 @@ export default async function ThoughtPage({ params }: ThoughtsProps) {
             </article>
           </div>
           <PostInteractions slug={thought.slugAsParams} session={session} adminUsername={siteConfig.admin.username} />
+          <RelatedPosts tags={thought.tags ?? []} currentSlug={thought.slugAsParams} collection={allThoughts} label="Related Thoughts" />
         </div>
       </MotionDiv>
     </div>

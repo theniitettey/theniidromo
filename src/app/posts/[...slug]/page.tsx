@@ -142,8 +142,8 @@ export default async function PostsPage({ params }: PostsProps) {
               <MDXComponent code={post.body} />
             </article>
           </div>
-          <RelatedPosts tags={post.tags ?? []} currentSlug={post.slugAsParams} />
           <PostInteractions slug={post.slugAsParams} session={session} adminUsername={siteConfig.admin.username} />
+          <RelatedPosts tags={post.tags ?? []} currentSlug={post.slugAsParams} />
         </div>
       </MotionDiv>
     </div>
