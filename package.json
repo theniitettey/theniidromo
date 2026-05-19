@@ -28,7 +28,7 @@
     "bright": "^1.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "eslint": "^9.39.1",
+    "eslint": "^10.4.0",
     "eslint-config-next": "latest",
     "framer-motion": "^12.23.12",
     "next": "^16.2.6",
