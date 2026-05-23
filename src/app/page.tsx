@@ -307,7 +307,7 @@ const Home = () => {
             />
           ))}
         </div>
-        <div className="flex items-center gap-5 pt-1">
+        <div className="flex items-center gap-3 pt-1">
           <Link
             href="/blog"
             className="text-xs text-zinc-500 hover:text-foreground transition-colors"
@@ -325,6 +325,12 @@ const Home = () => {
             className="text-xs text-zinc-500 hover:text-foreground transition-colors"
           >
             Asore →
+          </Link>
+          <Link
+            href="/uses"
+            className="text-xs text-zinc-500 hover:text-foreground transition-colors"
+          >
+            Uses →
           </Link>
         </div>
       </MotionDiv>
