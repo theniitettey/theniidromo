@@ -33,7 +33,7 @@ const Footer = () => {
         </div>
         <div className="flex justify-center items-center gap-1.5">
           <Link
-            href={person.projects.themefolio}
+            href={`https://github.com/${person.social.githubUsername}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 hover:text-foreground transition-colors"

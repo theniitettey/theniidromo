@@ -8,11 +8,11 @@ export const person = {
   social: {
     twitter:   "https://x.com/theniitettey",
     linkedin:  "https://linkedin.com/in/theniitettey",
-    github:    "https://github.com/michaelperryjnr",
+    github:    "https://github.com/theniitettey",
     youtube:   "https://youtube.com/@michaelperryjnr",
     twitterHandle: "@theniitettey",
     youtubeHandle: "@michaelperryjnr",
-    githubHandle:  "michaelperryjnr",
+    githubHandle:  "theniitettey",
     githubUsername: "theniitettey",
     avatarUrl: "https://github.com/theniitettey.png",
   },
