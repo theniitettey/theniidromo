@@ -3,7 +3,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import { SchemeToggle, useSearchModal } from "@/components";
 import Link from "next/link";
-import { FiGithub, FiTwitter, FiMail, FiLinkedin, FiFileText } from "react-icons/fi";
+import { FiGithub, FiTwitter, FiMail, FiLinkedin, FiFileText, FiRss } from "react-icons/fi";
 import { LuSearch } from "react-icons/lu";
 import { Dancing_Script } from "next/font/google";
 import { person } from "@/data/person";
@@ -77,6 +77,9 @@ const Header = () => {
           </Link>
           <Link href="/resume" className="text-zinc-400 hover:text-foreground transition-colors">
             <FiFileText size={15} />
+          </Link>
+          <Link href="/rss.xml" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-foreground transition-colors">
+            <FiRss size={15} />
           </Link>
         </div>
       </div>

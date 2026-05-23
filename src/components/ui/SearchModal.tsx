@@ -27,6 +27,7 @@ const NAV_COMMANDS: NavCommand[] = [
   { label: "Thoughts",  slug: "/thoughts",   icon: LuMessageSquare, group: "navigate" },
   { label: "Asore",     slug: "/asore",      icon: LuBookOpen,    group: "navigate" },
   { label: "Guestbook", slug: "/guestbook",  icon: LuBook,        group: "navigate" },
+  { label: "Uses",      slug: "/uses",       icon: LuFileText,    group: "navigate" },
   { label: "Resume",    slug: "/resume",     icon: LuFileUser,    group: "navigate" },
   { label: "RSS Feed",  slug: "/rss.xml",    icon: LuRss,         group: "navigate" },
 ];
