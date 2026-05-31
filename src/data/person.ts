@@ -6,20 +6,20 @@ export const person = {
   email: "michaelperryt97@gmail.com",
 
   social: {
-    twitter:   "https://x.com/theniitettey",
-    linkedin:  "https://linkedin.com/in/theniitettey",
-    github:    "https://github.com/theniitettey",
-    youtube:   "https://youtube.com/@michaelperryjnr",
-    twitterHandle: "@theniitettey",
+    twitter: "https://x.com/okponglozuck",
+    linkedin: "https://linkedin.com/in/theniitettey",
+    github: "https://github.com/theniitettey",
+    youtube: "https://youtube.com/@michaelperryjnr",
+    twitterHandle: "@okponglozuck",
     youtubeHandle: "@michaelperryjnr",
-    githubHandle:  "theniitettey",
+    githubHandle: "theniitettey",
     githubUsername: "theniitettey",
     avatarUrl: "https://github.com/theniitettey.png",
   },
 
   projects: {
-    qz:         "https://qz.bflabs.tech",
+    qz: "https://qz.bflabs.tech",
     eventflick: "https://eventflick.vercel.app",
-    themefolio: "https://github.com/michaelperryjnr/themefolio",
+    themefolio: "https://github.com/theniitettey/themefolio",
   },
 };

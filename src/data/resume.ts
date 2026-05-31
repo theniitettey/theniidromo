@@ -33,7 +33,7 @@ export const resumeData = {
       bullets: [
         "Engineered a multi-tenant B2B inventory management and booking platform, onboarding over 10+ companies and integrating full accounting/audit features.",
         "Developed a membership system backend that integrates with multiple payment platforms and supports 500+ concurrent users with 99.9% uptime.",
-        "Delivered diverse full-stack web apps, APIs, and AI services; refactored the admin panel and client portal to improve user experience, resulting in a 20% reduction in admin report load times.",
+        "Delivered diverse full-stack web apps, APIs, and AI services; refactored admin panels and client portals to improve user experience, resulting in a 20% reduction in admin report load times.",
       ],
     },
   ],
@@ -83,11 +83,13 @@ export const resumeData = {
     },
     {
       label: "Frameworks",
-      value: "React, Next.js, Node.js, Express.js, FastAPI, Django, Nest.js, .NET",
+      value:
+        "React, Next.js, Node.js, Express.js, FastAPI, Django, Nest.js, .NET",
     },
     {
       label: "Tools",
-      value: "Docker, Git, Firebase, PostgreSQL, MongoDB, Heroku, JWT, OAuth, Genkit, Linux",
+      value:
+        "Docker, Git, Firebase, PostgreSQL, MongoDB, Heroku, JWT, OAuth, Genkit, Linux",
     },
   ],
 
