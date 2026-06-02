@@ -6,11 +6,11 @@ export const person = {
   email: "michaelperryt97@gmail.com",
 
   social: {
-    twitter: "https://x.com/okponglozuck",
+    twitter: "https://x.com/theniidromo",
     linkedin: "https://linkedin.com/in/theniitettey",
     github: "https://github.com/theniitettey",
     youtube: "https://youtube.com/@michaelperryjnr",
-    twitterHandle: "@okponglozuck",
+    twitterHandle: "@theniidromo",
     youtubeHandle: "@michaelperryjnr",
     githubHandle: "theniitettey",
     githubUsername: "theniitettey",
