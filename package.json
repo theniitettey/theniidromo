@@ -24,7 +24,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "arctic": "^3.7.0",
     "autoprefixer": "10.5.0",
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "bright": "^1.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
