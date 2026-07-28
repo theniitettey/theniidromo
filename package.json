@@ -31,7 +31,7 @@
     "eslint": "^10.4.0",
     "eslint-config-next": "latest",
     "framer-motion": "^12.40.0",
-    "next": "^16.2.9",
+    "next": "^16.2.12",
     "next-themes": "^0.4.6",
     "postcss": "8.5.15",
     "postgres": "^3.4.9",
